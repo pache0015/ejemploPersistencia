@@ -4,6 +4,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 
+import javax.print.attribute.standard.PrinterResolution;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -39,7 +40,24 @@ public class JDBCEspecieDAO implements EspecieDAO {
 
     @Override
     public void actualizar(Especie especie) {
+        this.executeWithConnection(conn -> {
+            PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantida_de_bichos = ?");
+            ps.setString(1, especie.getNombre());
+            ps.setInt(2, especie.getPeso());
+            ps.setInt(3, especie.getAltura());
+            ps.setString(4, especie.getTipo().toString());
+            ps.setInt(5, especie.getCantidadBichos());
 
+            ps.executeQuery();
+
+            if (ps.getUpdateCount() != 1) {
+                throw new RuntimeException("No se actualizo la especie " + especie);
+            }
+
+            ps.close();
+
+            return null;
+        });
     }
 
     @Override
@@ -75,8 +93,8 @@ public class JDBCEspecieDAO implements EspecieDAO {
             while (resultSet.next()) {
 
                 Especie nuevaEspecieRecuperada = new Especie(resultSet.getInt("id"), resultSet.getString("nombre"), TipoBicho.valueOf(resultSet.getString("tipo")));
-                nuevaEspecieRecuperada.setAltura(resultSet.getInt("altura"))
-                nuevaEspecieRecuperada.setCantidadBichos(resultSet.getInt("cantidad_de_bichos"))
+                nuevaEspecieRecuperada.setAltura(resultSet.getInt("altura"));
+                nuevaEspecieRecuperada.setCantidadBichos(resultSet.getInt("cantidad_de_bichos"));
                 nuevaEspecieRecuperada.setPeso(resultSet.getInt("peso"));
 
                 especiesRecuperadas.add(nuevaEspecieRecuperada);
