@@ -41,14 +41,14 @@ public class JDBCEspecieDAO implements EspecieDAO {
     @Override
     public void actualizar(Especie especie) {
         this.executeWithConnection(conn -> {
-            PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantida_de_bichos = ?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantidad_de_bichos = ?");
             ps.setString(1, especie.getNombre());
             ps.setInt(2, especie.getPeso());
             ps.setInt(3, especie.getAltura());
             ps.setString(4, especie.getTipo().toString());
             ps.setInt(5, especie.getCantidadBichos());
 
-            ps.executeQuery();
+            ps.execute();
 
             if (ps.getUpdateCount() != 1) {
                 throw new RuntimeException("No se actualizo la especie " + especie);
@@ -90,6 +90,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM especie");
             ResultSet resultSet = ps.executeQuery();
             List<Especie> especiesRecuperadas = new ArrayList<>();
+
             while (resultSet.next()) {
 
                 Especie nuevaEspecieRecuperada = new Especie(resultSet.getInt("id"), resultSet.getString("nombre"), TipoBicho.valueOf(resultSet.getString("tipo")));
@@ -114,7 +115,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
         try {
             return bloque.executeWith(connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Error no esperado", e);
+            throw new RuntimeException(e);
         } finally {
             this.closeConnection(connection);
         }
@@ -127,7 +128,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }

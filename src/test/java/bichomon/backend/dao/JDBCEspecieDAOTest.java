@@ -6,6 +6,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceImp;
 import org.junit.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class JDBCEspecieDAOTest {
     private EspecieDAO dao = new JDBCEspecieDAO();
@@ -16,7 +17,7 @@ public class JDBCEspecieDAOTest {
     @Before
     public void setUp() {
         dataService.crearSetDatosIniciales();
-        crearEspecie();
+        this.especie = crearEspecie(this.nombreBichomon);
     }
 
     @After
@@ -24,13 +25,14 @@ public class JDBCEspecieDAOTest {
         dataService.eliminarDatos();
     }
 
-    private void crearEspecie() {
-        this.especie = new Especie();
-        this.especie.setPeso(15);
-        this.especie.setAltura(198);
-        this.especie.setCantidadBichos(2500);
-        this.especie.setNombre(this.nombreBichomon);
-        this.especie.setTipo(TipoBicho.ELECTRICIDAD);
+    private Especie crearEspecie(String nombreBichomon) {
+        Especie especie = new Especie();
+        especie.setPeso(15);
+        especie.setAltura(198);
+        especie.setCantidadBichos(2500);
+        especie.setNombre(nombreBichomon);
+        especie.setTipo(TipoBicho.ELECTRICIDAD);
+        return especie;
     }
 
     @Test
@@ -44,5 +46,29 @@ public class JDBCEspecieDAOTest {
         assertEquals(this.especie.getTipo(), especieX.getTipo());
         assertEquals(this.especie.getCantidadBichos(), especieX.getCantidadBichos());
 
+    }
+    @Test
+    public void se_actualiza_una_especie_guardada() {
+        Integer alturaSinActualizar = this.especie.getAltura();
+        Integer nuevaAltura = 1;
+
+        this.dao.guardar(this.especie);
+        this.especie.setAltura(nuevaAltura);
+
+        this.dao.actualizar(this.especie);
+
+        Especie especieRecuperada = this.dao.recuperar(this.nombreBichomon);
+
+        assertNotEquals(alturaSinActualizar, especieRecuperada.getAltura(), 0);
+    }
+
+    @Test
+    public void se_pide_la_lista_de_todas_las_especies(){
+        this.dao.guardar(this.especie);
+        this.dao.guardar(crearEspecie("El vamo a calmarno"));
+
+        Integer cantidad_de_especies  = this.dao.recuperarTodos().size();
+
+        assertEquals(2, cantidad_de_especies, 0);
     }
 }
