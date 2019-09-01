@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCEspecieDAO implements EspecieDAO {
@@ -67,7 +68,24 @@ public class JDBCEspecieDAO implements EspecieDAO {
     }
     @Override
     public List<Especie> recuperarTodos() {
-        return null;
+        return this.executeWithConnection(conn -> {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM especie");
+            ResultSet resultSet = ps.executeQuery();
+            List<Especie> especiesRecuperadas = new ArrayList<>();
+            while (resultSet.next()) {
+
+                Especie nuevaEspecieRecuperada = new Especie(resultSet.getInt("id"), resultSet.getString("nombre"), TipoBicho.valueOf(resultSet.getString("tipo")));
+                nuevaEspecieRecuperada.setAltura(resultSet.getInt("altura"))
+                nuevaEspecieRecuperada.setCantidadBichos(resultSet.getInt("cantidad_de_bichos"))
+                nuevaEspecieRecuperada.setPeso(resultSet.getInt("peso"));
+
+                especiesRecuperadas.add(nuevaEspecieRecuperada);
+
+            }
+
+            ps.close();
+            return especiesRecuperadas;
+        });
     }
 
     /**
@@ -91,7 +109,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }

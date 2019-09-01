@@ -37,7 +37,8 @@ public class DataServiceImp implements DataService {
         ScriptRunner scriptRunner = new ScriptRunner(connection);
         try {
             Reader reader = new BufferedReader(new FileReader("src/resources/create_all.sql"));
-            scriptRunner.runScript(reader );
+            scriptRunner.setLogWriter(null);
+            scriptRunner.runScript(reader);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("No se encontro el archivo", e);
         } finally {
@@ -61,7 +62,7 @@ public class DataServiceImp implements DataService {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
