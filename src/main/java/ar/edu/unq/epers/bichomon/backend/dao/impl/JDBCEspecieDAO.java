@@ -90,8 +90,8 @@ public class JDBCEspecieDAO implements EspecieDAO {
      */
     private Connection openConnection() {
         try {
-            //La url de conexion no deberia estar harcodeada aca
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/epers_ejemplo_jdbc?user=root");
+
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
