@@ -38,7 +38,7 @@ public class EspecieServiceTest {
 
 
     @Test
-    public void seActualizaUnBichoCreado(){
+    public void seCreaUnBichoParaEspecieYSeVerificaCantidadDeBichosDeEspecieGuardada(){
         unaEspecieService.crearBicho(unaEspecie.getNombre(), "chocho");
         Especie repcupero = unaEspecieService.getEspecie(unaEspecie.getNombre());
 
