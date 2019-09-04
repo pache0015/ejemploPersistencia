@@ -71,4 +71,10 @@ public class JDBCEspecieDAOTest {
 
         assertEquals(2, cantidad_de_especies, 0);
     }
+
+    @Test(expected = RuntimeException.class)
+    public void no_se_puede_agregar_dos_especies_con_el_mismo_nombre() {
+        this.dao.guardar(this.especie);
+        this.dao.guardar(this.especie);
+    }
 }
