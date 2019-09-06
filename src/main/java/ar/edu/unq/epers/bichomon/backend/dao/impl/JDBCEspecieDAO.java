@@ -87,7 +87,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
     @Override
     public List<Especie> recuperarTodos() {
         return this.executeWithConnection(conn -> {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM especie");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM especie ORDER BY nombre ASC");
             ResultSet resultSet = ps.executeQuery();
             List<Especie> especiesRecuperadas = new ArrayList<>();
 
@@ -129,7 +129,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false& ");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }

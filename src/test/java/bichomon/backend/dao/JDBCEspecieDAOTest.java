@@ -8,6 +8,10 @@ import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import org.junit.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class JDBCEspecieDAOTest {
@@ -93,5 +97,23 @@ public class JDBCEspecieDAOTest {
         } catch (EspecieNoExistente e) {
             assertEquals("No se encuentra la especie [" + especieNoGuardada.getNombre() + "]", e.getMessage());
         }
+    }
+    @Test
+    public void al_recuperar_todas_las_especies_esta_ordena(){
+        List miListaDeEspeceis = new ArrayList();
+        Especie especie1 = this.crearEspecie("cristal");
+        Especie especie2 = this.crearEspecie("armadura");
+        Especie especie3 = this.crearEspecie("Birdmna");
+
+        this.dao.guardar(especie1);
+        this.dao.guardar(especie2);
+        this.dao.guardar(especie3);
+
+
+        assertEquals(this.dao.recuperarTodos().get(0).getNombre(), especie2.getNombre());
+        assertEquals(this.dao.recuperarTodos().get(1).getNombre(), especie3.getNombre());
+        assertEquals(this.dao.recuperarTodos().get(2).getNombre(), especie1.getNombre());
+
+
     }
 }

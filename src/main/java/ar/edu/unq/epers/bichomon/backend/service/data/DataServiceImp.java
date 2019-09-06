@@ -58,7 +58,7 @@ public class DataServiceImp implements DataService {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
