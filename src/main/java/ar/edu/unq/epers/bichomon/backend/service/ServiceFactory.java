@@ -1,9 +1,10 @@
 package ar.edu.unq.epers.bichomon.backend.service;
 
+import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataService;
+import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceImp;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieServiceImpl;
-import ar.edu.unq.epers.bichomon.frontend.mock.EspecieDAOMock;
 
 /**
  * Esta clase es un singleton, el cual sera utilizado por equipo de frontend
@@ -11,9 +12,12 @@ import ar.edu.unq.epers.bichomon.frontend.mock.EspecieDAOMock;
  * 
  * @author Steve Frontend
  * 
- * TODO: Gente de backend, una vez que tengan las implementaciones de sus
+ * Gente de backend, una vez que tengan las implementaciones de sus
  * servicios propiamente realizadas apunten a ellas en los metodos provistos
  * debajo. Gracias!
+ *
+ * Hecho
+ * - Gente de Backend
  */
 public class ServiceFactory {
 	
@@ -21,14 +25,14 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		return new EspecieServiceImpl(new EspecieDAOMock());
+		return new EspecieServiceImpl(new JDBCEspecieDAO());
 	}
 	
 	/**
 	 * @return un objeto que implementa {@link DataService}
 	 */
 	public DataService getDataService() {
-		throw new RuntimeException("Todavia no se ha implementado este metodo");
+		return new DataServiceImp();
 	}
 
 }
