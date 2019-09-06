@@ -3,6 +3,8 @@ package ar.edu.unq.epers.bichomon.backend.dao.impl;
 import ar.edu.unq.epers.bichomon.backend.dao.EspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieExistente;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 
 import javax.print.attribute.standard.PrinterResolution;
 import java.sql.Connection;
@@ -20,44 +22,45 @@ public class JDBCEspecieDAO implements EspecieDAO {
 
     @Override
     public void guardar(Especie especie) {
-        this.executeWithConnection(conn -> {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO especie (nombre, peso, altura, tipo, cantidad_de_bichos) VALUES (?,?,?,?,?)");
-            ps.setString(1, especie.getNombre());
-            ps.setInt(2, especie.getPeso());
-            ps.setInt(3, especie.getAltura());
-            ps.setString(4, especie.getTipo().toString());
-            ps.setInt(5, especie.getCantidadBichos());
-            ps.execute();
+        try {
+            this.executeWithConnection(conn -> {
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO especie (nombre, peso, altura, tipo, cantidad_de_bichos) VALUES (?,?,?,?,?)");
+                ps.setString(1, especie.getNombre());
+                ps.setInt(2, especie.getPeso());
+                ps.setInt(3, especie.getAltura());
+                ps.setString(4, especie.getTipo().toString());
+                ps.setInt(5, especie.getCantidadBichos());
 
-            if (ps.getUpdateCount() != 1) {
-                throw new RuntimeException("No se inserto la especie " + especie);
-            }
-            ps.close();
+                ps.execute();
+                ps.close();
 
-            return null;
-        });
+                return null;
+            });
+
+        } catch (RuntimeException e) {
+            throw new EspecieExistente(especie.getNombre());
+        }
     }
 
     @Override
     public void actualizar(Especie especie) {
-        this.executeWithConnection(conn -> {
-            PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantidad_de_bichos = ?");
-            ps.setString(1, especie.getNombre());
-            ps.setInt(2, especie.getPeso());
-            ps.setInt(3, especie.getAltura());
-            ps.setString(4, especie.getTipo().toString());
-            ps.setInt(5, especie.getCantidadBichos());
+        try {
+            this.executeWithConnection(conn -> {
+                PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantidad_de_bichos = ?");
+                ps.setString(1, especie.getNombre());
+                ps.setInt(2, especie.getPeso());
+                ps.setInt(3, especie.getAltura());
+                ps.setString(4, especie.getTipo().toString());
+                ps.setInt(5, especie.getCantidadBichos());
 
-            ps.execute();
+                ps.execute();
+                ps.close();
 
-            if (ps.getUpdateCount() != 1) {
-                throw new RuntimeException("No se actualizo la especie " + especie);
-            }
-
-            ps.close();
-
-            return null;
-        });
+                return null;
+            });
+        } catch (RuntimeException e) {
+            throw new EspecieNoExistente(especie.getNombre());
+        }
     }
 
     @Override
@@ -70,10 +73,6 @@ public class JDBCEspecieDAO implements EspecieDAO {
 
             Especie especie = null;
             while (resultSet.next()) {
-                if (especie != null) {
-                    throw new RuntimeException("Existe mas de una especie con el nombre " + especie);
-                }
-
                 especie = new Especie(resultSet.getInt("id"), resultSet.getString("nombre"), TipoBicho.valueOf(resultSet.getString("tipo")));
                 especie.setAltura(resultSet.getInt("altura"));
                 especie.setCantidadBichos(resultSet.getInt("cantidad_de_bichos"));
@@ -84,6 +83,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
             return especie;
         });
     }
+
     @Override
     public List<Especie> recuperarTodos() {
         return this.executeWithConnection(conn -> {
@@ -123,12 +123,13 @@ public class JDBCEspecieDAO implements EspecieDAO {
 
     /**
      * Establece una conexion a la url especificada
+     *
      * @return la conexion establecida
      */
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
@@ -136,6 +137,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
 
     /**
      * Cierra una conexion con la base de datos (libera los recursos utilizados por la misma)
+     *
      * @param connection - la conexion a cerrar.
      */
     private void closeConnection(Connection connection) {

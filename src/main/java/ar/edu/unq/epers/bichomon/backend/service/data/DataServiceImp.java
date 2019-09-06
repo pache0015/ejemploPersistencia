@@ -20,10 +20,6 @@ public class DataServiceImp implements DataService {
             PreparedStatement dropTable = conn.prepareStatement("DELETE FROM especie");
 
             dropTable.execute();
-
-            if (dropTable.getUpdateCount() == 0) {
-                throw new RuntimeException("Se intento borrar informacion de una tabla vacia" );
-            }
             dropTable.close();
 
             return null;
@@ -62,7 +58,7 @@ public class DataServiceImp implements DataService {
     private Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }

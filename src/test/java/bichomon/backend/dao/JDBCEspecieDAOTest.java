@@ -4,9 +4,11 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceImp;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieExistente;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import org.junit.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+
+import static org.junit.Assert.*;
 
 public class JDBCEspecieDAOTest {
     private EspecieDAO dao = new JDBCEspecieDAO();
@@ -45,7 +47,6 @@ public class JDBCEspecieDAOTest {
         assertEquals(this.especie.getAltura(), especieX.getAltura());
         assertEquals(this.especie.getTipo(), especieX.getTipo());
         assertEquals(this.especie.getCantidadBichos(), especieX.getCantidadBichos());
-
     }
     @Test
     public void se_actualiza_una_especie_guardada() {
@@ -72,9 +73,25 @@ public class JDBCEspecieDAOTest {
         assertEquals(2, cantidad_de_especies, 0);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void no_se_puede_agregar_dos_especies_con_el_mismo_nombre() {
         this.dao.guardar(this.especie);
-        this.dao.guardar(this.especie);
+        try {
+            this.dao.guardar(this.especie);
+            fail();
+        } catch (EspecieExistente e) {
+            assertEquals("La especie [" + this.especie.getNombre() + "] ya se encuentra en el sistema", e.getMessage());
+        }
+    }
+
+    @Test
+    public void no_se_puede_actualizar_una_especie_que_no_existe() {
+        Especie especieNoGuardada = new Especie();
+        try {
+            this.dao.actualizar(especieNoGuardada);
+            fail();
+        } catch (EspecieNoExistente e) {
+            assertEquals("No se encuentra la especie [" + especieNoGuardada.getNombre() + "]", e.getMessage());
+        }
     }
 }
