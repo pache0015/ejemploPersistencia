@@ -5,9 +5,14 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.service.data.DataServiceImp;
+import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieServiceImpl;
 import org.junit.*;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class EspecieServiceTest {
 
@@ -38,11 +43,29 @@ public class EspecieServiceTest {
 
 
     @Test
-    public void seCreaUnBichoParaEspecieYSeVerificaCantidadDeBichosDeEspecieGuardada(){
+    public void se_crea_un_bicho_para_especie_y_se_verifica_cantidad_de_bichos_de_especie_guardada(){
         unaEspecieService.crearBicho(unaEspecie.getNombre(), "chocho");
         Especie repcupero = unaEspecieService.getEspecie(unaEspecie.getNombre());
 
         assertEquals(1, repcupero.getCantidadBichos());
 
+    }
+
+    @Test
+    public void intentar_obtener_una_especie_inexistente_provoca_un_error() {
+        String nombreInexistente = "Nombre de especie inexistente";
+        try {
+            unaEspecieService.getEspecie(nombreInexistente);
+        } catch (EspecieNoExistente e) {
+            assertEquals("No se encuentra la especie [" + nombreInexistente + "]", e.getMessage());
+        }
+    }
+
+    @Test
+    public void recuperar_todos_retorna_todas_las_especies_guardadas() {
+        List<Especie> especies = unaEspecieService.getAllEspecies();
+
+        assertEquals(1, especies.size());
+        assertEquals(especies.get(0).getNombre(), unaEspecie.getNombre());
     }
 }
