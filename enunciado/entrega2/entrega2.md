@@ -144,11 +144,11 @@ Se pide que implementen los siguientes servicios los cuales seran consumidos por
 - `campeonHistorico(String dojo):Bicho` retorna el bicho que haya sido campeon por mas tiempo en el Dojo.
 
 #### LeaderboardService
-- `campeones():List<Entrenador>` retorna aquellos entrenadores que posean un bicho que actualmente sea campeon de un Dojo, retornando primero aquellos que ocupen el puesto de campeon desde hace mas tiempo.
+- `campeones():List<Entrenador>` retorna los diez entrenadores que posean un bicho que actualmente sea campeon de un Dojo, retornando primero aquellos que ocupen el puesto de campeon desde hace mas tiempo.
 
 - `especieLider():Especie` retorna la especie que tenga mas bichos que haya sido campeones de cualquier dojo. Cada bicho deberá ser contando una sola vez (independientemente de si haya sido coronado campeon mas de una vez o en mas de un Dojo)
 
-- lideres():List<Entrenador>` retorna los diez primeros entrenadores para los cuales el valor de poder combinado de todos sus bichos sea superior.
+- `lideres():List<Entrenador>` retorna los diez primeros entrenadores para los cuales el valor de poder combinado de todos sus bichos sea superior.
 
 #### EspecieService
 - `populares():List<Especie>` retorna aquellos diez especies mas populares, o sea, aquellas que tengan mas bichos en manos de distintos entrenadores.  No contaran los bichos en la Guardería.
@@ -161,12 +161,3 @@ Se pide que implementen los siguientes servicios los cuales seran consumidos por
 - Asignen propiamente las responsabilidades a todos los objetos intervinientes, discriminando entre servicios, DAOs y objetos de negocio.
 - Creen test unitarios para cada unidad de código entregada que prueben todas las funcionalidades pedidas, con casos favorables y desfavorables.
 - Que los tests unitarios sean deterministicos. Hay mucha lógica que depende del resultado de un valor aleatorio. Se aconseja no utilizar directamente generadores de valores aleatorios (random) sino introducir una interfaz en el medio para la cual puedan proveer una implementacion mock determinsitica en los tests.
-
-### Consejos utiles:
-- Enfoquense primero en el modelo y la capa de servicios, traten de asignar responsabilidades a sus objetos para resolver los casos de uso propuestos.
-- Pueden comenzar trabajando con implementaciones mock de su capa de DAOs. No es necesario que utilicen algun framework de mocking, pueden simplemente codifcar DAOs que persistan los objetos en mapas y los recuperen desde ahi.
-- Una vez que tengan el modelo terminado y validado persistanlo utilizando hibernate, en este punto deberan analizar:
-
-   - Qué objetos deben ser persitentes y cuales no?
-   - Cuáles son las claves primarias de cada entidad? Existe algún atributo de negocio que oficie de clave primaria o deberán introducir algun id?
-   - Cuál es la cardinalidad de cada una de las relaciones? Como mapearlas?
