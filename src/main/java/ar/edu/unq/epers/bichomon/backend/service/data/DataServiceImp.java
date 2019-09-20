@@ -26,7 +26,6 @@ public class DataServiceImp implements DataService {
         });
     }
 
-
     @Override
     public void crearSetDatosIniciales() {
         Connection connection = this.openConnection();
@@ -40,7 +39,6 @@ public class DataServiceImp implements DataService {
         } finally {
             this.closeConnection(connection);
         }
-
     }
 
 
@@ -57,7 +55,6 @@ public class DataServiceImp implements DataService {
 
     private Connection openConnection() {
         try {
-
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);

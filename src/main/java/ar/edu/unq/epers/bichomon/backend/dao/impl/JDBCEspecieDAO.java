@@ -26,13 +26,10 @@ public class JDBCEspecieDAO implements EspecieDAO {
             this.executeWithConnection(conn -> {
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO especie (nombre, peso, altura, tipo, cantidad_de_bichos) VALUES (?,?,?,?,?)");
                 this.setearEspecie(especie, ps);
-
                 ps.execute();
                 ps.close();
-
                 return null;
             });
-
         } catch (RuntimeException e) {
             throw new EspecieExistente(especie.getNombre());
         }
@@ -44,10 +41,8 @@ public class JDBCEspecieDAO implements EspecieDAO {
             this.executeWithConnection(conn -> {
                 PreparedStatement ps = conn.prepareStatement("UPDATE especie SET nombre = ?, peso = ?, altura = ?, tipo = ?, cantidad_de_bichos = ?");
                 this.setearEspecie(especie, ps);
-
                 ps.execute();
                 ps.close();
-
                 return null;
             });
         } catch (RuntimeException e) {
@@ -60,14 +55,11 @@ public class JDBCEspecieDAO implements EspecieDAO {
         return this.executeWithConnection(conn -> {
             PreparedStatement ps = conn.prepareStatement("SELECT id, nombre, peso, altura, tipo, cantidad_de_bichos FROM especie WHERE nombre = ?");
             ps.setString(1, nombreEspecie);
-
             ResultSet resultSet = ps.executeQuery();
-
             Especie especie = null;
             while (resultSet.next()) {
                 especie = this.getEspecieResultante(resultSet);
             }
-
             ps.close();
             return especie;
         });
@@ -79,13 +71,10 @@ public class JDBCEspecieDAO implements EspecieDAO {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM especie ORDER BY nombre ASC");
             ResultSet resultSet = ps.executeQuery();
             List<Especie> especiesRecuperadas = new ArrayList<>();
-
             while (resultSet.next()) {
                 Especie nuevaEspecieRecuperada = this.getEspecieResultante(resultSet);
                 especiesRecuperadas.add(nuevaEspecieRecuperada);
-
             }
-
             ps.close();
             return especiesRecuperadas;
         });
@@ -96,7 +85,6 @@ public class JDBCEspecieDAO implements EspecieDAO {
         especie.setAltura(resultSet.getInt("altura"));
         especie.setCantidadBichos(resultSet.getInt("cantidad_de_bichos"));
         especie.setPeso(resultSet.getInt("peso"));
-
         return especie;
     }
 
@@ -107,7 +95,6 @@ public class JDBCEspecieDAO implements EspecieDAO {
         ps.setString(4, especie.getTipo().toString());
         ps.setInt(5, especie.getCantidadBichos());
     }
-
     /**
      * Ejecuta un bloque de codigo contra una conexion.
      */
@@ -121,7 +108,6 @@ public class JDBCEspecieDAO implements EspecieDAO {
             this.closeConnection(connection);
         }
     }
-
     /**
      * Establece una conexion a la url especificada
      *
@@ -129,13 +115,11 @@ public class JDBCEspecieDAO implements EspecieDAO {
      */
     private Connection openConnection() {
         try {
-
             return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false& ");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
     }
-
     /**
      * Cierra una conexion con la base de datos (libera los recursos utilizados por la misma)
      *
@@ -148,5 +132,4 @@ public class JDBCEspecieDAO implements EspecieDAO {
             throw new RuntimeException("Error al cerrar la conexion", e);
         }
     }
-
 }
