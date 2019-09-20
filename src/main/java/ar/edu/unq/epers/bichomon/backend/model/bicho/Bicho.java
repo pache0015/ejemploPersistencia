@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import com.mysql.cj.xdevapi.DocumentID;
 
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
@@ -12,7 +13,7 @@ public class Bicho {
 
 	private String nombre;
 	private Especie especie;
-	private int energia;
+	private Double energia;
 	
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
@@ -39,11 +40,24 @@ public class Bicho {
 	 * particular. Dicha cantidad crecerá (o decrecerá) conforme
 	 * a este bicho participe en combates contra otros bichomones.
 	 */
-	public int getEnergia() {
+	public Double getEnergia() {
 		return this.energia;
 	}
-	public void setEnergia(int energia) {
+	public void setEnergia(Double energia) {
 		this.energia = energia;
 	}
 
+
+
+
+
+	// Codigo de Facu para probar Duelo
+
+	public void reducirEnergia(Double valor){
+		this.energia -= valor;
+	}
+
+	public boolean puedeSeguir() {
+		return this.getEnergia()>0;
+	}
 }
