@@ -3,22 +3,40 @@ package ar.edu.unq.epers.bichomon.backend.model.bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import com.mysql.cj.xdevapi.DocumentID;
 
+import javax.persistence.*;
+
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
  * y pertenece a una {@link Especie} en particular.
  * 
  * @author Charly Backend
  */
+@Entity
+@Table(name = "bicho")
 public class Bicho {
 
+	@Column
 	private String nombre;
+
+	@Column
+	@ManyToOne
 	private Especie especie;
+
+	@Column
 	private Double energia;
-	
+
+	@Id
+	@Column(name = "bicho_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
 		this.nombre = nombre;
 	}
+
+
+
 
 	/**
 	 * @return el nombre de un bicho (todos los bichos tienen

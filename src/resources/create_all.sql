@@ -13,6 +13,7 @@ altura INT NOT NULL,
 tipo VARCHAR(30) NOT NULL,
 cantidad_de_bichos INT NOT NULL,
 PRIMARY KEY(id)
+
 );
 
 
