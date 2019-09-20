@@ -42,9 +42,7 @@ public class Entrenador {
     }
 
 
-    public void setUbicadoEnDojo(Boolean estado){
-        this.ubicadoEnDojo = estado;
-    }
+    public void setUbicadoEnDojo(Boolean estado) {this.ubicadoEnDojo = estado;}
     public Duelo retarACampeon(Entrenador this, Entrenador campeon){
         this.setBichoParaDuelo(bichos.get(0));
         return new Duelo(this, campeon);
