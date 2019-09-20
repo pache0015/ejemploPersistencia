@@ -17,7 +17,7 @@ public class BichoService {
 
     @Before
     public void prepare() {
-        especie = new Especie(1, "fuego", TipoBicho.AIRE);
+        especie = new Especie("fuego", TipoBicho.AIRE);
         bicho = new Bicho(especie, "alfredo");
         service = new Service(new HibernateBichoDao());
 
@@ -25,8 +25,8 @@ public class BichoService {
     @Test
     public void test01_NoSePuedeRecuperarUnBichoQueNoPerteneceALaBaseDeDatos(){
         this.service.guardarBicho(bicho);
-
-        Assert.assertEquals(bicho.getNombre(), "alfredo");
+        Bicho bichoRecuperado = this.service.recuperarBicho(bicho.getId());
+        Assert.assertEquals(bichoRecuperado.getNombre(), bicho.getNombre());
     }
 
 }

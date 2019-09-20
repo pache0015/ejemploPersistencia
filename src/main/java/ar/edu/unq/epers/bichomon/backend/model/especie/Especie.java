@@ -2,26 +2,35 @@ package ar.edu.unq.epers.bichomon.backend.model.especie;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
+import javax.persistence.*;
+
 /**
  * Representa una {@link Especie} de bicho.
  * 
  * @author Charly Backend
  */
+@Entity
 public class Especie {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private String nombre;
+	@Column
 	private int altura;
+	@Column
 	private int peso;
-	private TipoBicho tipo;
 
+	@Column
+	private TipoBicho tipo;
+	@Column
 	private int energiaInicial;
-	
+	@Column
 	private String urlFoto;
-	
+	@Column
 	private int cantidadBichos;
 	
-	public Especie(){
+	public Especie(String fuego, TipoBicho aire){
 	}
 	
 	public Especie(int id, String nombre, TipoBicho tipo) {
@@ -29,7 +38,10 @@ public class Especie {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
-	
+
+	public Especie() {
+	}
+
 	/**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */

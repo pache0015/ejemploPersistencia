@@ -9,7 +9,6 @@ import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieNoExistente;
 import org.junit.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -32,7 +31,7 @@ public class JDBCEspecieDAOTest {
     }
 
     private Especie crearEspecie(String nombreBichomon) {
-        Especie especie = new Especie();
+        Especie especie = new Especie("fuego", TipoBicho.AIRE);
         especie.setPeso(15);
         especie.setAltura(198);
         especie.setCantidadBichos(2500);
@@ -90,7 +89,7 @@ public class JDBCEspecieDAOTest {
 
     @Test
     public void no_se_puede_actualizar_una_especie_que_no_existe() {
-        Especie especieNoGuardada = new Especie();
+        Especie especieNoGuardada = new Especie("fuego", TipoBicho.AIRE);
         try {
             this.dao.actualizar(especieNoGuardada);
             fail();

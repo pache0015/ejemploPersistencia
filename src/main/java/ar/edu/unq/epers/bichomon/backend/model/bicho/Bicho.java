@@ -12,30 +12,29 @@ import javax.persistence.*;
  * @author Charly Backend
  */
 @Entity
-@Table(name = "bicho")
 public class Bicho {
 
 	@Column
 	private String nombre;
 
-	@Column
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.ALL})
 	private Especie especie;
 
 	@Column
 	private Double energia;
 
 	@Id
-	@Column(name = "bicho_id")
+	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
 		this.nombre = nombre;
 	}
 
-
+	public Bicho() {
+	}
 
 
 	/**
@@ -77,5 +76,9 @@ public class Bicho {
 
 	public boolean puedeSeguir() {
 		return this.getEnergia()>0;
+	}
+
+	public Long getId() {
+		return this.id;
 	}
 }

@@ -23,7 +23,7 @@ public class EspecieServiceTest {
 
     @Before
     public void setUp() {
-        unaEspecie = new Especie();
+        unaEspecie = new Especie("fuego", TipoBicho.AIRE);
         unaEspecie.setPeso(15);
         unaEspecie.setAltura(198);
         unaEspecie.setCantidadBichos(0);
