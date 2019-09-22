@@ -1,9 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.ubicaciones;
 
-import ar.edu.unq.epers.bichomon.backend.interfaces.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
-public class Gimnasio implements Ubicacion {
+public class Gimnasio extends Ubicacion {
 
     private String nombre;
     private Entrenador campeon;

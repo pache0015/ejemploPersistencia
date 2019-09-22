@@ -4,7 +4,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
-import bichomon.backend.service.especie.Service;
+import ar.edu.unq.epers.bichomon.backend.model.Service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,8 @@ public class BichoService {
     public void prepare() {
         especie = new Especie("fuego", TipoBicho.AIRE);
         bicho = new Bicho(especie, "alfredo");
-        service = new Service(new HibernateBichoDao());
+        service = new Service();
+        service.setBichoDao(new HibernateBichoDao());
 
     }
     @Test
@@ -28,5 +29,11 @@ public class BichoService {
         Bicho bichoRecuperado = this.service.recuperarBicho(bicho.getId());
         Assert.assertEquals(bichoRecuperado.getNombre(), bicho.getNombre());
     }
+
+    @Test
+    public void test002_(){
+
+    }
+
 
 }
