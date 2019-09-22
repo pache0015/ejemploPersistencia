@@ -1,30 +1,51 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
-import ar.edu.unq.epers.bichomon.backend.interfaces.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.model.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.ubicaciones.Gimnasio;
+import org.apache.ibatis.annotations.One;
 
 
+import javax.persistence.*;
+import javax.ws.rs.CookieParam;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Entrenador {
-    private String  nombre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    private String nombre;
+    @Column
     private Integer puntosDeExperiencia;
-    private Integer nivel;
+    @OneToMany
     private List<Bicho> bichos;
-    private Boolean esCampeon;
-    private Boolean ubicadoEnDojo;
+    @OneToOne
     private Bicho bichoParaDuelo;
+    @ManyToOne
+    private Ubicacion ubicacionActual;
+    @ManyToOne (cascade = CascadeType.ALL)
+    private Nivel nivel;
+    @OneToMany
+    private ProveedorDeNiveles proveedor;
 
-
-    public Entrenador(String nombre){
+    public Entrenador(String nombre, Ubicacion ubicacion, Nivel nivel, ProveedorDeNiveles proveedor){
         this.nombre = nombre;
         this.bichos = new ArrayList<>();
-        this.esCampeon = false;
-        this.ubicadoEnDojo = false;
+        this.puntosDeExperiencia = 1;
+        this.nivel = nivel;
+        this.ubicacionActual = ubicacion;
+        this.proveedor = proveedor;
+    }
 
+    public Entrenador() {
+    }
+
+    public void updateNivel(){
+        this.nivel = this.proveedor.getNivelDeEntrenador(this.getPuntosDeExperiencia());
     }
 
     public String getNombre(){
@@ -33,21 +54,15 @@ public class Entrenador {
     public Integer getPuntosDeExperiencia(){
         return this.puntosDeExperiencia;
     }
-    public Integer getNivel(){
+    public Nivel getNivel(){
         return this.nivel;
     }
     public List<Bicho> getBichos(){
         return this.bichos;
     }
-    public Boolean getEsCampeon() {
-        return this.esCampeon;
-    }
-
-
-    public void setUbicadoEnDojo(Boolean estado) {this.ubicadoEnDojo = estado;}
 
     public Duelo retarACampeon(Gimnasio gym){
-        this.setBichoParaDuelo(bichos.get(0));
+        this.setBichoParaDuelo(bichos.get(0));;
         return new Duelo(this, gym.getCampeon());
 
     }
@@ -56,8 +71,15 @@ public class Entrenador {
         this.bichoParaDuelo = bicho;
     }
 
+    public Long getId(){
+        return this.id;
+    }
     public Bicho getBichoParaDuelo() {
         return bichoParaDuelo;
     }
 
+    public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada){
+        this.puntosDeExperiencia = this.puntosDeExperiencia + cantidadDePuntosDeExperienciaGanada;
+        this.updateNivel();
+    }
 }
