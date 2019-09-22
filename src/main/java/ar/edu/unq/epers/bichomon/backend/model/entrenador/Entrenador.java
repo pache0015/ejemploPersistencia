@@ -3,6 +3,7 @@ import ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.Gimnasio;
 import org.apache.ibatis.annotations.One;
 
 
@@ -60,9 +61,10 @@ public class Entrenador {
         return this.bichos;
     }
 
-    public Duelo retarACampeon(Entrenador entrenadorCampeon){
-        this.setBichoParaDuelo(bichos.get(0));
-        return new Duelo(this, entrenadorCampeon);
+    public Duelo retarACampeon(Gimnasio gym){
+        this.setBichoParaDuelo(bichos.get(0));;
+        return new Duelo(this, gym.getCampeon());
+
     }
 
     private void setBichoParaDuelo(Bicho bicho) {

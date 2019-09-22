@@ -12,5 +12,7 @@ public class Gimnasio extends Ubicacion {
         this.nombre = nombre;
     }
 
-
+    public Entrenador getCampeon() {
+        return this.campeon;
+    }
 }

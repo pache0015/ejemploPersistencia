@@ -31,9 +31,15 @@ public class JDBCEspecieDAO implements EspecieDAO {
                 return null;
             });
         } catch (RuntimeException e) {
-            throw new EspecieExistente(especie.getNombre());
+            if (e.getMessage().equals("")) {
+                throw new EspecieExistente(especie.getNombre());
+            } else if(e.getMessage().equals("")) {
+                throw new RuntimeException("No se puede establecer una conexion", e);
+            }
+            throw new RuntimeException(e);
         }
     }
+
 
     @Override
     public void actualizar(Especie especie) {
