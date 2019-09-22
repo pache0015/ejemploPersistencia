@@ -33,6 +33,7 @@ public class Duelo {
     }
 
     public void atacarSiValida(Entrenador atacante, Entrenador rival){
+
         if (atacante.getBichoParaDuelo().puedeSeguir()){
             this.atacar(atacante.getBichoParaDuelo(), rival.getBichoParaDuelo());
         }
