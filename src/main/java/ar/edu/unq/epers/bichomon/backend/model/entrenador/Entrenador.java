@@ -59,4 +59,5 @@ public class Entrenador {
     public Bicho getBichoParaDuelo() {
         return bichoParaDuelo;
     }
+
 }
