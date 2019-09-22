@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class GuarderiaTest {
+public class GuarderiaTest extends BichomonTest {
 
     private Entrenador entrenador;
     private Guarderia guarderia;
@@ -59,6 +59,7 @@ public class GuarderiaTest {
 
         try {
             entrenador.abandonar(bichoAAbandonar);
+            fail();
         } catch(RuntimeException e) {
             assertEquals(Ubicacion.ERROR_ABANDONO, e.getMessage());
         }
@@ -88,10 +89,5 @@ public class GuarderiaTest {
         Entrenador entrenadorDos = new Entrenador("Entrenador Dos");
 
         assertTrue(guarderia.bichomonesPara(entrenadorDos).contains(bichoAAbandonar));
-    }
-
-    public Bicho nuevoBicho(String nombre) {
-        Especie especie = new Especie("Especie",  TipoBicho.AIRE);
-        return new Bicho(especie, nombre);
     }
 }

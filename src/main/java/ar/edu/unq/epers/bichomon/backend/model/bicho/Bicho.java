@@ -81,4 +81,8 @@ public class Bicho {
 	public Long getId() {
 		return this.id;
 	}
+
+	public Especie getEspecieRaiz() {
+		return especie;
+	}
 }
