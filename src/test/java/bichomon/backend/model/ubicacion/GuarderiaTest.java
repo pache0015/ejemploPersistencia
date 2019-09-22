@@ -4,17 +4,14 @@ import static org.junit.Assert.*;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class GuarderiaTest extends BichomonTest {
+public class GuarderiaTest extends UbicacionTest {
 
-    private Entrenador entrenador;
     private Guarderia guarderia;
 
     @Before

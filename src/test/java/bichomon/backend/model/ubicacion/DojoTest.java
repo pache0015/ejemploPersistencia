@@ -9,9 +9,8 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DojoTest extends BichomonTest {
+public class DojoTest extends UbicacionTest {
 
-    private Entrenador entrenador;
     private Dojo dojo;
 
     @Before
