@@ -26,4 +26,10 @@ public class Nivel {
         this.experienciaMinima = experienciaMinima;
         this.experienciaMaxima = experienciaMaxima;
     }
+    public Integer getExperienciaMinima(){
+        return this.experienciaMinima;
+    }
+    public Integer getExperienciaMaxima(){
+        return this.experienciaMaxima;
+    }
 }

@@ -3,6 +3,7 @@ package bichomon.backend.model;
 import ar.edu.unq.epers.bichomon.backend.model.*;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,16 +14,33 @@ import java.util.List;
 public class EntrenadorTest {
 
     private Entrenador entrenador;
-    private Service service = new Service();
-    private Nivel nivel = new Nivel(1, 1, 99);
+    private EntrenadorService entrenadorService = new EntrenadorService();
+    private ExperienciaService experienciaService = new ExperienciaService();
+    private ProveedorDeNiveles proveedor;
+    private Nivel nivelUno  = new Nivel(1, 1, 99);
+    private Nivel nivelDos  = new Nivel(2, 100, 400);
+    private Nivel nivelTres = new Nivel(3, 401, 1000);
+    private Nivel nivelCuatro = new Nivel(4, 1001, 2000);
+    private Nivel nivelCinco  = new Nivel(5, 2001, 3000);
+    private List<Nivel> niveles = new ArrayList<>();
+
+
 
     @Before
     public void setUp(){
-        service.setEntrenadorDao(new HibernateEntrenadorDao());
-        service.setNivelDao(new HibernateNivelDao());
-        entrenador = new Entrenador("Ash", null, nivel, service);
-        service.setEntrenadorDao(new HibernateEntrenadorDao());
-        service.setExperiencia(new HibernateExperienciaDao());
+        niveles.add(nivelUno);
+        niveles.add(nivelDos);
+        niveles.add(nivelTres);
+        niveles.add(nivelCuatro);
+        niveles.add(nivelCinco);
+
+        proveedor = new ProveedorDeNiveles(niveles);
+
+        entrenadorService.setEntrenadorDao(new HibernateEntrenadorDao());
+        entrenador = new Entrenador("Ash", null, nivelUno, proveedor);
+        entrenadorService.setEntrenadorDao(new HibernateEntrenadorDao());
+        experienciaService.setExperiencia(new HibernateExperienciaDao());
+
     }
     @Test
     public void test_constructoDeEntrenador(){
@@ -30,26 +48,25 @@ public class EntrenadorTest {
 
         Assert.assertEquals(entrenador.getBichos(), listaDeBichosVacios);
         Assert.assertEquals(entrenador.getNivel().numeroNivel, 1, 0);
-        Assert.assertEquals(entrenador.getPuntosDeExperiencia(), 0, 0);
+        Assert.assertEquals(entrenador.getPuntosDeExperiencia(), 1, 0);
     }
     @Test
     public void test001_unEntrenadorTieneUnNivel() {
-        this.service.guardarNivel(nivel);
-        this.service.guardarEntrenador(entrenador);
+        this.entrenadorService.guardarEntrenador(entrenador);
 
-        Entrenador entrenadorRecuperado = this.service.recuperarEntrenador(this.entrenador.getId());
+        Entrenador entrenadorRecuperado = this.entrenadorService.recuperarEntrenador(this.entrenador.getId());
 
-        Assert.assertEquals(entrenadorRecuperado.getNivel().numeroNivel, this.nivel.numeroNivel);
+        Assert.assertEquals(entrenadorRecuperado.getNivel().numeroNivel, this.nivelUno.numeroNivel);
     }
     @Test
     public void test002_unEntrandorAumentaSuEnergia(){
 
         Experiencia tabla = new Experiencia(10, "Combatir");
-        this.service.guardarEntrenador(entrenador);
-        this.service.guardarExperiencia(tabla);
+        this.entrenadorService.guardarEntrenador(entrenador);
+        this.experienciaService.guardarExperiencia(tabla);
 
-        Entrenador entranadorRecuperador = this.service.recuperarEntrenador(this.entrenador.getId());
-        Experiencia tablaRecuperada = this.service.recuperarTabla(tabla.getId());
+        Entrenador entranadorRecuperador = this.entrenadorService.recuperarEntrenador(this.entrenador.getId());
+        Experiencia tablaRecuperada = this.experienciaService.recuperarTabla(tabla.getId());
 
         entranadorRecuperador.ganarEnergia(tablaRecuperada.puntosDeExperiencia());
 

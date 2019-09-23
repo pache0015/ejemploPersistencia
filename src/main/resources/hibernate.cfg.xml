@@ -27,6 +27,7 @@
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador"/>
         <mapping class="ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion"/>
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.Experiencia"/>
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles" />
 
 
 

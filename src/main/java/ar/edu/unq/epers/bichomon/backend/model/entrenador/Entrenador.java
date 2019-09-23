@@ -1,14 +1,11 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 import ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion;
-import ar.edu.unq.epers.bichomon.backend.model.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.ubicaciones.Gimnasio;
-import org.apache.ibatis.annotations.One;
 
 
 import javax.persistence.*;
-import javax.ws.rs.CookieParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class Entrenador {
     private Ubicacion ubicacionActual;
     @ManyToOne (cascade = CascadeType.ALL)
     private Nivel nivel;
-    @OneToMany
+    @ManyToOne (cascade = CascadeType.ALL)
     private ProveedorDeNiveles proveedor;
 
     public Entrenador(String nombre, Ubicacion ubicacion, Nivel nivel, ProveedorDeNiveles proveedor){
@@ -62,7 +59,7 @@ public class Entrenador {
     }
 
     public Duelo retarACampeon(Gimnasio gym){
-        this.setBichoParaDuelo(bichos.get(0));;
+        this.setBichoParaDuelo(bichos.get(0));
         return new Duelo(this, gym.getCampeon());
 
     }

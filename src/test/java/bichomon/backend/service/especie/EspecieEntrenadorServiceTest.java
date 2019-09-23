@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class EspecieServiceTest {
+public class EspecieEntrenadorServiceTest {
 
     private Especie unaEspecie;
     private DataServiceImp dataService = new DataServiceImp();
