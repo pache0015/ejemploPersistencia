@@ -17,12 +17,15 @@ public class Nivel {
 
     @Column
     public Integer experienciaMaxima;
+    @Column
+    public Integer limiteDeBichomonsPorNivel;
 
     public Nivel() {
     }
 
     public Nivel(Integer numeroNivel, Integer experienciaMinima, Integer experienciaMaxima) {
         this.numeroNivel = numeroNivel;
+        this.limiteDeBichomonsPorNivel = numeroNivel;
         this.experienciaMinima = experienciaMinima;
         this.experienciaMaxima = experienciaMaxima;
     }
@@ -31,5 +34,9 @@ public class Nivel {
     }
     public Integer getExperienciaMaxima(){
         return this.experienciaMaxima;
+    }
+
+    public boolean llegoAlLimite(int cantidadDeBichosAtrapadosPorEntrenador) {
+        return this.limiteDeBichomonsPorNivel > cantidadDeBichosAtrapadosPorEntrenador;
     }
 }

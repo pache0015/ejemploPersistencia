@@ -10,8 +10,8 @@ public class ProveedorDeNiveles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Transient
-    private List nivelesPosibles = new ArrayList<Nivel>();
+    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<Nivel> nivelesPosibles;
 
     public ProveedorDeNiveles(List<Nivel> niveles){
         this.nivelesPosibles = niveles;
