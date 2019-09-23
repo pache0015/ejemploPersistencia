@@ -86,9 +86,10 @@ public class Entrenador {
         this.updateNivel();
     }
 
-    public void capturarBichomon(Bicho unBichoCapturado) throws LimitePokemon {
+    public void capturarBichomon(Bicho unBichoCapturado, Integer puntosDeExperienciaGanados) throws LimitePokemon {
         if (this.puedeAgregarBichomon()) {
             this.bichos.add(unBichoCapturado);
+            this.ganarEnergia(puntosDeExperienciaGanados);
         } else {
             throw new LimitePokemon("Tu lista esta llena, sube de nivel para caputar mas bichomons");
         }

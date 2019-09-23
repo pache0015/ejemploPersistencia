@@ -27,6 +27,7 @@ public class EntrenadorTest {
     private Bicho bichoUno;
     private Bicho bichoDos;
     private Bicho bichoTres;
+    Experiencia experienciaPorCaptura;
 
 
     @Before
@@ -47,6 +48,8 @@ public class EntrenadorTest {
         bichoUno = new Bicho();
         bichoDos = new Bicho();
         bichoTres= new Bicho();
+        experienciaPorCaptura = new Experiencia(10, "Caputarar bichomon");
+        this.experienciaService.guardarExperiencia(experienciaPorCaptura);
 
     }
     @Test
@@ -99,15 +102,18 @@ public class EntrenadorTest {
     }
 
     @Test
-    public void test004_unEntrenadorPuedeCapturarPokemons() throws LimitePokemon {
-        entrenador.capturarBichomon(bichoUno);
+    public void test004_unEntrenadorPuedeCapturarPokemonsYGanaExperienciaPorEllo() throws LimitePokemon {
+        Experiencia experienciaRecuperada = this.experienciaService.recuperarTabla(experienciaPorCaptura.getId());
+
+        entrenador.capturarBichomon(bichoUno, experienciaRecuperada.puntosDeExperiencia());
 
         Assert.assertEquals(entrenador.getBichos().size(), 1);
     }
     @Test(expected = LimitePokemon.class)
     public void test005_unEntrenadorNoPuedeCapturarMasBichosDeLoQueSuNivelLePermita() throws LimitePokemon {
-        entrenador.capturarBichomon(bichoUno);
-        entrenador.capturarBichomon(bichoDos);
+
+        entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
+        entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
 
 
     }
