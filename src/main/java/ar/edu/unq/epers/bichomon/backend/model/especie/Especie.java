@@ -30,7 +30,9 @@ public class Especie {
 	@Column
 	private int cantidadBichos;
 	
-	public Especie(String fuego, TipoBicho aire){
+	public Especie(String nombre, TipoBicho tipo) {
+		this.nombre = nombre;
+		this.tipo = tipo;
 	}
 	
 	public Especie(int id, String nombre, TipoBicho tipo) {

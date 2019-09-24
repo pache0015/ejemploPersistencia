@@ -15,7 +15,7 @@ import java.util.List;
 public class ResultadoCombateTest {
 
     private Especie especie = new Especie();
-    private Entrenador entrenador = new Entrenador("Juan");
+    private Entrenador entrenador = new Entrenador("Juan", null, null, null);
     private Bicho bicho = new Bicho(especie, "pepito");
     private Bicho bicho1 = new Bicho(especie, "pepoto");
     private ResultadoCombate resultadoCombate;

@@ -7,6 +7,5 @@ public interface EntrenadorDao {
 
     Entrenador recuperar(Long id);
     void guardar(Entrenador entrenador);
-    Nivel getNivel(Integer puntosDeExperiencia);
 
 }

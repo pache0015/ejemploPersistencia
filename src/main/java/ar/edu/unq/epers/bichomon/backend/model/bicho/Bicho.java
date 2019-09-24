@@ -65,11 +65,6 @@ public class Bicho {
 	}
 
 
-
-
-
-	// Codigo de Facu para probar Duelo
-
 	public void reducirEnergia(Double valor){
 		this.energia -= valor;
 	}
@@ -80,5 +75,9 @@ public class Bicho {
 
 	public Long getId() {
 		return this.id;
+	}
+
+	public Especie getEspecieRaiz() {
+		return especie;
 	}
 }
