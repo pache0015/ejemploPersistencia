@@ -1,10 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
-import ar.edu.unq.epers.bichomon.backend.dao.impl.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
-import ar.edu.unq.epers.bichomon.backend.ubicaciones.Gimnasio;
-
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 
 import javax.persistence.*;
@@ -24,7 +21,7 @@ public class Entrenador {
     private List<Bicho> bichos;
     @OneToOne
     private Bicho bichoParaDuelo;
-    @ManyToOne
+    @Transient
     private Ubicacion ubicacionActual;
     @ManyToOne(cascade = CascadeType.ALL)
     private Nivel nivel;
@@ -63,11 +60,14 @@ public class Entrenador {
         return this.bichos;
     }
 
+
+   /*
     public Duelo retarACampeon(Gimnasio gym) {
         this.setBichoParaDuelo(bichos.get(0));
         return new Duelo(this, gym.getCampeon());
 
     }
+    */
 
     private void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
@@ -95,7 +95,20 @@ public class Entrenador {
         }
     }
 
+    public void ubicarseEn(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
+
     private boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
+
+    public boolean tieneMasDeUnBicho() {
+        return this.bichos.size() > 1;
+    }
+
+    public void abandonar(Bicho bichoAAbandonar) {
+        ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
+    }
+
 }

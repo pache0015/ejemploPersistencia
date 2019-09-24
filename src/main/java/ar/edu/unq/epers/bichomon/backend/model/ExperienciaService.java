@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model;
 
-import static ar.edu.unq.epers.bichomon.backend.service.runner.TransactionRunner.run;
+
+import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
 public class ExperienciaService {
 

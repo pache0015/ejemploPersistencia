@@ -1,14 +1,15 @@
 package ar.edu.unq.epers.bichomon.backend.model;
 
-import ar.edu.unq.epers.bichomon.backend.dao.impl.BichoDao;
-import ar.edu.unq.epers.bichomon.backend.dao.impl.HibernateBichoDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.BichoDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
-import static ar.edu.unq.epers.bichomon.backend.service.runner.TransactionRunner.run;
+import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
 public class BichoService {
 
     private BichoDao bichoDao;
+
     public void setBichoDao(HibernateBichoDao hibernateBichoDao) {
         this.bichoDao = hibernateBichoDao;
     }
