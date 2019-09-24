@@ -14,12 +14,11 @@ import org.junit.Test;
 public class DojoTest extends UbicacionTest {
 
     private Dojo dojo;
-    private Nivel nivel;
+    private Entrenador entrenador;
 
     @Before
     public void setUp() {
-        nivel = new Nivel(10, 1000,1000);
-        entrenador = new Entrenador("El Entrenador", null , nivel , null);
+        entrenador = this.nuevoEntrenador("el entrenador");
         dojo = new Dojo("El Dojo");
     }
 

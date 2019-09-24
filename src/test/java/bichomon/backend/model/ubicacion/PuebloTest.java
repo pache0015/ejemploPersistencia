@@ -15,12 +15,11 @@ import org.junit.Test;
 public class PuebloTest extends UbicacionTest {
 
     private Pueblo pueblo;
-    private Nivel nivel;
+    private Entrenador entrenador;
 
     @Before
     public void setUp() {
-        nivel = new Nivel(10, 1000, 1000);
-        entrenador = new Entrenador("El Entrenador", null, nivel, null);
+        entrenador = this.nuevoEntrenador("el entrenador");
         pueblo = new Pueblo("El Pueblo");
     }
 
