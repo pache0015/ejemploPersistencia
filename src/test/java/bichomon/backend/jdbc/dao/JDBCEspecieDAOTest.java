@@ -81,7 +81,6 @@ public class JDBCEspecieDAOTest {
         this.dao.guardar(this.especie);
         try {
             this.dao.guardar(this.especie);
-            fail();
         } catch (EspecieExistente e) {
             assertEquals("La especie [" + this.especie.getNombre() + "] ya se encuentra en el sistema", e.getMessage());
         }

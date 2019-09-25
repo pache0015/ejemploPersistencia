@@ -35,7 +35,6 @@ public class JDBCEspecieDAO implements EspecieDAO {
             } else if(e.getMessage().equals("")) {
                 throw new RuntimeException("No se puede establecer una conexion", e);
             }
-            throw new RuntimeException(e);
         }
     }
 

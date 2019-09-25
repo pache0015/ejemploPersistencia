@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
+import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import com.mysql.cj.xdevapi.DocumentID;
 
 import javax.persistence.*;
 
@@ -19,10 +19,13 @@ public class Bicho {
 	@Column
 	private String nombre;
 
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
 	private Especie especie;
+	@Column
     private Integer victorias;
+	@Column
     private LocalDate fechaDeCaptura;
+	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
     private Condicion condicionDeEvolucion;
 
 	@Column

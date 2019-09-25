@@ -1,5 +1,6 @@
 package bichomon.backend.ServiceTest.BichoService;
 
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.model.BichoDaoService;
 import ar.edu.unq.epers.bichomon.backend.model.EntrenadorDaoService;
 import ar.edu.unq.epers.bichomon.backend.model.HibernateEntrenadorDao;
@@ -53,12 +54,10 @@ public class BichoServiceTest {
     public void test001UnEntrenadorNoPuedeAbandonarASuBichoEnUnDojo() throws LimitePokemon {
         entrenador.setUbicacionEn(dojo);
         entrenador.capturarBichomon(bicho, 10);
-
+        bichoDao.setBichoDao(new HibernateBichoDao());
+        bichoDao.guardarBicho(bicho);
         entrenadorDao.setEntrenadorDao(new HibernateEntrenadorDao());
         entrenadorDao.guardarEntrenador(entrenador);
-
-
-
 
     }
 

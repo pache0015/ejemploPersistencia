@@ -29,6 +29,7 @@ public class Especie {
 	private String urlFoto;
 	@Column
 	private Integer cantidadBichos;
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private Especie evolucionDeEspecie;
 
 	public Especie(String nombre, TipoBicho tipo) {

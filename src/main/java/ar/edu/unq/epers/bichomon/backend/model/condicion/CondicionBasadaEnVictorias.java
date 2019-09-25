@@ -1,8 +1,10 @@
-package bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.model.condicion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.Condicion;
 
+import javax.persistence.Entity;
+
+@Entity
 public class CondicionBasadaEnVictorias extends Condicion {
     private final Integer victorias;
 

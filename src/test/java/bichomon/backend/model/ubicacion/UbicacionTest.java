@@ -12,8 +12,8 @@ import java.util.List;
 
 class UbicacionTest {
 
-    private Nivel nivelUno = new Nivel(1, 1,99);
-    private Nivel nivelDos = new Nivel(2,100,300);
+    private Nivel nivelUno = new Nivel(7, 1,99);
+    private Nivel nivelDos = new Nivel(8,100,300);
     private List<Nivel> niveles = new ArrayList();
     ProveedorDeNiveles proveedor;
 

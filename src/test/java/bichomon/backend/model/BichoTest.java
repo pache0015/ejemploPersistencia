@@ -1,10 +1,13 @@
 package bichomon.backend.model;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.Condicion;
-import ar.edu.unq.epers.bichomon.backend.model.bicho.CondicionBasadaEnEnergia;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEdad;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnVictorias;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionMultiple;
 import org.junit.Assert;
 import org.junit.Test;
 

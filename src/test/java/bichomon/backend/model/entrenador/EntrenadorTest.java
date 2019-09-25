@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,6 +115,7 @@ public class EntrenadorTest {
         try {
             entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
             entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
+            entrenador.capturarBichomon(bichoTres, experienciaPorCaptura.puntosDeExperiencia());
         }catch (LimitePokemon error){
             Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
         }
