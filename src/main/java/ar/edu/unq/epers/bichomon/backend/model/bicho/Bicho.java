@@ -2,6 +2,8 @@ package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+import java.time.LocalDate;
+
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
  * y pertenece a una {@link Especie} en particular.
@@ -13,8 +15,10 @@ public class Bicho {
 	private String nombre;
 	private Especie especie;
 	private Integer energia;
-	
-	public Bicho(Especie especie, String nombre) {
+    private Integer victorias;
+    private LocalDate fechaDeCaptura;
+
+    public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
 		this.nombre = nombre;
 	}
@@ -55,4 +59,19 @@ public class Bicho {
 		especie = especie.getEvolucionDeEspecie();
 	}
 
+    public Integer getVictorias() {
+        return victorias;
+    }
+
+    public void setVictorias(Integer victorias) {
+        this.victorias = victorias;
+    }
+
+    public void setFechaDeCaptura(LocalDate fechaDeCaptura) {
+        this.fechaDeCaptura = fechaDeCaptura;
+    }
+
+    public LocalDate getFechaDeCaptura() {
+        return fechaDeCaptura;
+    }
 }
