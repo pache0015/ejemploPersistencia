@@ -5,6 +5,8 @@ import com.mysql.cj.xdevapi.DocumentID;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
  * y pertenece a una {@link Especie} en particular.
@@ -19,6 +21,9 @@ public class Bicho {
 
 	@ManyToOne(cascade = {CascadeType.ALL})
 	private Especie especie;
+    private Integer victorias;
+    private LocalDate fechaDeCaptura;
+    private Condicion condicionDeEvolucion;
 
 	@Column
 	private Double energia;
@@ -83,4 +88,28 @@ public class Bicho {
 	public Especie getEspecieRaiz() {
 		return especie;
 	}
+	public void setCondicionDeEvolucion(Condicion condicion) {
+		this.condicionDeEvolucion = condicion;
+	}
+
+	public void evolucionar() {
+        if(condicionDeEvolucion.evaluar(this))
+            especie = especie.getEvolucionDeEspecie();
+	}
+
+    public Integer getVictorias() {
+        return victorias;
+    }
+
+    public void setVictorias(Integer victorias) {
+        this.victorias = victorias;
+    }
+
+    public void setFechaDeCaptura(LocalDate fechaDeCaptura) {
+        this.fechaDeCaptura = fechaDeCaptura;
+    }
+
+    public LocalDate getFechaDeCaptura() {
+        return fechaDeCaptura;
+    }
 }

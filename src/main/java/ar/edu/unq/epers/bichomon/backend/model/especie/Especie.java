@@ -24,18 +24,19 @@ public class Especie {
 	@Column
 	private TipoBicho tipo;
 	@Column
-	private int energiaInicial;
+	private Integer energiaInicial;
 	@Column
 	private String urlFoto;
 	@Column
-	private int cantidadBichos;
-	
+	private Integer cantidadBichos;
+	private Especie evolucionDeEspecie;
+
 	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
 	
-	public Especie(int id, String nombre, TipoBicho tipo) {
+	public Especie(Integer id, String nombre, TipoBicho tipo) {
 	    this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
@@ -44,7 +45,11 @@ public class Especie {
 	public Especie() {
 	}
 
-	/**
+    public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie) {
+        setEvolucionDeEspecie(evolucionDeEspecie);
+    }
+
+    /**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */
 	public String getNombre() {
@@ -128,5 +133,13 @@ public class Especie {
 		this.cantidadBichos++;
 		return new Bicho(this, nombreBicho);
 	}
-	
+
+
+    public Especie getEvolucionDeEspecie() {
+        return evolucionDeEspecie;
+    }
+
+    private void setEvolucionDeEspecie(Especie evolucionDeEspecie) {
+        this.evolucionDeEspecie = evolucionDeEspecie;
+    }
 }
