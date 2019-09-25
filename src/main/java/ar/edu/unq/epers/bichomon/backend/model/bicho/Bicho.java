@@ -12,7 +12,7 @@ public class Bicho {
 
 	private String nombre;
 	private Especie especie;
-	private int energia;
+	private Integer energia;
 	
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
@@ -39,11 +39,20 @@ public class Bicho {
 	 * particular. Dicha cantidad crecerá (o decrecerá) conforme
 	 * a este bicho participe en combates contra otros bichomones.
 	 */
-	public int getEnergia() {
+	public Integer getEnergia() {
 		return this.energia;
 	}
-	public void setEnergia(int energia) {
+	public void setEnergia(Integer energia) {
 		this.energia = energia;
+	}
+
+	public void evolucionarSegunCondicion(Condicion condicion) {
+		if(condicion.evaluar(this))
+			evolucionar();
+	}
+
+	private void evolucionar() {
+		especie = especie.getEvolucionDeEspecie();
 	}
 
 }
