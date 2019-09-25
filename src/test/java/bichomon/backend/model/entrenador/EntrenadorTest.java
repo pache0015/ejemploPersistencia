@@ -15,8 +15,8 @@ import java.util.List;
 public class EntrenadorTest {
 
     private Entrenador entrenador;
-    private EntrenadorService entrenadorService = new EntrenadorService();
-    private ExperienciaService experienciaService = new ExperienciaService();
+    private EntrenadorDaoService entrenadorDaoService = new EntrenadorDaoService();
+    private ExperienciaDaoService experienciaDaoService = new ExperienciaDaoService();
     private ProveedorDeNiveles proveedor;
     private Nivel nivelUno  = new Nivel(1, 1, 99);
     private Nivel nivelDos  = new Nivel(2, 100, 400);
@@ -40,16 +40,16 @@ public class EntrenadorTest {
 
         proveedor = new ProveedorDeNiveles(niveles);
 
-        entrenadorService.setEntrenadorDao(new HibernateEntrenadorDao());
-        entrenador = new Entrenador("Ash", null, nivelUno, proveedor);
-        entrenadorService.setEntrenadorDao(new HibernateEntrenadorDao());
-        experienciaService.setExperiencia(new HibernateExperienciaDao());
+        entrenadorDaoService.setEntrenadorDao(new HibernateEntrenadorDao());
+        entrenador = new Entrenador("Ash", null, proveedor);
+        entrenadorDaoService.setEntrenadorDao(new HibernateEntrenadorDao());
+        experienciaDaoService.setExperiencia(new HibernateExperienciaDao());
 
         bichoUno = new Bicho();
         bichoDos = new Bicho();
         bichoTres= new Bicho();
         experienciaPorCaptura = new Experiencia(10, "Caputarar bichomon");
-        this.experienciaService.guardarExperiencia(experienciaPorCaptura);
+        this.experienciaDaoService.guardarExperiencia(experienciaPorCaptura);
 
     }
     @Test
@@ -62,9 +62,9 @@ public class EntrenadorTest {
     }
     @Test
     public void test001_unEntrenadorTieneUnNivel() {
-        this.entrenadorService.guardarEntrenador(entrenador);
+        this.entrenadorDaoService.guardarEntrenador(entrenador);
 
-        Entrenador entrenadorRecuperado = this.entrenadorService.recuperarEntrenador(this.entrenador.getId());
+        Entrenador entrenadorRecuperado = this.entrenadorDaoService.recuperarEntrenador(this.entrenador.getNombre());
 
         Assert.assertEquals(entrenadorRecuperado.getNivel().numeroNivel, this.nivelUno.numeroNivel);
     }
@@ -72,11 +72,11 @@ public class EntrenadorTest {
     public void test002_unEntrandorAumentaSuEnergia(){
 
         Experiencia tabla = new Experiencia(10, "Combatir");
-        this.entrenadorService.guardarEntrenador(entrenador);
-        this.experienciaService.guardarExperiencia(tabla);
+        this.entrenadorDaoService.guardarEntrenador(entrenador);
+        this.experienciaDaoService.guardarExperiencia(tabla);
 
-        Entrenador entranadorRecuperador = this.entrenadorService.recuperarEntrenador(this.entrenador.getId());
-        Experiencia tablaRecuperada = this.experienciaService.recuperarTabla(tabla.getId());
+        Entrenador entranadorRecuperador = this.entrenadorDaoService.recuperarEntrenador(this.entrenador.getNombre());
+        Experiencia tablaRecuperada = this.experienciaDaoService.recuperarTabla(tabla.getId());
 
         entranadorRecuperador.ganarEnergia(tablaRecuperada.puntosDeExperiencia());
 
@@ -87,11 +87,11 @@ public class EntrenadorTest {
     @Test
     public void test003_unEntrenadorGanaTantaExperienciaQueSubeDeNivel(){
         Experiencia tabla = new Experiencia(200, "Just for testing");
-        this.experienciaService.guardarExperiencia(tabla);
-        this.entrenadorService.guardarEntrenador(entrenador);
+        this.experienciaDaoService.guardarExperiencia(tabla);
+        this.entrenadorDaoService.guardarEntrenador(entrenador);
 
-        Entrenador entrenadorRecuperado = this.entrenadorService.recuperarEntrenador(this.entrenador.getId());
-        Experiencia tablaRecuperada = this.experienciaService.recuperarTabla(tabla.getId());
+        Entrenador entrenadorRecuperado = this.entrenadorDaoService.recuperarEntrenador(this.entrenador.getNombre());
+        Experiencia tablaRecuperada = this.experienciaDaoService.recuperarTabla(tabla.getId());
 
         Assert.assertEquals(entrenadorRecuperado.getNivel().numeroNivel, nivelUno.numeroNivel);
 
@@ -103,18 +103,20 @@ public class EntrenadorTest {
 
     @Test
     public void test004_unEntrenadorPuedeCapturarPokemonsYGanaExperienciaPorEllo() throws LimitePokemon {
-        Experiencia experienciaRecuperada = this.experienciaService.recuperarTabla(experienciaPorCaptura.getId());
+        Experiencia experienciaRecuperada = this.experienciaDaoService.recuperarTabla(experienciaPorCaptura.getId());
 
         entrenador.capturarBichomon(bichoUno, experienciaRecuperada.puntosDeExperiencia());
 
         Assert.assertEquals(entrenador.getBichos().size(), 1);
     }
     @Test(expected = LimitePokemon.class)
-    public void test005_unEntrenadorNoPuedeCapturarMasBichosDeLoQueSuNivelLePermita() throws LimitePokemon {
-
-        entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
-        entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
-
+    public void test005_unEntrenadorNoPuedeCapturarMasBichosDeLoQueSuNivelLePermita(){
+        try {
+            entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
+            entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
+        }catch (LimitePokemon error){
+            Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
+        }
 
     }
 }

@@ -11,9 +11,6 @@ import java.util.List;
 @Entity
 public class Entrenador {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
@@ -28,11 +25,11 @@ public class Entrenador {
     @ManyToOne(cascade = CascadeType.ALL)
     private ProveedorDeNiveles proveedor;
 
-    public Entrenador(String nombre, Ubicacion ubicacion, Nivel nivel, ProveedorDeNiveles proveedor) {
+    public Entrenador(String nombre, Ubicacion ubicacion, ProveedorDeNiveles proveedor) {
         this.nombre = nombre;
         this.bichos = new ArrayList<>();
         this.puntosDeExperiencia = 1;
-        this.nivel = nivel;
+        this.nivel = proveedor.getNivelDeEntrenador(this.puntosDeExperiencia);
         this.ubicacionActual = ubicacion;
         this.proveedor = proveedor;
     }
@@ -73,10 +70,6 @@ public class Entrenador {
         this.bichoParaDuelo = bicho;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
     public Bicho getBichoParaDuelo() {
         return bichoParaDuelo;
     }
@@ -111,4 +104,7 @@ public class Entrenador {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
 
+    public void setUbicacionEn(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
 }

@@ -28,6 +28,9 @@ public class Bicho {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	public Bicho(Especie especie){
+		this.especie = especie;
+	}
 	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
 		this.nombre = nombre;
