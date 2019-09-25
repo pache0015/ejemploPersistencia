@@ -17,6 +17,7 @@ public class Bicho {
 	private Integer energia;
     private Integer victorias;
     private LocalDate fechaDeCaptura;
+    private Condicion condicionDeEvolucion;
 
     public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
@@ -50,13 +51,13 @@ public class Bicho {
 		this.energia = energia;
 	}
 
-	public void evolucionarSegunCondicion(Condicion condicion) {
-		if(condicion.evaluar(this))
-			evolucionar();
+	public void setCondicionDeEvolucion(Condicion condicion) {
+		this.condicionDeEvolucion = condicion;
 	}
 
-	private void evolucionar() {
-		especie = especie.getEvolucionDeEspecie();
+	public void evolucionar() {
+        if(condicionDeEvolucion.evaluar(this))
+            especie = especie.getEvolucionDeEspecie();
 	}
 
     public Integer getVictorias() {
