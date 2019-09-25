@@ -1,6 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import com.mysql.cj.xdevapi.DocumentID;
+
+import javax.persistence.*;
 
 import java.time.LocalDate;
 
@@ -10,19 +13,37 @@ import java.time.LocalDate;
  * 
  * @author Charly Backend
  */
+@Entity
 public class Bicho {
 
+	@Column
 	private String nombre;
+
+	@ManyToOne(cascade = {CascadeType.ALL})
 	private Especie especie;
-	private Integer energia;
     private Integer victorias;
     private LocalDate fechaDeCaptura;
     private Condicion condicionDeEvolucion;
 
-    public Bicho(Especie especie, String nombre) {
+	@Column
+	private Double energia;
+
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	public Bicho(Especie especie){
+		this.especie = especie;
+	}
+	public Bicho(Especie especie, String nombre) {
 		this.especie = especie;
 		this.nombre = nombre;
 	}
+
+	public Bicho() {
+	}
+
 
 	/**
 	 * @return el nombre de un bicho (todos los bichos tienen
@@ -44,13 +65,29 @@ public class Bicho {
 	 * particular. Dicha cantidad crecerá (o decrecerá) conforme
 	 * a este bicho participe en combates contra otros bichomones.
 	 */
-	public Integer getEnergia() {
+	public Double getEnergia() {
 		return this.energia;
 	}
-	public void setEnergia(Integer energia) {
+	public void setEnergia(Double energia) {
 		this.energia = energia;
 	}
 
+
+	public void reducirEnergia(Double valor){
+		this.energia -= valor;
+	}
+
+	public boolean puedeSeguir() {
+		return this.getEnergia()>0;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public Especie getEspecieRaiz() {
+		return especie;
+	}
 	public void setCondicionDeEvolucion(Condicion condicion) {
 		this.condicionDeEvolucion = condicion;
 	}

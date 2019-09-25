@@ -19,7 +19,7 @@ public class BichoTest {
         Especie lagartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
 
         Bicho bicho =  new Bicho(lagartomon, "helloworld");
-        bicho.setEnergia(1);
+        bicho.setEnergia(1d);
 
         bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
         bicho.evolucionar();
@@ -32,7 +32,7 @@ public class BichoTest {
         Especie lagartomon =new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
 
         Bicho bicho = new Bicho(lagartomon, "helloworld");
-        bicho.setEnergia(0);
+        bicho.setEnergia(0d);
 
         bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
         bicho.evolucionar();
@@ -84,7 +84,7 @@ public class BichoTest {
         condiciones.add(condicionDeVictorias(1));
 
         Bicho bicho = new Bicho(lagartomon, "helloworld");
-        bicho.setVictorias(3);bicho.setEnergia(3);
+        bicho.setVictorias(3);bicho.setEnergia(3d);
         bicho.setCondicionDeEvolucion(new CondicionMultiple(condiciones));
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
