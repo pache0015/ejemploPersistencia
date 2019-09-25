@@ -2,34 +2,48 @@ package ar.edu.unq.epers.bichomon.backend.model.especie;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
+import javax.persistence.*;
+
 /**
  * Representa una {@link Especie} de bicho.
- * 
+ *
  * @author Charly Backend
  */
+@Entity
 public class Especie {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	@Column
 	private String nombre;
+	@Column
 	private int altura;
+	@Column
 	private int peso;
-	private TipoBicho tipo;
 
+	@Column
+	private TipoBicho tipo;
+	@Column
 	private int energiaInicial;
-	
+	@Column
 	private String urlFoto;
-	
+	@Column
 	private int cantidadBichos;
-	
-	public Especie(){
-	}
-	
-	public Especie(int id, String nombre, TipoBicho tipo) {
-	    this.id = id;
+
+	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
-	
+
+	public Especie(int id, String nombre, TipoBicho tipo) {
+		this.id = id;
+		this.nombre = nombre;
+		this.tipo = tipo;
+	}
+
+	public Especie() {
+	}
+
 	/**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */
@@ -39,7 +53,7 @@ public class Especie {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	/**
 	 * @return la altura de todos los bichos de esta especie
 	 */
@@ -49,7 +63,7 @@ public class Especie {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
-	
+
 	/**
 	 * @return el peso de todos los bichos de esta especie
 	 */
@@ -59,7 +73,7 @@ public class Especie {
 	public void setPeso(int peso) {
 		this.peso = peso;
 	}
-	
+
 	/**
 	 * @return una url que apunta al un recurso imagen el cual será
 	 * utilizado para mostrar un thumbnail del bichomon por el frontend.
@@ -70,7 +84,7 @@ public class Especie {
 	public void setUrlFoto(String urlFoto) {
 		this.urlFoto = urlFoto;
 	}
-	
+
 	/**
 	 * @return la cantidad de energia de poder iniciales para los bichos
 	 * de esta especie.
@@ -91,7 +105,7 @@ public class Especie {
 	public void setTipo(TipoBicho tipo) {
 		this.tipo = tipo;
 	}
-	
+
 	/**
 	 * @return la cantidad de bichos que se han creado para esta
 	 * especie.
@@ -114,5 +128,5 @@ public class Especie {
 		this.cantidadBichos++;
 		return new Bicho(this, nombreBicho);
 	}
-	
+
 }
