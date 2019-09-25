@@ -21,7 +21,7 @@ class UbicacionTest {
         niveles.add(nivelUno);
         niveles.add(nivelDos);
         proveedor = new ProveedorDeNiveles(niveles);
-      return new Entrenador(nombre, null, nivelUno, proveedor);
+      return new Entrenador(nombre, null, proveedor);
     }
     Bicho nuevoBicho(String nombre) {
         Especie especie = new Especie("Especie",  TipoBicho.AIRE);
