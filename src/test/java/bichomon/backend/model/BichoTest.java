@@ -1,56 +1,68 @@
 package bichomon.backend.model;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.*;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEdad;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnVictorias;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionMultiple;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BichoTest {
+    Especie reptilmon;
+    Especie largartomon;
+    Bicho bicho;
+    Nivel nivel;
+    ProveedorDeNiveles proveedor;
+    Entrenador entrenador;
 
+    @Before
+    public void setUp() {
+        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
+        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
+        bicho = new Bicho(largartomon, "helloworld");
+        List niveles = new ArrayList<Nivel>();
+        nivel = new Nivel(1, 1, 99);
+        niveles.add(nivel);
+        proveedor = new ProveedorDeNiveles(niveles);
+        entrenador = new Entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
+    }
     @Test
     public void cuandoCumpleUnaCondicionBasadaEnEnergiaEvolucionaYCambiaSuEspecie(){
-        Especie reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        Especie lagartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
-
-        Bicho bicho =  new Bicho(lagartomon, "helloworld");
         bicho.setEnergia(1d);
 
         bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
 
     @Test
     public void cuandoNoCumpleUnaCondicionBasadaEnEnergiaNoEvoluciona(){
-        Especie reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        Especie lagartomon =new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
-
-        Bicho bicho = new Bicho(lagartomon, "helloworld");
         bicho.setEnergia(0d);
 
         bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
-        Assert.assertEquals(bicho.getEspecie(), lagartomon);
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
     }
 
     @Test
     public void cuandoCumpleUnaCondicionBasadaEnVictoriasEvolucionaYCambiaSuEspecie(){
-        Especie reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        Especie lagartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
-
-        Bicho bicho = new Bicho(lagartomon, "helloworld");
         bicho.setVictorias(3);
 
         bicho.setCondicionDeEvolucion(condicionDeVictorias(2));
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
@@ -61,15 +73,12 @@ public class BichoTest {
 
     @Test
     public void cuandoCumpleUnaCondicionBasadaEnEdadEvolucionaYCambiaSuEspecie(){
-        Especie reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        Especie lagartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
-
-        Bicho bicho = new Bicho(lagartomon, "helloworld");
         bicho.setFechaDeCaptura(LocalDate.of(2019, Month.JANUARY,1));
 
         LocalDate localDate = LocalDate.of(2019, Month.JANUARY, 2);
         Period temporalAmount = Period.ofDays(1);
         bicho.setCondicionDeEvolucion(condicionDeEdad(localDate, temporalAmount));
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
@@ -80,13 +89,10 @@ public class BichoTest {
 
     @Test
     public void cuandoCumpleMasDeUnaCondicionEvolucionaYCambiaSuEspecie(){
-        Especie reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        Especie lagartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
         ArrayList<Condicion> condiciones = new ArrayList<>();
         condiciones.add(condicionDeEnergia(2));
         condiciones.add(condicionDeVictorias(1));
 
-        Bicho bicho = new Bicho(lagartomon, "helloworld");
         bicho.setVictorias(3);bicho.setEnergia(3d);
         bicho.setCondicionDeEvolucion(new CondicionMultiple(condiciones));
         bicho.evolucionar();
@@ -95,5 +101,18 @@ public class BichoTest {
 
     private CondicionBasadaEnEnergia condicionDeEnergia(Integer cantidadDeEnergia) {
         return new CondicionBasadaEnEnergia(cantidadDeEnergia);
+    }
+
+    @Test
+    public void cuandoSuEntrenadorLLeguaAUnDeterminadoNivelEvoluciona() {
+        Condicion condicionDeNivel = getCondicionDeNivel(1);
+        bicho.setCondicionDeEvolucion(condicionDeNivel);
+        Assert.assertEquals(bicho.getEspecie(), largartomon);
+        bicho.evolucionar();
+        Assert.assertEquals(bicho.getEspecie(), reptilmon);
+    }
+
+    private CondicionBasadaEnNivelEntrenador getCondicionDeNivel(Integer nivelNcesarioParaEvolucionar) {
+        return new CondicionBasadaEnNivelEntrenador(entrenador, nivelNcesarioParaEvolucionar);
     }
 }

@@ -9,7 +9,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class EntrenadorTest {
         bichoUno = new Bicho();
         bichoDos = new Bicho();
         bichoTres= new Bicho();
-        experienciaPorCaptura = new Experiencia(10, "Caputarar bichomon");
+        experienciaPorCaptura = new Experiencia(10, "Capturar bichomon");
         this.experienciaDaoService.guardarExperiencia(experienciaPorCaptura);
 
     }
@@ -110,7 +109,8 @@ public class EntrenadorTest {
 
         Assert.assertEquals(entrenador.getBichos().size(), 1);
     }
-    @Test(expected = LimitePokemon.class)
+
+    @Test
     public void test005_unEntrenadorNoPuedeCapturarMasBichosDeLoQueSuNivelLePermita(){
         try {
             entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());

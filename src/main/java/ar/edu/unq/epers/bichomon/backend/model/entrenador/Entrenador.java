@@ -1,8 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
+
 import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -92,11 +92,11 @@ public class Entrenador {
         this.ubicacionActual = ubicacion;
     }
 
-    private boolean puedeAgregarBichomon() {
+    private Boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
 
-    public boolean tieneMasDeUnBicho() {
+    public Boolean tieneMasDeUnBicho() {
         return this.bichos.size() > 1;
     }
 
@@ -106,5 +106,9 @@ public class Entrenador {
 
     public void setUbicacionEn(Ubicacion ubicacion) {
         this.ubicacionActual = ubicacion;
+    }
+
+    public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
+        return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
     }
 }
