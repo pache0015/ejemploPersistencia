@@ -1,5 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.dao.impl;
 
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.ConnectionBlock;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
