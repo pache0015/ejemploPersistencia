@@ -30,6 +30,10 @@
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.Experiencia"/>
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Pueblo" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo" />
 
 
 

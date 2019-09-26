@@ -2,10 +2,12 @@ package ar.edu.unq.epers.bichomon.backend.model.condicion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
 public class CondicionBasadaEnVictorias extends Condicion {
+    @Column
     private final Integer victorias;
 
     public CondicionBasadaEnVictorias(Integer victorias) {

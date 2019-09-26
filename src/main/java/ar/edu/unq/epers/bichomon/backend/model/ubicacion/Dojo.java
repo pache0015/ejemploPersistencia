@@ -4,13 +4,20 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Dojo extends Ubicacion {
 
+    @OneToOne
     private Entrenador entrenadorCampeon;
+    @OneToOne
     private Bicho bichoCampeon;
+    @OneToMany
     private List<Bicho> bichos;
 
 

@@ -4,9 +4,13 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.*;
 
+@Entity
 public class Pueblo extends Ubicacion {
+    @Transient
     private Map<Especie, Integer> especiesHabitantes;
     public static String ERROR_EXCESO_ESPECIES = "No se puede agregar esa especie al pueblo";
 
