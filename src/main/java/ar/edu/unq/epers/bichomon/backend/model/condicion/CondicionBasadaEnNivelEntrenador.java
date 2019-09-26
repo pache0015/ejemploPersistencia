@@ -1,7 +1,6 @@
-package bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.model.condicion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 public class CondicionBasadaEnNivelEntrenador extends Condicion {
