@@ -24,6 +24,7 @@ public class ResultadoCombate {
     public String getEntrenadorCampeon(){
         return entrenadorCampeon.getNombre();
     }
+    public Long getBichoCampeonId(){ return bichoCampeon.getId();}
     public List getAtaques(){
         return ataques;
     }

@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 
 import java.util.*;
 
@@ -22,13 +23,18 @@ public class Pueblo extends Ubicacion {
 
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new RuntimeException(Ubicacion.ERROR_ABANDONO);
+        throw new UbicacionIncorrectaException();
     }
 
     // TODO: Llenar este método o reemplazarlo en todas las subclases por bichomonPara(Entrenador entrenador)
     @Override
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
         return new ArrayList<>();
+    }
+
+    @Override
+    public Entrenador getEntrenadorCampeon() {
+        throw new UbicacionIncorrectaException();
     }
 
     public List<Especie> especiesPosibles() {

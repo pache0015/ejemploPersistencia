@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,7 +26,7 @@ public class Guarderia extends Ubicacion {
         if (puedeDejarAbandonar(entrenador)) {
             abandonos.put(bichoAAbandonar, entrenador);
         } else {
-            throw new RuntimeException(Ubicacion.ERROR_ABANDONO);
+            throw new UbicacionIncorrectaException();
         }
     }
 
@@ -35,6 +36,11 @@ public class Guarderia extends Ubicacion {
 
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
         return bichomones().stream().filter((bicho -> !abandonos.get(bicho).getNombre().equals(entrenador.getNombre()))).collect(Collectors.toList());
+    }
+
+    @Override
+    public Entrenador getEntrenadorCampeon() {
+        throw new UbicacionIncorrectaException();
     }
 
     private List<Bicho> bichomones() {

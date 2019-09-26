@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Dojo extends Ubicacion {
 
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new RuntimeException(Ubicacion.ERROR_ABANDONO);
+        throw new UbicacionIncorrectaException();
     }
 
     @Override
@@ -49,5 +50,9 @@ public class Dojo extends Ubicacion {
             Bicho nuevoBicho = new Bicho(especie, "Hije del campeón");
             bichos.add(nuevoBicho);
         }
+    }
+
+    public Entrenador getEntrenadorCampeon(){
+        return entrenadorCampeon;
     }
 }

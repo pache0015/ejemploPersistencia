@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 
@@ -61,13 +63,10 @@ public class Entrenador {
     }
 
 
-   /*
-    public Duelo retarACampeon(Gimnasio gym) {
-        this.setBichoParaDuelo(bichos.get(0));
-        return new Duelo(this, gym.getCampeon());
-
+    private Bicho buscarBichoPorId(Integer idBicho) {
+        return bichos.stream().filter((bicho -> bicho.getId().equals(idBicho))).findFirst().get();
     }
-    */
+
 
     private void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
@@ -110,5 +109,7 @@ public class Entrenador {
     public void abandonar(Bicho bichoAAbandonar) {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
+
+    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
 
 }

@@ -1,7 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import com.mysql.cj.xdevapi.DocumentID;
 
 import javax.persistence.*;
 
@@ -65,12 +64,20 @@ public class Bicho {
 	}
 
 
-	public void reducirEnergia(Double valor){
-		this.energia -= valor;
-	}
-
 	public boolean puedeSeguir() {
 		return this.getEnergia()>0;
+	}
+
+	public Double atacar(Bicho atacado){
+		Double energiaPorAtaque = this.energiaPorAtaque();
+		atacado.recibirAtaque(energiaPorAtaque);
+		return energiaPorAtaque;
+	}
+
+	private Double energiaPorAtaque() {return energia * (Math.random() * 1.5) + 0.5;}
+
+	public void recibirAtaque(Double energia) {
+		this.energia -= energia;
 	}
 
 	public Long getId() {
