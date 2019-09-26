@@ -3,11 +3,13 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Entity
 public class Guarderia extends Ubicacion {
-
+    @OneToOne
     private Map<Bicho, Entrenador> abandonos;
 
     public Guarderia(String nombre) {

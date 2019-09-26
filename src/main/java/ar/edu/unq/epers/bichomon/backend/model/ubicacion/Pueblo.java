@@ -4,10 +4,15 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import java.util.*;
-
+@Entity
 public class Pueblo extends Ubicacion {
+    @OneToOne
     private Map<Especie, Integer> especiesHabitantes;
+    @Column
     public static String ERROR_EXCESO_ESPECIES = "No se puede agregar esa especie al pueblo";
 
     public Pueblo(String nombre) {
