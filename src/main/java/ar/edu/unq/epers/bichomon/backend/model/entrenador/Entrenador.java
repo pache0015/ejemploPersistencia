@@ -1,10 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
+
 import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,9 +11,6 @@ import java.util.List;
 @Entity
 public class Entrenador {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
@@ -30,11 +25,11 @@ public class Entrenador {
     @ManyToOne(cascade = CascadeType.ALL)
     private ProveedorDeNiveles proveedor;
 
-    public Entrenador(String nombre, Ubicacion ubicacion, Nivel nivel, ProveedorDeNiveles proveedor) {
+    public Entrenador(String nombre, Ubicacion ubicacion, ProveedorDeNiveles proveedor) {
         this.nombre = nombre;
         this.bichos = new ArrayList<>();
         this.puntosDeExperiencia = 1;
-        this.nivel = nivel;
+        this.nivel = proveedor.getNivelDeEntrenador(this.puntosDeExperiencia);
         this.ubicacionActual = ubicacion;
         this.proveedor = proveedor;
     }
@@ -62,18 +57,12 @@ public class Entrenador {
         return this.bichos;
     }
 
-
     private Bicho buscarBichoPorId(Integer idBicho) {
         return bichos.stream().filter((bicho -> bicho.getId().equals(idBicho))).findFirst().get();
     }
 
-
     private void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     public Bicho getBichoParaDuelo() {
@@ -98,11 +87,11 @@ public class Entrenador {
         this.ubicacionActual = ubicacion;
     }
 
-    private boolean puedeAgregarBichomon() {
+    private Boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
 
-    public boolean tieneMasDeUnBicho() {
+    public Boolean tieneMasDeUnBicho() {
         return this.bichos.size() > 1;
     }
 
@@ -112,4 +101,11 @@ public class Entrenador {
 
     public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
 
+    public void setUbicacionEn(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
+
+    public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
+        return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
+    }
 }

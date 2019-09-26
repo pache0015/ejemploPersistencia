@@ -10,7 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaExceptio
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-public class BichoService {
+public class BichoDaoService {
 
     private BichoDao bichoDao;
 

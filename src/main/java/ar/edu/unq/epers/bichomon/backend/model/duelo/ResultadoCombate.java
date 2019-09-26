@@ -21,7 +21,7 @@ public class ResultadoCombate {
     public String getBichoCampeon(){
         return bichoCampeon.getNombre();
     }
-    public String getEntrenadorCampeon(){
+    public String getNombreDeEntrenadorCampeon(){
         return entrenadorCampeon.getNombre();
     }
     public Long getBichoCampeonId(){ return bichoCampeon.getId();}

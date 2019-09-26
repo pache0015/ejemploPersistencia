@@ -87,7 +87,7 @@ public class GuarderiaTest extends UbicacionTest {
 
         entrenador.abandonar(bichoAAbandonar);
 
-        Entrenador entrenadorDos = new Entrenador("Entrenador Dos", null , null , null);
+        Entrenador entrenadorDos = this.nuevoEntrenador("Entrenador_Dos");
 
         assertTrue(guarderia.bichomonesPara(entrenadorDos).contains(bichoAAbandonar));
     }

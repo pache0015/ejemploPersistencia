@@ -12,8 +12,8 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
     public HibernateEntrenadorDao() { super(Entrenador.class); }
 
     @Override
-    public Entrenador recuperar(Long id) {
+    public Entrenador recuperar(String nombre_entrenador) {
         Session session = TransactionRunner.getCurrentSession();
-        return session.get(Entrenador.class, id);
+        return session.get(Entrenador.class, nombre_entrenador);
     }
 }
