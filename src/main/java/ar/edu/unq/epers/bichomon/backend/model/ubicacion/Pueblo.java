@@ -29,25 +29,23 @@ public class Pueblo extends Ubicacion {
         throw new RuntimeException(Ubicacion.ERROR_ABANDONO);
     }
 
-    // TODO: Llenar este método o reemplazarlo en todas las subclases por bichomonPara(Entrenador entrenador)
     @Override
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return new ArrayList<>();
+        List<Especie> especiesPosibles = especiesPosibles();
+
+        Random randomGenerator = new Random();
+        Especie especieElegida = especiesPosibles.stream()
+                .filter((Especie especiePosible) -> especiesHabitantes.get(especiePosible) > randomGenerator.nextInt(101))
+                .findFirst().get();
+
+        Bicho bichoElegido = new Bicho(especieElegida, "Bicho de pueblo");
+        List<Bicho> bichosParaEntrenador = new ArrayList<>();
+        bichosParaEntrenador.add(bichoElegido);
+        return bichosParaEntrenador;
     }
 
     public List<Especie> especiesPosibles() {
         return new ArrayList<>(especiesHabitantes.keySet());
-    }
-
-    public Bicho bichomonPara(Entrenador entrenador) {
-        List<Especie> especiesPosibles = especiesPosibles();
-
-        Random randomGenerator = new Random();
-        Especie especieElegida = especiesPosibles.stream().filter((Especie especiePosible) -> {
-            return especiesHabitantes.get(especiePosible) > randomGenerator.nextInt(101);
-        }).findFirst().get();
-
-        return new Bicho(especieElegida, "Bicho de pueblo");
     }
 
     public void agregarEspecie(Especie especie, Integer probabilidadDeAparecer) {

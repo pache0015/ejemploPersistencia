@@ -25,4 +25,8 @@ public abstract class Ubicacion {
     public abstract void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar);
 
     public abstract List<Bicho> bichomonesPara(Entrenador entrenador);
+
+    public Bicho bichomonPara(Entrenador entrenador) {
+        return bichomonesPara(entrenador).get(0);
+    }
 }
