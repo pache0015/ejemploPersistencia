@@ -92,7 +92,7 @@ public class Bicho {
 		this.energia -= energia;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 

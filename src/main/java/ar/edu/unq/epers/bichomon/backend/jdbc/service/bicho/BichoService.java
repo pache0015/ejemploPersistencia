@@ -6,9 +6,9 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 public interface BichoService {
 
     public Bicho buscar(String nombreEntrador);
-    public void abandonar(String nombreEntrenador, int idBicho);
-    public ResultadoCombate duelo(String entrenador, int idBicho);
-    public Boolean puedeEvolucionar(String nombreEntrenador, int idBicho);
-    public  Bicho evolucionar(String nombreEntrenador, int idBicho);
+    public void abandonar(String nombreEntrenador, Integer idBicho);
+    public ResultadoCombate duelo(String entrenador, Integer idBicho);
+    public Boolean puedeEvolucionar(String nombreEntrenador, Integer idBicho);
+    public  Bicho evolucionar(String nombreEntrenador, Integer idBicho);
 
 }
