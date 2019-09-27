@@ -14,7 +14,8 @@ import java.util.List;
 public abstract class Ubicacion {
     @Id
     protected String nombre;
-    public static String ERROR_ABANDONO = "No se puede abandonar a ese bichomon en esta ubicacion";
+
+    private Entrenador entrenadorCampeon;
 
     public Ubicacion(String nombre) {
         this.nombre = nombre;
@@ -29,4 +30,6 @@ public abstract class Ubicacion {
     public Bicho bichomonPara(Entrenador entrenador) {
         return bichomonesPara(entrenador).get(0);
     }
+
+    public abstract Entrenador getEntrenadorCampeon();
 }

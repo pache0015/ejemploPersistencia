@@ -1,9 +1,9 @@
 package ar.edu.unq.epers.bichomon.backend.ubicaciones;
 
 public class UbicacionIncorrectaException extends RuntimeException{
-
-
+    public static String MENSAJE_ERROR = "No se encuentra en la ubicacion correcta para hacer esta accion";
     public UbicacionIncorrectaException() {
-        super("No se encuentra en la ubicacion correcta para hacer esta accion");
+        super(UbicacionIncorrectaException.MENSAJE_ERROR);
     }
+
 }

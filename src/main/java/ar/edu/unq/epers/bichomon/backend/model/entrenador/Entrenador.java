@@ -57,14 +57,9 @@ public class Entrenador {
         return this.bichos;
     }
 
-
-   /*
-    public Duelo retarACampeon(Gimnasio gym) {
-        this.setBichoParaDuelo(bichos.get(0));
-        return new Duelo(this, gym.getCampeon());
-
+    private Bicho buscarBichoPorId(Integer idBicho) {
+        return bichos.stream().filter((bicho -> bicho.getId().equals(idBicho))).findFirst().get();
     }
-    */
 
     private void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
@@ -103,6 +98,8 @@ public class Entrenador {
     public void abandonar(Bicho bichoAAbandonar) {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
+
+    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
 
     public void setUbicacionEn(Ubicacion ubicacion) {
         this.ubicacionActual = ubicacion;

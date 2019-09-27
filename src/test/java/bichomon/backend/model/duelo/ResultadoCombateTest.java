@@ -36,9 +36,6 @@ public class ResultadoCombateTest {
         ataques = new ArrayList<>();
 
         ataques.add(ataque);
-        ataques.add(ataque);
-        ataques.add(ataque);
-        ataques.add(ataque);
 
 
         resultadoCombate = new ResultadoCombate(entrenador, bicho, ataques);
@@ -48,6 +45,13 @@ public class ResultadoCombateTest {
     public void unResultadoCombateRetornaElBichoCampeon(){
         Assert.assertEquals("pepito", resultadoCombate.getBichoCampeon());
     }
+    @Test
+    public void unResultadoCombateRetornaElBichoCampeonPorId(){
+        Assert.assertEquals(new Long(0), resultadoCombate.getBichoCampeonId());
+
+        //da null porque no esta creado y guardado en la bbdd
+    }
+
 
     @Test
     public void unResultadoCombateRetornaElEntrenadorCampeon(){

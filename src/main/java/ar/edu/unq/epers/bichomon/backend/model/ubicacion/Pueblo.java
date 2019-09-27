@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -26,7 +27,7 @@ public class Pueblo extends Ubicacion {
 
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new RuntimeException(Ubicacion.ERROR_ABANDONO);
+        throw new UbicacionIncorrectaException();
     }
 
     @Override
@@ -51,6 +52,11 @@ public class Pueblo extends Ubicacion {
     public void agregarEspecie(Especie especie, Integer probabilidadDeAparecer) {
         chequearProbabilidadesTotales(probabilidadDeAparecer);
         especiesHabitantes.put(especie, probabilidadDeAparecer);
+    }
+
+    @Override
+    public Entrenador getEntrenadorCampeon() {
+        throw new UbicacionIncorrectaException();
     }
 
     private void chequearProbabilidadesTotales(Integer probabilidadDeAparecer) {
