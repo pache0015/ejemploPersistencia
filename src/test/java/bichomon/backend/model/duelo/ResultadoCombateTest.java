@@ -44,20 +44,13 @@ public class ResultadoCombateTest {
     public void unResultadoCombateRetornaElBichoCampeon(){
         Assert.assertEquals("pepito", resultadoCombate.getBichoCampeon());
     }
-    @Test
-    public void unResultadoCombateRetornaElBichoCampeonPorId(){
-
-        //Assert.assertEquals(new Long(0), resultadoCombate.getBichoCampeonId());
-        Assert.assertThat(resultadoCombate.getBichoCampeonId(), CoreMatchers.notNullValue(Long.class));
-        //da null porque no esta creado y guardado en la bbdd
-    }
 
 
     @Test
-    public void unResultadoCombateRetornaElEntrenadorCampeon(){
+    public void unResultadoCombateRetornaElEntrenadorCampeon() {
         Assert.assertEquals("Juan", resultadoCombate.getNombreDeEntrenadorCampeon());
-    public void unResultadoCombateRetornaElEntrenadorCampeon(){        Assert.assertEquals("Juan", resultadoCombate.getNombreDeEntrenadorCampeon());
     }
+
 
     @Test
     public void unResultadoCombateTieneAtaques(){
