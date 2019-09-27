@@ -3,10 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -14,14 +11,14 @@ import java.util.List;
 public abstract class Ubicacion {
     @Id
     protected String nombre;
-
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Entrenador entrenadorCampeon;
 
     public Ubicacion(String nombre) {
         this.nombre = nombre;
     }
 
-    public abstract boolean puedeDejarAbandonar(Entrenador entrenador);
+    public abstract Boolean puedeDejarAbandonar(Entrenador entrenador);
 
     public abstract void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar);
 

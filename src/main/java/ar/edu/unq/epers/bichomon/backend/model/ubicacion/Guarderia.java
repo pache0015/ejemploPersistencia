@@ -6,7 +6,10 @@ import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaExceptio
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,7 +23,7 @@ public class Guarderia extends Ubicacion {
     }
 
     @Override
-    public boolean puedeDejarAbandonar(Entrenador entrenador) {
+    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
         return entrenador.tieneMasDeUnBicho();
     }
 

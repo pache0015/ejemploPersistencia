@@ -21,7 +21,7 @@ public class Pueblo extends Ubicacion {
     }
 
     @Override
-    public boolean puedeDejarAbandonar(Entrenador entrenador) {
+    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
         return false;
     }
 

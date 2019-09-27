@@ -11,7 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +46,8 @@ public class ResultadoCombateTest {
     }
     @Test
     public void unResultadoCombateRetornaElBichoCampeonPorId(){
+
+
         Assert.assertEquals(new Long(0), resultadoCombate.getBichoCampeonId());
 
         //da null porque no esta creado y guardado en la bbdd

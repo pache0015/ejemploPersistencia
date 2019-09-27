@@ -28,7 +28,7 @@ public class Dojo extends Ubicacion {
     }
 
     @Override
-    public boolean puedeDejarAbandonar(Entrenador entrenador) {
+    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
         return false;
     }
 
@@ -61,5 +61,13 @@ public class Dojo extends Ubicacion {
 
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
+    }
+
+    public Bicho getBichoCampeon() {
+        return bichoCampeon;
+    }
+
+    public void setBichoCampeon(Bicho bichoCampeon) {
+        this.bichoCampeon = bichoCampeon;
     }
 }

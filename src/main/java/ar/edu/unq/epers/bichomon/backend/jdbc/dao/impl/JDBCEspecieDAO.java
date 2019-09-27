@@ -1,16 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +115,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
      */
     private Connection openConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false& ");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false& ");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }
