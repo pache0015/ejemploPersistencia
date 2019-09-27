@@ -1,16 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +26,7 @@ public class JDBCEspecieDAO implements EspecieDAO {
                 return null;
             });
         } catch (RuntimeException e) {
-            if (e.getMessage().equals("")) {
+            if (e.getMessage().contains("Duplicate entry")) {
                 throw new EspecieExistente(especie.getNombre());
             } else if(e.getMessage().equals("")) {
                 throw new RuntimeException("No se puede establecer una conexion", e);

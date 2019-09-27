@@ -2,48 +2,70 @@ package ar.edu.unq.epers.bichomon.backend.model.duelo;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
-import static java.lang.Math.random;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Duelo {
     private Entrenador retador;
-    private Entrenador campeon;
-    private Integer cantAtaques;
+    private Entrenador campeonActual;
+    private List<Ataque> ataques;
+    private Bicho atacante;
+    private Bicho atacado;
 
 
-    public Duelo(Entrenador retador, Entrenador campeon){
+    public Duelo(Entrenador retador, Ubicacion gym){
         this.retador = retador;
-        this.campeon = campeon;
-        this.cantAtaques = 0;
+        this.ataques = new ArrayList<Ataque>();
+        this.campeonActual = gym.getEntrenadorCampeon();
+
+    }
+    private void cargarAtaque(Bicho atacante, Bicho rival, Double energiaAtacante) {
+        this.ataques.add((new Ataque(atacante, rival, energiaAtacante)));
     }
 
-    private void atacar(Bicho atacante, Bicho rival){
+    public Boolean puedenSeguir(Bicho bicho1, Bicho bicho2){return bicho1.puedeSeguir() && bicho2.puedeSeguir();}
 
+    private Entrenador obtenerGanador() {
+        Bicho bichoCampeon = campeonActual.getBichoParaDuelo();
 
-        Double energiaAtacante = atacante.getEnergia();
-
-        rival.reducirEnergia(this.energiaAQuitar(energiaAtacante));
-
-        cantAtaques ++;
-    }
-
-    private Double energiaAQuitar(Double valor){
-        return valor * Math.random();
-        //Corregir random
-    }
-
-    public void atacarSiValida(Entrenador atacante, Entrenador rival){
-
-        if (atacante.getBichoParaDuelo().puedeSeguir()){
-            this.atacar(atacante.getBichoParaDuelo(), rival.getBichoParaDuelo());
+        if (bichoCampeon.puedeSeguir() || hayTimeout()) {
+            return campeonActual;
         }
-        else {
-            this.finalizar();
-
-        }
+        return retador;
     }
 
-    private void finalizar() {
-        
+    private void intercambiarAtacanteYAtacado(){
+        Bicho auxiliar = atacante;
+        atacante = atacado;
+        atacado = auxiliar;
+    }
+
+    public ResultadoCombate pelear(){
+        atacante = retador.getBichoParaDuelo();
+        atacado = campeonActual.getBichoParaDuelo();
+
+        while (puedenSeguir(atacante, atacado) && !hayTimeout()){
+            Double energiaDeAtaque = atacante.atacar(atacado);
+            this.cargarAtaque(atacante, atacado, energiaDeAtaque);
+            this.intercambiarAtacanteYAtacado();
+        }
+
+        Entrenador ganador = this.obtenerGanador();
+        return new ResultadoCombate(ganador, ganador.getBichoParaDuelo(), ataques);
+    }
+
+    private boolean hayTimeout() {
+        return cantidadDeAtaques().equals(cantidadMaximaDeAtaques());
+    }
+
+    private Integer cantidadDeAtaques() {
+        return ataques.size();
+    }
+
+    private Integer cantidadMaximaDeAtaques() {
+        return 10;
     }
 }

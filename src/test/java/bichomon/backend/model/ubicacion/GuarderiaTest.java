@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,8 +61,8 @@ public class GuarderiaTest extends UbicacionTest {
         try {
             entrenador.abandonar(bichoAAbandonar);
             fail();
-        } catch(RuntimeException e) {
-            assertEquals(Ubicacion.ERROR_ABANDONO, e.getMessage());
+        } catch(UbicacionIncorrectaException e) {
+            assertEquals(UbicacionIncorrectaException.MENSAJE_ERROR, e.getMessage());
         }
     }
 
