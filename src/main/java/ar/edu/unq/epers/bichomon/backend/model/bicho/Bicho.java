@@ -34,7 +34,7 @@ public class Bicho {
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 
 	public Bicho(Especie especie){
 		this.especie = especie;
@@ -92,7 +92,7 @@ public class Bicho {
 		this.energia -= energia;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -104,7 +104,7 @@ public class Bicho {
 	}
 
 	public void evolucionar() {
-        if(condicionDeEvolucion.evaluar(this))
+        if(puedeEvolucionar())
             especie = especie.getEvolucionDeEspecie();
 	}
 
@@ -123,6 +123,9 @@ public class Bicho {
     public LocalDate getFechaDeCaptura() {
         return fechaDeCaptura;
     }
+    public Boolean puedeEvolucionar(){
+		return condicionDeEvolucion.evaluar(this);
+	}
 
     public void aumentarEnergiaDeBichoPorDuelo() {
 	    this.setEnergia((Math.random() * 5.0) + 1.0);

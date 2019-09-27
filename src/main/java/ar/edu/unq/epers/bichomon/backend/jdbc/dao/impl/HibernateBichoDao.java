@@ -10,7 +10,7 @@ public class HibernateBichoDao extends HibernateDAO<Bicho> implements BichoDao {
     public HibernateBichoDao() { super(Bicho.class); }
 
     @Override
-    public Bicho recuperar(Long id) {
+    public Bicho recuperar(int id) {
         Session session = TransactionRunner.getCurrentSession();
         return session.get(Bicho.class, id);
     }

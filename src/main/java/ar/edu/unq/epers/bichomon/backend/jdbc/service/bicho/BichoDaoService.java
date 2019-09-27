@@ -20,12 +20,9 @@ public class BichoDaoService {
     public void guardarBicho(Bicho bicho){
         run(() -> { this.bichoDao.guardar(bicho);});
     }
-    public Bicho recuperarBicho(Long id_bicho){
+    public Bicho recuperarBicho(int id_bicho){
         return run(()-> this.bichoDao.recuperar(id_bicho));
     }
 
-    public ResultadoCombate duelo(Entrenador entrenador, Integer idBicho) {
-        Duelo duelo = new Duelo(entrenador, entrenador.getUbicacionActual());
-        return duelo.pelear();
-    }
+
 }

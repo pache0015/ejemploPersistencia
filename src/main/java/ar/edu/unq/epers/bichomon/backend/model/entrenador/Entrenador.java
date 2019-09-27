@@ -56,11 +56,11 @@ public class Entrenador {
         return this.bichos;
     }
 
-    private Bicho buscarBichoPorId(Integer idBicho) {
+    public Bicho buscarBichoPorId(Integer idBicho) {
         return bichos.stream().filter((bicho -> bicho.getId().equals(idBicho))).findFirst().get();
     }
 
-    private void setBichoParaDuelo(Bicho bicho) {
+    public void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
     }
 

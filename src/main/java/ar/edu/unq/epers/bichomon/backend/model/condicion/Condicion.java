@@ -8,11 +8,11 @@ import javax.persistence.*;
 public abstract class Condicion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     public abstract Boolean evaluar(Bicho bicho);
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 }
