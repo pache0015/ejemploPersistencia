@@ -6,13 +6,20 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 
 import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Dojo extends Ubicacion {
 
+    @OneToOne
     private Entrenador entrenadorCampeon;
+    @OneToOne
     private Bicho bichoCampeon;
+    @OneToMany
     private List<Bicho> bichos;
     private GestorDeFichasDeCampeones gestor;
 
@@ -24,8 +31,11 @@ public class Dojo extends Ubicacion {
 
     }
 
+    public Dojo() {
+    }
+
     @Override
-    public boolean puedeDejarAbandonar(Entrenador entrenador) {
+    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
         return false;
     }
 
@@ -63,5 +73,13 @@ public class Dojo extends Ubicacion {
 
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
+    }
+
+    public Bicho getBichoCampeon() {
+        return bichoCampeon;
+    }
+
+    public void setBichoCampeon(Bicho bichoCampeon) {
+        this.bichoCampeon = bichoCampeon;
     }
 }

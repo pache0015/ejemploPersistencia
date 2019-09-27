@@ -7,10 +7,10 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,6 @@ public class ResultadoCombateTest {
 
         ataques.add(ataque);
 
-
         resultadoCombate = new ResultadoCombate(entrenador, bicho, ataques);
     }
 
@@ -46,6 +45,17 @@ public class ResultadoCombateTest {
         Assert.assertEquals("pepito", resultadoCombate.getBichoCampeon());
     }
     @Test
+    public void unResultadoCombateRetornaElBichoCampeonPorId(){
+
+        //Assert.assertEquals(new Long(0), resultadoCombate.getBichoCampeonId());
+        Assert.assertThat(resultadoCombate.getBichoCampeonId(), CoreMatchers.notNullValue(Long.class));
+        //da null porque no esta creado y guardado en la bbdd
+    }
+
+
+    @Test
+    public void unResultadoCombateRetornaElEntrenadorCampeon(){
+        Assert.assertEquals("Juan", resultadoCombate.getNombreDeEntrenadorCampeon());
     public void unResultadoCombateRetornaElEntrenadorCampeon(){        Assert.assertEquals("Juan", resultadoCombate.getNombreDeEntrenadorCampeon());
     }
 

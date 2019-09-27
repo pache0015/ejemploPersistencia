@@ -4,10 +4,16 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.*;
 
+@Entity
 public class Pueblo extends Ubicacion {
+    @Transient
     private Map<Especie, Integer> especiesHabitantes;
+    @Column
     public static String ERROR_EXCESO_ESPECIES = "No se puede agregar esa especie al pueblo";
 
     public Pueblo(String nombre) {
@@ -15,8 +21,11 @@ public class Pueblo extends Ubicacion {
         especiesHabitantes = new HashMap<>();
     }
 
+    public Pueblo() {
+    }
+
     @Override
-    public boolean puedeDejarAbandonar(Entrenador entrenador) {
+    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
         return false;
     }
 
@@ -25,15 +34,19 @@ public class Pueblo extends Ubicacion {
         throw new UbicacionIncorrectaException();
     }
 
-    // TODO: Llenar este método o reemplazarlo en todas las subclases por bichomonPara(Entrenador entrenador)
     @Override
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return new ArrayList<>();
-    }
+        List<Especie> especiesPosibles = especiesPosibles();
 
-    @Override
-    public Entrenador getEntrenadorCampeon() {
-        throw new UbicacionIncorrectaException();
+        Random randomGenerator = new Random();
+        Especie especieElegida = especiesPosibles.stream()
+                .filter((Especie especiePosible) -> especiesHabitantes.get(especiePosible) > randomGenerator.nextInt(101))
+                .findFirst().get();
+
+        Bicho bichoElegido = new Bicho(especieElegida, "Bicho de pueblo");
+        List<Bicho> bichosParaEntrenador = new ArrayList<>();
+        bichosParaEntrenador.add(bichoElegido);
+        return bichosParaEntrenador;
     }
     @Override
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
@@ -44,20 +57,14 @@ public class Pueblo extends Ubicacion {
         return new ArrayList<>(especiesHabitantes.keySet());
     }
 
-    public Bicho bichomonPara(Entrenador entrenador) {
-        List<Especie> especiesPosibles = especiesPosibles();
-
-        Random randomGenerator = new Random();
-        Especie especieElegida = especiesPosibles.stream().filter((Especie especiePosible) -> {
-            return especiesHabitantes.get(especiePosible) > randomGenerator.nextInt(101);
-        }).findFirst().get();
-
-        return new Bicho(especieElegida, "Bicho de pueblo");
-    }
-
     public void agregarEspecie(Especie especie, Integer probabilidadDeAparecer) {
         chequearProbabilidadesTotales(probabilidadDeAparecer);
         especiesHabitantes.put(especie, probabilidadDeAparecer);
+    }
+
+    @Override
+    public Entrenador getEntrenadorCampeon() {
+        throw new UbicacionIncorrectaException();
     }
 
     private void chequearProbabilidadesTotales(Integer probabilidadDeAparecer) {

@@ -2,13 +2,16 @@ package ar.edu.unq.epers.bichomon.backend.model.condicion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAmount;
 
 @Entity
 public class CondicionBasadaEnEdad extends Condicion {
+    @Column
     private final LocalDate fechaActual;
+    @Column
     private final TemporalAmount tiempo;
 
     public CondicionBasadaEnEdad(TemporalAmount temporalAmount, LocalDate date) {
