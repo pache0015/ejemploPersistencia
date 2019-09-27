@@ -16,13 +16,14 @@ public class GestorDeFichasDeCampeones {
         this.fichas = new ArrayList<FichaDeCampeon>();
     }
 
+    public List<FichaDeCampeon> getAllFichas() {return fichas;}
+
 
     public void addNuevoCampeon(Entrenador entrenador, Bicho bicho, LocalDate fechaInicio) {
         if(!contieneCampeon(entrenador, fechaInicio)){
             fichas.add(new FichaDeCampeon(entrenador, bicho, LocalDate.now()));
         }
     }
-
     private boolean contieneCampeon(Entrenador entrenadorCampeon, LocalDate fechaInicio) {
         Boolean contiene = false;
         for (FichaDeCampeon ficha: fichas){
@@ -40,4 +41,5 @@ public class GestorDeFichasDeCampeones {
             }
         }
     }
+
 }
