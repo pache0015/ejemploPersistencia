@@ -86,7 +86,7 @@ public class Bicho {
 		return energiaPorAtaque;
 	}
 
-	private Double energiaPorAtaque() {return energia * (Math.random() * 1.5) + 0.5;}
+	private Double energiaPorAtaque() {return energia * (Math.random() * 1.0) + 0.5;}
 
 	public void recibirAtaque(Double energia) {
 		this.energia -= energia;
@@ -122,5 +122,9 @@ public class Bicho {
 
     public LocalDate getFechaDeCaptura() {
         return fechaDeCaptura;
+    }
+
+    public void aumentarEnergiaDeBichoPorDuelo() {
+	    this.setEnergia((Math.random() * 5.0) + 1.0);
     }
 }

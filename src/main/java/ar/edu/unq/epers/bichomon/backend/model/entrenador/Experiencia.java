@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
 import javax.persistence.*;
 

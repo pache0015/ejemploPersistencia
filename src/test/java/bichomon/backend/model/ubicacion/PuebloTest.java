@@ -2,14 +2,12 @@ package bichomon.backend.model.ubicacion;
 
 import static org.junit.Assert.*;
 
-import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Pueblo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +28,7 @@ public class PuebloTest extends UbicacionTest {
     }
 
     @Test
-    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimitePokemon {
+    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoAAbandonar, 10);
         try {

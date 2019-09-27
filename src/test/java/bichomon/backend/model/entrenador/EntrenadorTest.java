@@ -1,10 +1,7 @@
 package bichomon.backend.model.entrenador;
 
-import ar.edu.unq.epers.bichomon.backend.model.*;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +76,7 @@ public class EntrenadorTest {
     }
 
     @Test
-    public void test004_unEntrenadorPuedeCapturarPokemonsYGanaExperienciaPorEllo() throws LimitePokemon {
+    public void test004_unEntrenadorPuedeCapturarPokemonsYGanaExperienciaPorEllo() throws LimiteBicho {
         entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
 
         Assert.assertEquals(entrenador.getBichos().size(), 1);
@@ -91,7 +88,7 @@ public class EntrenadorTest {
             entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
             entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
             entrenador.capturarBichomon(bichoTres, experienciaPorCaptura.puntosDeExperiencia());
-        }catch (LimitePokemon error){
+        }catch (LimiteBicho error){
             Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
         }
 

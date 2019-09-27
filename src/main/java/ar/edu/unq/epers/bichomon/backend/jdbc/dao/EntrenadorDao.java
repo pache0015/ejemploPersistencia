@@ -1,4 +1,4 @@
-package ar.edu.unq.epers.bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.jdbc.dao;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;

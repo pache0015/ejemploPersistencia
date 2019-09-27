@@ -1,5 +1,9 @@
-package ar.edu.unq.epers.bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.jdbc.service.entrenador;
 
+
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.ExperienciaDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateExperienciaDao;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Experiencia;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 

@@ -1,6 +1,5 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
-import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
@@ -74,12 +73,12 @@ public class Entrenador {
         this.updateNivel();
     }
 
-    public void capturarBichomon(Bicho unBichoCapturado, Integer puntosDeExperienciaGanados) throws LimitePokemon {
+    public void capturarBichomon(Bicho unBichoCapturado, Integer puntosDeExperienciaGanados) throws LimiteBicho {
         if (this.puedeAgregarBichomon()) {
             this.bichos.add(unBichoCapturado);
             this.ganarEnergia(puntosDeExperienciaGanados);
         } else {
-            throw new LimitePokemon("Tu lista esta llena, sube de nivel para caputar mas bichomons");
+            throw new LimiteBicho("Tu lista esta llena, sube de nivel para caputar mas bichomons");
         }
     }
 

@@ -2,13 +2,11 @@ package bichomon.backend.model.ubicacion;
 
 import static org.junit.Assert.*;
 
-import ar.edu.unq.epers.bichomon.backend.model.LimitePokemon;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +28,7 @@ public class DojoTest extends UbicacionTest {
     }
 
     @Test
-    public void un_dojo_con_campeon_tiene_bichos() throws LimitePokemon {
+    public void un_dojo_con_campeon_tiene_bichos() throws LimiteBicho {
         Bicho bicho = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
@@ -39,7 +37,7 @@ public class DojoTest extends UbicacionTest {
     }
 
     @Test
-    public void todos_los_bichomones_de_un_dojo_son_de_la_especie_raiz_del_bichomon_campeon() throws LimitePokemon {
+    public void todos_los_bichomones_de_un_dojo_son_de_la_especie_raiz_del_bichomon_campeon() throws LimiteBicho {
         Bicho bichoCampeon = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoCampeon, 10);
         dojo.declararCampeones(entrenador, bichoCampeon);
@@ -53,7 +51,7 @@ public class DojoTest extends UbicacionTest {
     }
 
     @Test
-    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimitePokemon {
+    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoAAbandonar, 10);
         try {

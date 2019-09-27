@@ -21,4 +21,6 @@ public abstract class Ubicacion {
     public abstract List<Bicho> bichomonesPara(Entrenador entrenador);
 
     public abstract Entrenador getEntrenadorCampeon();
+
+    public abstract void declararCampeones(Entrenador entrenador, Bicho bicho);
 }

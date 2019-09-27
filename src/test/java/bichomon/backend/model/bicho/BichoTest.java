@@ -1,4 +1,4 @@
-package bichomon.backend.model;
+package bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.*;

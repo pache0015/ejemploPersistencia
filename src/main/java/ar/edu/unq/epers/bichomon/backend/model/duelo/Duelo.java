@@ -14,16 +14,18 @@ public class Duelo {
     private List<Ataque> ataques;
     private Bicho atacante;
     private Bicho atacado;
+    private Ubicacion gym;
 
 
     public Duelo(Entrenador retador, Ubicacion gym){
         this.retador = retador;
         this.ataques = new ArrayList<Ataque>();
         this.campeonActual = gym.getEntrenadorCampeon();
+        this.gym = gym;
 
     }
     private void cargarAtaque(Bicho atacante, Bicho rival, Double energiaAtacante) {
-        this.ataques.add((new Ataque(atacante, rival, energiaAtacante)));
+        ataques.add((new Ataque(atacante, rival, energiaAtacante)));
     }
 
     public Boolean puedenSeguir(Bicho bicho1, Bicho bicho2){return bicho1.puedeSeguir() && bicho2.puedeSeguir();}
@@ -49,12 +51,20 @@ public class Duelo {
 
         while (puedenSeguir(atacante, atacado) && !hayTimeout()){
             Double energiaDeAtaque = atacante.atacar(atacado);
-            this.cargarAtaque(atacante, atacado, energiaDeAtaque);
-            this.intercambiarAtacanteYAtacado();
+            cargarAtaque(atacante, atacado, energiaDeAtaque);
+            intercambiarAtacanteYAtacado();
         }
 
-        Entrenador ganador = this.obtenerGanador();
+        Entrenador ganador = obtenerGanador();
+
+        gym.declararCampeones(ganador, ganador.getBichoParaDuelo());
+        aumentarEnergiaDeBichosPorDuelo();
         return new ResultadoCombate(ganador, ganador.getBichoParaDuelo(), ataques);
+    }
+
+    private void aumentarEnergiaDeBichosPorDuelo() {
+        atacado.aumentarEnergiaDeBichoPorDuelo();
+        atacante.aumentarEnergiaDeBichoPorDuelo();
     }
 
     private boolean hayTimeout() {

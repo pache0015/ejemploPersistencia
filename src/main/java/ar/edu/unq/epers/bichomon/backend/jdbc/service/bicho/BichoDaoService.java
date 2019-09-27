@@ -1,12 +1,11 @@
-package ar.edu.unq.epers.bichomon.backend.model;
+package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.BichoDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.ubicaciones.UbicacionIncorrectaException;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
