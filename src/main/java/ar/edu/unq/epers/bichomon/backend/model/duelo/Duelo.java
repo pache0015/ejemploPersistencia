@@ -9,16 +9,16 @@ import java.util.List;
 
 
 public class Duelo {
-    public Entrenador retador;
-    public Entrenador campeonActual;
+    private Entrenador retador;
+    private Entrenador campeonActual;
     private List<Ataque> ataques;
-    public Bicho atacante;
-    public Bicho atacado;
+    private Bicho atacante;
+    private Bicho atacado;
     private Ubicacion gym;
 
     public Duelo(Entrenador retador, Ubicacion gym){
         this.retador = retador;
-        this.ataques = new ArrayList<Ataque>();
+        this.ataques = new ArrayList<>();
         this.campeonActual = gym.getEntrenadorCampeon();
         this.gym = gym;
 
@@ -32,13 +32,13 @@ public class Duelo {
 
     private Integer cantidadMaximaDeAtaques() {return 10;}
 
-    public Boolean puedenSeguir(Bicho bicho1, Bicho bicho2){return bicho1.puedeSeguir() && bicho2.puedeSeguir();}
+    private Boolean puedenSeguir(Bicho bicho1, Bicho bicho2) {
+        return bicho1.puedeSeguir() && bicho2.puedeSeguir();
+    }
 
     private Entrenador obtenerGanador() {
         Bicho bichoCampeon = campeonActual.getBichoParaDuelo();
-        if (bichoCampeon.puedeSeguir() || hayTimeout()) {
-            return campeonActual;
-        }
+        if (bichoCampeon.puedeSeguir() || hayTimeout()) return campeonActual;
         return retador;
     }
     private void intercambiarAtacanteYAtacado(){

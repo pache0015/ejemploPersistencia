@@ -3,9 +3,12 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
-
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
@@ -16,7 +19,7 @@ public class Guarderia extends Ubicacion {
 
     public Guarderia(String nombre) {
         super(nombre);
-        abandonos = new HashMap<Bicho, Entrenador>();
+        abandonos = new HashMap<>();
     }
 
     public Guarderia() {

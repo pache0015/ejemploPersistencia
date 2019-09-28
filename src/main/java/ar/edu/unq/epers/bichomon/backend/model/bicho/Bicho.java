@@ -9,103 +9,108 @@ import java.time.LocalDate;
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
  * y pertenece a una {@link Especie} en particular.
- * 
+ *
  * @author Charly Backend
  */
 @Entity
 public class Bicho {
 
-	@Column
-	private String nombre;
+    @Column
+    private String nombre;
 
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
-	private Especie especie;
-	@Column
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Especie especie;
+    @Column
     private Integer victorias;
-	@Column
+    @Column
     private LocalDate fechaDeCaptura;
-	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Condicion condicionDeEvolucion;
 
-	@Column
-	private Double energia;
+    @Column
+    private Double energia;
 
-	@Id
-	@Column
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public Bicho(Especie especie){
-		this.especie = especie;
-	}
-	public Bicho(Especie especie, String nombre) {
-		this.especie = especie;
-		this.nombre = nombre;
-	}
+    public Bicho(Especie especie) {
+        this.especie = especie;
+    }
 
-	public Bicho() {
-	}
+    public Bicho(Especie especie, String nombre) {
+        this.especie = especie;
+        this.nombre = nombre;
+    }
+
+    public Bicho() {
+    }
 
 
-	/**
-	 * @return el nombre de un bicho (todos los bichos tienen
-	 * nombre). Este NO es el nombre de su especie.
-	 */
-	public String getNombre() {
-		return this.nombre;
-	}
-	
-	/**
-	 * @return la especie a la que este bicho pertenece.
-	 */
-	public Especie getEspecie() {
-		return this.especie;
-	}
-	
-	/**
-	 * @return la cantidad de puntos de energia de este bicho en
-	 * particular. Dicha cantidad crecerá (o decrecerá) conforme
-	 * a este bicho participe en combates contra otros bichomones.
-	 */
-	public Double getEnergia() {
-		return this.energia;
-	}
-	public void setEnergia(Double energia) {
-		this.energia = energia;
-	}
+    /**
+     * @return el nombre de un bicho (todos los bichos tienen
+     * nombre). Este NO es el nombre de su especie.
+     */
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    /**
+     * @return la especie a la que este bicho pertenece.
+     */
+    public Especie getEspecie() {
+        return this.especie;
+    }
+
+    /**
+     * @return la cantidad de puntos de energia de este bicho en
+     * particular. Dicha cantidad crecerá (o decrecerá) conforme
+     * a este bicho participe en combates contra otros bichomones.
+     */
+    public Double getEnergia() {
+        return this.energia;
+    }
+
+    public void setEnergia(Double energia) {
+        this.energia = energia;
+    }
 
 
     public Boolean puedeSeguir() {
-		return this.getEnergia()>0;
-	}
+        return this.getEnergia() > 0;
+    }
 
-	public Double atacar(Bicho atacado){
-		Double energiaPorAtaque = this.energiaPorAtaque();
-		atacado.recibirAtaque(energiaPorAtaque);
-		return energiaPorAtaque;
-	}
+    public Double atacar(Bicho atacado) {
+        Double energiaPorAtaque = this.energiaPorAtaque();
+        atacado.recibirAtaque(energiaPorAtaque);
+        return energiaPorAtaque;
+    }
 
-	private Double energiaPorAtaque() {return energia * (Math.random() * 1.0) + 0.5;}
+    private Double energiaPorAtaque() {
+        return energia * (Math.random() * 1.0) + 0.5;
+    }
 
     private void recibirAtaque(Double energia) {
-		this.energia -= energia;
-	}
+        this.energia -= energia;
+    }
 
-	public Integer getId() {
-		return this.id;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public Especie getEspecieRaiz() {
-		return especie;
-	}
-	public void setCondicionDeEvolucion(Condicion condicion) {
-		this.condicionDeEvolucion = condicion;
-	}
+    public Especie getEspecieRaiz() {
+        return especie;
+    }
 
-	public void evolucionar() {
-        if(puedeEvolucionar())
+    public void setCondicionDeEvolucion(Condicion condicion) {
+        this.condicionDeEvolucion = condicion;
+    }
+
+    public void evolucionar() {
+        if (puedeEvolucionar())
             especie = especie.getEvolucionDeEspecie();
-	}
+    }
 
     public Integer getVictorias() {
         return victorias;
@@ -122,11 +127,12 @@ public class Bicho {
     public LocalDate getFechaDeCaptura() {
         return fechaDeCaptura;
     }
-    public Boolean puedeEvolucionar(){
-		return condicionDeEvolucion.evaluar(this);
-	}
+
+    public Boolean puedeEvolucionar() {
+        return condicionDeEvolucion.evaluar(this);
+    }
 
     public void aumentarEnergiaDeBichoPorDuelo() {
-	    this.setEnergia((Math.random() * 5.0) + 1.0);
+        this.setEnergia((Math.random() * 5.0) + 1.0);
     }
 }

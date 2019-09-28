@@ -20,7 +20,7 @@ public class GestorDeFichasDeCampeones {
     public List<FichaDeCampeon> getAllFichas() {return fichas;}
 
     public GestorDeFichasDeCampeones(){
-        this.fichas = new ArrayList<FichaDeCampeon>();
+        this.fichas = new ArrayList<>();
     }
     public void addNuevoCampeon(Entrenador entrenador, Bicho bicho, LocalDate fechaInicio) {
         if(!contieneCampeon(entrenador, fechaInicio)){
@@ -35,11 +35,10 @@ public class GestorDeFichasDeCampeones {
 
     public void finDeCampeon(Entrenador entrenadorCampeon, LocalDate fechaFin) {
         fichas.stream().filter(each -> each.getCampeon().equals(entrenadorCampeon))
-                .collect(Collectors.toList())
-                .stream().forEach(ficha -> ficha.setFechaFin(fechaFin));
+                .collect(Collectors.toList()).forEach(ficha -> ficha.setFechaFin(fechaFin));
     }
 
-    public FichaDeCampeon getFichaDeCampeon(Entrenador entrenadorCampeon) {
+    public FichaDeCampeon getFichaDeCampeon(Entrenador entrenadorCampeon) throws RuntimeException {
         return fichas.stream().filter(each -> each.getCampeon().equals(entrenadorCampeon))
                 .collect(Collectors.toList())
                 .stream().findFirst().get();
