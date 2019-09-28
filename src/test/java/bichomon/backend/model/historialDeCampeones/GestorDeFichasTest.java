@@ -61,6 +61,6 @@ public class GestorDeFichasTest {
         gestor.addNuevoCampeon(campeon, bicho, fechaInicio);
         gestor.finDeCampeon(campeon, fechaFin);
 
-        Assert.assertEquals(fechaFin, ficha.getFechaFin());
+        Assert.assertEquals(fechaFin, gestor.getFichaDeCampeon(campeon).getFechaFin());
     }
 }

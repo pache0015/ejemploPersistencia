@@ -7,6 +7,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Entity
 public class GestorDeFichasDeCampeones {
     @Id
@@ -22,25 +24,25 @@ public class GestorDeFichasDeCampeones {
     }
     public void addNuevoCampeon(Entrenador entrenador, Bicho bicho, LocalDate fechaInicio) {
         if(!contieneCampeon(entrenador, fechaInicio)){
-            fichas.add(new FichaDeCampeon(entrenador, bicho, LocalDate.now()));
+            fichas.add(new FichaDeCampeon(entrenador, bicho, fechaInicio));
         }
     }
-    private boolean contieneCampeon(Entrenador entrenadorCampeon, LocalDate fechaInicio) {
-        Boolean contiene = false;
-        for (FichaDeCampeon ficha: fichas){
-            contiene = (ficha.getCampeon().equals(entrenadorCampeon) &&
-                    ficha.getFechaInicio().equals(fechaInicio));
-        }
-        return contiene;
+
+    private Boolean contieneCampeon(Entrenador entrenadorCampeon, LocalDate fechaInicio) {
+        return fichas.stream().anyMatch(ficha -> ficha.getCampeon().equals(entrenadorCampeon) &&
+                ficha.getFechaInicio().equals(fechaInicio));
     }
 
     public void finDeCampeon(Entrenador entrenadorCampeon, LocalDate fechaFin) {
+        fichas.stream().filter(each -> each.getCampeon().equals(entrenadorCampeon))
+                .collect(Collectors.toList())
+                .stream().forEach(ficha -> ficha.setFechaFin(fechaFin));
+    }
 
-        for (FichaDeCampeon ficha: fichas){
-            if(ficha.getCampeon().equals(entrenadorCampeon)){
-                ficha.setFechaFin(fechaFin);
-            }
-        }
+    public FichaDeCampeon getFichaDeCampeon(Entrenador entrenadorCampeon) {
+        return fichas.stream().filter(each -> each.getCampeon().equals(entrenadorCampeon))
+                .collect(Collectors.toList())
+                .stream().findFirst().get();
     }
 
     public Integer getId() {

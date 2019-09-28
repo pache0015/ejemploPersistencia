@@ -5,10 +5,11 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 
-import java.time.LocalDate;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Entity
 public class Dojo extends Ubicacion {
@@ -66,10 +67,8 @@ public class Dojo extends Ubicacion {
 
 
     private void llenarDojo(Especie especie) {
-        for (int i = 0; i < 10; i++) {
-            Bicho nuevoBicho = new Bicho(especie, "Hije del campeón");
-            bichos.add(nuevoBicho);
-        }
+        IntStream.range(0, 10).mapToObj(i -> new Bicho(especie, "Hije del campeón"))
+                .forEach(nuevoBicho -> bichos.add(nuevoBicho));
     }
 
     @Transient
