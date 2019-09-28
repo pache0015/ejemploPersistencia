@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import org.hibernate.annotations.LazyCollection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ public class Entrenador {
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Bicho> bichos;
     @OneToOne
     private Bicho bichoParaDuelo;
-    @Transient
+    @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacionActual;
     @ManyToOne(cascade = CascadeType.ALL)
     private Nivel nivel;

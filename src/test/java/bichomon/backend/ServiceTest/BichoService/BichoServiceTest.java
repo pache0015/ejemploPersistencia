@@ -2,6 +2,7 @@ package bichomon.backend.ServiceTest.BichoService;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoDaoService;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.entrenador.EntrenadorDaoService;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
@@ -14,7 +15,8 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-import bichomon.backend.model.BichoService;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +32,7 @@ public class BichoServiceTest {
     Entrenador entrenador;
     Especie especie;
     Bicho bicho;
-    BichoService bService;
+    BichoServiceImp bichoService;
     BichoDaoService bichoDao;
     EntrenadorDaoService entrenadorDao;
 
@@ -45,20 +47,28 @@ public class BichoServiceTest {
         especie = new Especie("especiemon", TipoBicho.TIERRA);
         bicho = new Bicho(especie);
         entrenador = new Entrenador("ASH", null ,proveedor);
-        bService = new BichoService();
+        bichoService = new BichoServiceImp();
         bichoDao = new BichoDaoService();
         entrenadorDao = new EntrenadorDaoService();
     }
 
-    @Test
+    @Test(expected = UbicacionIncorrectaException.class)
     public void test001UnEntrenadorNoPuedeAbandonarASuBichoEnUnDojo() throws LimiteBicho {
         entrenador.setUbicacionEn(dojo);
         entrenador.capturarBichomon(bicho, 10);
+
         bichoDao.setBichoDao(new HibernateBichoDao());
         bichoDao.guardarBicho(bicho);
+
         entrenadorDao.setEntrenadorDao(new HibernateEntrenadorDao());
         entrenadorDao.guardarEntrenador(entrenador);
 
-    }
+        bichoService.setBichoDaoService(bichoDao);
+        bichoService.setEntrenadorDaoService(entrenadorDao);
 
+        bichoService.abandonar(entrenador.getNombre(), bicho.getId());
+
+    }
 }
+
+

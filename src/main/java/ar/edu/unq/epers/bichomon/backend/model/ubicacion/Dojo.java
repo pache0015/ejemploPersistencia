@@ -6,21 +6,22 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 
 import java.time.LocalDate;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Dojo extends Ubicacion {
 
-    @OneToOne
+    //@OneToOne(fetch = FetchType.EAGER)
+    @Transient
     private Entrenador entrenadorCampeon;
-    @OneToOne
+    @Transient
+    //@OneToOne
     private Bicho bichoCampeon;
     @OneToMany
     private List<Bicho> bichos;
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private GestorDeFichasDeCampeones gestor;
 
 
@@ -71,10 +72,11 @@ public class Dojo extends Ubicacion {
         }
     }
 
+    @Transient
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
     }
-
+    @Transient
     public Bicho getBichoCampeon() {
         return bichoCampeon;
     }

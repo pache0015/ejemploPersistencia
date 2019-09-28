@@ -9,8 +9,6 @@ import java.util.List;
 public abstract class Ubicacion {
     @Id
     protected String nombre;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private Entrenador entrenadorCampeon;
 
     public Ubicacion(String nombre) {
         this.nombre = nombre;
@@ -22,22 +20,12 @@ public abstract class Ubicacion {
 
     public abstract List<Bicho> bichomonesPara(Entrenador entrenador);
 
-
-    private Long id;
-
-    @Id
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
     protected Ubicacion() {
     }
     public Bicho bichomonPara(Entrenador entrenador) {
         return bichomonesPara(entrenador).get(0);
     }
+    @Transient
     public abstract Entrenador getEntrenadorCampeon();
 
     public abstract void declararCampeones(Entrenador entrenador, Bicho bicho);

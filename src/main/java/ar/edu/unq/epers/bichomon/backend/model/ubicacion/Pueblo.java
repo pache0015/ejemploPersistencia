@@ -63,6 +63,7 @@ public class Pueblo extends Ubicacion {
     }
 
     @Override
+    @Transient
     public Entrenador getEntrenadorCampeon() {
         throw new UbicacionIncorrectaException();
     }
