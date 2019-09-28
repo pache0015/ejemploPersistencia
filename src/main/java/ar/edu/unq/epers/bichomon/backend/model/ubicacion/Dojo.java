@@ -14,17 +14,14 @@ import java.util.stream.IntStream;
 @Entity
 public class Dojo extends Ubicacion {
 
-    //@OneToOne(fetch = FetchType.EAGER)
-    @Transient
+    @OneToOne
     private Entrenador entrenadorCampeon;
-    @Transient
-    //@OneToOne
+    @OneToOne
     private Bicho bichoCampeon;
     @OneToMany
     private List<Bicho> bichos;
     @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private GestorDeFichasDeCampeones gestor;
-
 
     public Dojo(String nombre) {
         super(nombre);
@@ -70,11 +67,10 @@ public class Dojo extends Ubicacion {
                 .forEach(nuevoBicho -> bichos.add(nuevoBicho));
     }
 
-    @Transient
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
     }
-    @Transient
+
     public Bicho getBichoCampeon() {
         return bichoCampeon;
     }

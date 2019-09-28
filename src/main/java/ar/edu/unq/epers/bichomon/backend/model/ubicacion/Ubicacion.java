@@ -25,7 +25,7 @@ public abstract class Ubicacion {
     public Bicho bichomonPara(Entrenador entrenador) {
         return bichomonesPara(entrenador).get(0);
     }
-    @Transient
+
     public abstract Entrenador getEntrenadorCampeon();
 
     public abstract void declararCampeones(Entrenador entrenador, Bicho bicho);

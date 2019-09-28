@@ -14,5 +14,4 @@ public class HibernateBichoDao extends HibernateDAO<Bicho> implements BichoDao {
         Session session = TransactionRunner.getCurrentSession();
         return session.get(Bicho.class, id);
     }
-
 }

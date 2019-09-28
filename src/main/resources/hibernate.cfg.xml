@@ -8,7 +8,6 @@
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/bichomonhb</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">root</property>
 
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
@@ -33,7 +32,9 @@
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Pueblo" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Abandono" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo" />
+        <mapping class="ar.edu.unq.epers.bichomon.backend.model.ubicacion.ProbabilidadEspecie" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon" />
 

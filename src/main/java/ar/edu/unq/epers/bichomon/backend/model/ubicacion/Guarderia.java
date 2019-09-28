@@ -3,23 +3,21 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Entity
 public class Guarderia extends Ubicacion {
 
-    @Transient
-    private Map<Bicho, Entrenador> abandonos;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Abandono> abandonos = new ArrayList<>();
 
     public Guarderia(String nombre) {
         super(nombre);
-        abandonos = new HashMap<>();
     }
 
     public Guarderia() {
@@ -33,7 +31,7 @@ public class Guarderia extends Ubicacion {
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
         if (puedeDejarAbandonar(entrenador)) {
-            abandonos.put(bichoAAbandonar, entrenador);
+            abandonos.add(new Abandono(bichoAAbandonar, entrenador));
         } else {
             throw new UbicacionIncorrectaException();
         }
@@ -44,21 +42,16 @@ public class Guarderia extends Ubicacion {
     }
 
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return bichomones().stream().filter((bicho -> !abandonos.get(bicho).getNombre().equals(entrenador.getNombre()))).collect(Collectors.toList());
+        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).collect(Collectors.toList());
     }
 
 
     @Override
-    @Transient
     public Entrenador getEntrenadorCampeon() {
         throw new UbicacionIncorrectaException();
     }
     @Override
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
         throw new UbicacionIncorrectaException();
-    }
-
-    private List<Bicho> bichomones() {
-        return new ArrayList<>(abandonos.keySet());
     }
 }

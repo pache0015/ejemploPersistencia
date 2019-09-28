@@ -4,21 +4,18 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Pueblo extends Ubicacion {
-    @Transient
-    private Map<Especie, Integer> especiesHabitantes;
-    @Column
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<ProbabilidadEspecie> especiesYProbabilidades = new ArrayList<>();
     public static String ERROR_EXCESO_ESPECIES = "No se puede agregar esa especie al pueblo";
 
     public Pueblo(String nombre) {
         super(nombre);
-        especiesHabitantes = new HashMap<>();
     }
 
     public Pueblo() {
@@ -36,14 +33,13 @@ public class Pueblo extends Ubicacion {
 
     @Override
     public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        List<Especie> especiesPosibles = especiesPosibles();
 
         Random randomGenerator = new Random();
-        Especie especieElegida = especiesPosibles.stream()
-                .filter((Especie especiePosible) -> especiesHabitantes.get(especiePosible) > randomGenerator.nextInt(101))
+        ProbabilidadEspecie probabilidadEspecieEncontrada = especiesYProbabilidades.stream()
+                .filter(probabilidadEspecie -> probabilidadEspecie.probabilidad > randomGenerator.nextInt(101))
                 .findFirst().get();
 
-        Bicho bichoElegido = new Bicho(especieElegida, "Bicho de pueblo");
+        Bicho bichoElegido = new Bicho(probabilidadEspecieEncontrada.especie);
         List<Bicho> bichosParaEntrenador = new ArrayList<>();
         bichosParaEntrenador.add(bichoElegido);
         return bichosParaEntrenador;
@@ -54,16 +50,15 @@ public class Pueblo extends Ubicacion {
     }
 
     public List<Especie> especiesPosibles() {
-        return new ArrayList<>(especiesHabitantes.keySet());
+        return new ArrayList<>(especiesYProbabilidades.stream().map(probabilidadEspecie -> probabilidadEspecie.especie).collect(Collectors.toList()));
     }
 
     public void agregarEspecie(Especie especie, Integer probabilidadDeAparecer) {
         chequearProbabilidadesTotales(probabilidadDeAparecer);
-        especiesHabitantes.put(especie, probabilidadDeAparecer);
+        especiesYProbabilidades.add(new ProbabilidadEspecie(especie, probabilidadDeAparecer));
     }
 
     @Override
-    @Transient
     public Entrenador getEntrenadorCampeon() {
         throw new UbicacionIncorrectaException();
     }
@@ -75,6 +70,6 @@ public class Pueblo extends Ubicacion {
     }
 
     private Integer probabilidadTotalesDeAparicion() {
-        return especiesHabitantes.values().stream().mapToInt(Integer::intValue).sum();
+        return especiesYProbabilidades.stream().mapToInt(probabilidadEspecie -> probabilidadEspecie.probabilidad).sum();
     }
 }
