@@ -51,7 +51,7 @@ public class Dojo extends Ubicacion {
         return bichos;
     }
 
-    public boolean tieneCampeon() {
+    public Boolean tieneCampeon() {
         return false;
     }
 
@@ -62,7 +62,6 @@ public class Dojo extends Ubicacion {
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
         llenarDojo(bicho.getEspecieRaiz());
-
     }
 
 

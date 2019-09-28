@@ -4,7 +4,6 @@ import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 import javax.persistence.*;
-
 import java.time.LocalDate;
 
 /**
@@ -76,7 +75,7 @@ public class Bicho {
 	}
 
 
-	public boolean puedeSeguir() {
+    public Boolean puedeSeguir() {
 		return this.getEnergia()>0;
 	}
 
@@ -88,7 +87,7 @@ public class Bicho {
 
 	private Double energiaPorAtaque() {return energia * (Math.random() * 1.0) + 0.5;}
 
-	public void recibirAtaque(Double energia) {
+    private void recibirAtaque(Double energia) {
 		this.energia -= energia;
 	}
 
