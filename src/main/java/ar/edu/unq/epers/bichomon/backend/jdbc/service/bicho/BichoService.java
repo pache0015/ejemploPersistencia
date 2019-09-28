@@ -6,12 +6,18 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 public interface BichoService {
 
-    public void guardarEntrenador(Entrenador entrenador);
-    public void guardarBicho(Bicho bicho);
-    public Bicho buscar(String nombreEntrenador);
-    public void abandonar(String nombreEntrenador, Integer idBicho);
-    public ResultadoCombate duelo(String entrenador, Integer idBicho);
-    public Boolean puedeEvolucionar(String nombreEntrenador, Integer idBicho);
-    public  Bicho evolucionar(String nombreEntrenador, Integer idBicho);
+    void guardarEntrenador(Entrenador entrenador);
+
+    void guardarBicho(Bicho bicho);
+
+    Bicho buscar(String nombreEntrenador);
+
+    void abandonar(String nombreEntrenador, Integer idBicho);
+
+    ResultadoCombate duelo(String entrenador, Integer idBicho);
+
+    Boolean puedeEvolucionar(String nombreEntrenador, Integer idBicho);
+
+    Bicho evolucionar(String nombreEntrenador, Integer idBicho);
 
 }
