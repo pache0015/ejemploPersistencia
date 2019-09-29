@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 /**
  * Representa una {@link Especie} de bicho.
- *
+ * 
  * @author Charly Backend
  */
 @Entity
@@ -24,18 +24,26 @@ public class Especie {
 	@Column
 	private TipoBicho tipo;
 	@Column
-	private int energiaInicial;
+	private Integer energiaInicial;
 	@Column
 	private String urlFoto;
 	@Column
-	private int cantidadBichos;
+	private Integer cantidadBichos;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Especie evolucionDeEspecie;
 
 	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
 
-	public Especie(int id, String nombre, TipoBicho tipo) {
+	public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie) {
+		this.nombre = nombre;
+		this.tipo = tipoBicho;
+		this.evolucionDeEspecie = evolucionDeEspecie;
+	}
+
+	public Especie(Integer id, String nombre, TipoBicho tipo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
@@ -44,7 +52,7 @@ public class Especie {
 	public Especie() {
 	}
 
-	/**
+    /**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
 	 */
 	public String getNombre() {
@@ -53,7 +61,7 @@ public class Especie {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
+	
 	/**
 	 * @return la altura de todos los bichos de esta especie
 	 */
@@ -63,7 +71,7 @@ public class Especie {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
-
+	
 	/**
 	 * @return el peso de todos los bichos de esta especie
 	 */
@@ -73,7 +81,7 @@ public class Especie {
 	public void setPeso(int peso) {
 		this.peso = peso;
 	}
-
+	
 	/**
 	 * @return una url que apunta al un recurso imagen el cual será
 	 * utilizado para mostrar un thumbnail del bichomon por el frontend.
@@ -84,7 +92,7 @@ public class Especie {
 	public void setUrlFoto(String urlFoto) {
 		this.urlFoto = urlFoto;
 	}
-
+	
 	/**
 	 * @return la cantidad de energia de poder iniciales para los bichos
 	 * de esta especie.
@@ -105,7 +113,7 @@ public class Especie {
 	public void setTipo(TipoBicho tipo) {
 		this.tipo = tipo;
 	}
-
+	
 	/**
 	 * @return la cantidad de bichos que se han creado para esta
 	 * especie.
@@ -129,4 +137,8 @@ public class Especie {
 		return new Bicho(this, nombreBicho);
 	}
 
+
+    public Especie getEvolucionDeEspecie() {
+        return evolucionDeEspecie;
+    }
 }

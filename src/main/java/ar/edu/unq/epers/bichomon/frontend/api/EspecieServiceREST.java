@@ -12,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.service.ServiceFactory;
-import ar.edu.unq.epers.bichomon.backend.service.especie.EspecieService;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.ServiceFactory;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieService;
 
 /**
  * Esta implementacion decora el servicio {@link EspecieService} devuelto
