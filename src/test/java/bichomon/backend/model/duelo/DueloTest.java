@@ -2,6 +2,7 @@ package bichomon.backend.model.duelo;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
@@ -66,12 +67,34 @@ public class DueloTest {
     }
 
     @Test
-    public void seLEPideAlCampeonElBichoParaDuelo(){
+    public void seLePideAlCampeonElBichoParaDuelo(){
         Assert.assertEquals(bicho,campeon.getBichoParaDuelo());
     }
     @Test
-    public void x(){
+    public void alPelearLaListaDeAtaquesTieneAlMenosUnAtaque(){
         duelo.pelear();
         Assert.assertTrue(duelo.cantidadDeAtaques() >0);
+    }
+    @Test
+    public void luegoDeUnaPeleaUnBichoTieneMenosEnergiaQueAntes(){
+        duelo.pelear();
+        Assert.assertTrue(bicho.getEnergia() < 1000.00);
+    }
+    @Test
+    public void luegoDeUnDueloElObjetoResultadoNoTieneAtributosNulosYLaListDeAtaquesTieneElementos(){
+        ResultadoCombate resultado = duelo.pelear();
+        Assert.assertFalse(resultado.getAtaques().isEmpty());
+
+    }
+    @Test
+    public void elResultadoDeUnDueloTieneunBichoYEntrenadorCampeon(){
+        ResultadoCombate resultado = duelo.pelear();
+        Assert.assertNotNull(resultado.getBichoCampeon());
+        Assert.assertNotNull(resultado.getNombreDeEntrenadorCampeon());
+    }
+    @Test
+    public void luegoDeUnDueloElBichoCampeonAunTieneEnergia(){
+        ResultadoCombate resultado = duelo.pelear();
+        Assert.assertTrue(resultado.getBichoCampeon().puedeSeguir());
     }
 }

@@ -18,8 +18,8 @@ public class ResultadoCombate {
         this.entrenadorCampeon = entrenador;
     }
 
-    public String getBichoCampeon(){
-        return bichoCampeon.getNombre();
+    public Bicho getBichoCampeon(){
+        return bichoCampeon;
     }
     public String getNombreDeEntrenadorCampeon(){
         return entrenadorCampeon.getNombre();
