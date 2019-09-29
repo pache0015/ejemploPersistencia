@@ -42,7 +42,7 @@ public class ResultadoCombateTest {
 
     @Test
     public void unResultadoCombateRetornaElBichoCampeon(){
-        Assert.assertEquals("pepito", resultadoCombate.getBichoCampeon());
+        Assert.assertEquals("pepito", resultadoCombate.getBichoCampeon().getNombre());
     }
 
 

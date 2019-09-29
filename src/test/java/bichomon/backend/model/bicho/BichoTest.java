@@ -76,15 +76,15 @@ public class BichoTest {
         bicho.setFechaDeCaptura(LocalDate.of(2019, Month.JANUARY,1));
 
         LocalDate localDate = LocalDate.of(2019, Month.JANUARY, 2);
-        Period temporalAmount = Period.ofDays(1);
-        bicho.setCondicionDeEvolucion(condicionDeEdad(localDate, temporalAmount));
+        Long tiempoEnDias = (long)1;
+        bicho.setCondicionDeEvolucion(condicionDeEdad(localDate, tiempoEnDias));
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
 
-    private CondicionBasadaEnEdad condicionDeEdad(LocalDate localDate, Period temporalAmount) {
-        return new CondicionBasadaEnEdad(temporalAmount, localDate);
+    private CondicionBasadaEnEdad condicionDeEdad(LocalDate localDate, Long tiempoEnDias) {
+        return new CondicionBasadaEnEdad(tiempoEnDias, localDate);
     }
 
     @Test

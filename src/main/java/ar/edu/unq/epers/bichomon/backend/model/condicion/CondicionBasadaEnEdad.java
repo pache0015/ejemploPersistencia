@@ -10,18 +10,21 @@ import java.time.temporal.TemporalAmount;
 @Entity
 public class CondicionBasadaEnEdad extends Condicion {
     @Column
-    private final LocalDate fechaActual;
+    private LocalDate fechaActual;
     @Column
-    private final TemporalAmount tiempo;
+    private Long tiempoEnDias;
 
-    public CondicionBasadaEnEdad(TemporalAmount temporalAmount, LocalDate date) {
-        this.tiempo = temporalAmount;
+    public CondicionBasadaEnEdad(Long tiempoEnDias, LocalDate date) {
+        this.tiempoEnDias = tiempoEnDias;
         this.fechaActual = date;
+    }
+
+    public CondicionBasadaEnEdad() {
     }
 
     @Override
     public Boolean evaluar(Bicho bicho) {
-        return bicho.getFechaDeCaptura().plus(tiempo).isBefore(fechaActual) ||
-                bicho.getFechaDeCaptura().plus(tiempo).isEqual(fechaActual);
+        return bicho.getFechaDeCaptura().plusDays(tiempoEnDias).isBefore(fechaActual) ||
+                bicho.getFechaDeCaptura().plusDays(tiempoEnDias).isEqual(fechaActual);
     }
 }

@@ -4,15 +4,18 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class CondicionMultiple extends Condicion {
     @OneToMany
-    private ArrayList<Condicion> condiciones;
+    private List<Condicion> condiciones;
 
-    public CondicionMultiple(ArrayList<Condicion> condiciones) {
+    public CondicionMultiple(List<Condicion> condiciones) {
         this.condiciones = condiciones;
+    }
+
+    public CondicionMultiple() {
     }
 
     @Override

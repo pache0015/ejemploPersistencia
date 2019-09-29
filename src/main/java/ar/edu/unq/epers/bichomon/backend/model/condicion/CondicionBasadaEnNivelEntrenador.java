@@ -19,6 +19,9 @@ public class CondicionBasadaEnNivelEntrenador extends Condicion {
         this.nivelNecesarioDeEntrenador = nivelNcesarioParaEvolucionar;
     }
 
+    public CondicionBasadaEnNivelEntrenador() {
+    }
+
     @Override
     public Boolean evaluar(Bicho bicho) {
         return this.entrenador.tieneNivelNecesario(this.nivelNecesarioDeEntrenador);

@@ -14,6 +14,9 @@ public class CondicionBasadaEnEnergia extends Condicion {
         this.energia = cantidadDeEnergia;;
     }
 
+    public CondicionBasadaEnEnergia() {
+    }
+
     public Integer getEnergia() {
         return energia;
     }

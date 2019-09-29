@@ -29,26 +29,28 @@ public class Especie {
 	private String urlFoto;
 	@Column
 	private Integer cantidadBichos;
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Especie evolucionDeEspecie;
 
 	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
-	
+
+	public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie) {
+		this.nombre = nombre;
+		this.tipo = tipoBicho;
+		this.evolucionDeEspecie = evolucionDeEspecie;
+	}
+
 	public Especie(Integer id, String nombre, TipoBicho tipo) {
-	    this.id = id;
+		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
 
 	public Especie() {
 	}
-
-    public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie) {
-        setEvolucionDeEspecie(evolucionDeEspecie);
-    }
 
     /**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
@@ -138,9 +140,5 @@ public class Especie {
 
     public Especie getEvolucionDeEspecie() {
         return evolucionDeEspecie;
-    }
-
-    private void setEvolucionDeEspecie(Especie evolucionDeEspecie) {
-        this.evolucionDeEspecie = evolucionDeEspecie;
     }
 }

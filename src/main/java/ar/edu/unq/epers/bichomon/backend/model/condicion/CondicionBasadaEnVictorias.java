@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 @Entity
 public class CondicionBasadaEnVictorias extends Condicion {
     @Column
-    private final Integer victorias;
+    private Integer victorias;
 
     public CondicionBasadaEnVictorias(Integer victorias) {
         this.victorias = victorias;
+    }
+
+    public CondicionBasadaEnVictorias() {
     }
 
     @Override
