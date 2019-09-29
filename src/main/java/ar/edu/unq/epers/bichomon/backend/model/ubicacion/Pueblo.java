@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
@@ -60,6 +61,11 @@ public class Pueblo extends Ubicacion {
 
     @Override
     public Entrenador getEntrenadorCampeon() {
+        throw new UbicacionIncorrectaException();
+    }
+
+    @Override
+    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
         throw new UbicacionIncorrectaException();
     }
 

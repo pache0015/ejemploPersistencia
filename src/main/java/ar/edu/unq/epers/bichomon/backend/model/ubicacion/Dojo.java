@@ -1,6 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
@@ -69,6 +71,12 @@ public class Dojo extends Ubicacion {
 
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
+    }
+
+    @Override
+    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
+        Duelo duelo = new Duelo(entrenador,  this);
+        return duelo.pelear();
     }
 
     public Bicho getBichoCampeon() {

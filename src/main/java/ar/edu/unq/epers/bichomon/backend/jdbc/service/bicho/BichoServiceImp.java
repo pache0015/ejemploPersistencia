@@ -3,10 +3,10 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.BusquedaExitosa;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 import java.time.LocalTime;
 
@@ -61,15 +61,17 @@ public class BichoServiceImp implements BichoService {
     @Override
     public ResultadoCombate duelo(String entrenador, Integer idBicho) {
         return run(() -> {
+            ResultadoCombate resultadoCombate;
+
             Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
             Bicho bichoRecuperado = this.bichoDao.recuperar(idBicho);
-            entrenadorRecuperado.setBichoParaDuelo(bichoRecuperado);
 
-            Duelo duelo = new Duelo(entrenadorRecuperado, entrenadorRecuperado.getUbicacionActual());
-            if (entrenadorRecuperado.tieneBicho(idBicho)) {
-                return duelo.pelear();
+            if(entrenadorRecuperado.tieneBicho(idBicho)){
+                resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
+                return resultadoCombate;
             }
-            return null;
+
+           return   null;
         });
     }
 

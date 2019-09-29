@@ -47,15 +47,20 @@ public class Duelo {
         atacado = auxiliar;
     }
     public ResultadoCombate pelear(){
+
         atacante = retador.getBichoParaDuelo();
         atacado = campeonActual.getBichoParaDuelo();
+
         while (puedenSeguir(atacante, atacado) && !hayTimeout()){
             Double energiaDeAtaque = atacante.atacar(atacado);
             cargarAtaque(atacante, atacado, energiaDeAtaque);
             intercambiarAtacanteYAtacado();
         }
+
         Entrenador ganador = obtenerGanador();
+
         gym.declararCampeones(ganador, ganador.getBichoParaDuelo());
+
         aumentarEnergiaDeBichosPorDuelo();
         return new ResultadoCombate(ganador, ganador.getBichoParaDuelo(), ataques);
     }

@@ -1,8 +1,8 @@
 package ar.edu.unq.epers.bichomon.backend.model.entrenador;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-import org.hibernate.annotations.LazyCollection;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,33 +41,23 @@ public class Entrenador {
         this.nivel = this.proveedor.getNivelDeEntrenador(this.getPuntosDeExperiencia());
     }
 
-    public String getNombre() {
-        return this.nombre;
-    }
+    public String getNombre() {return this.nombre;}
 
-    public Integer getPuntosDeExperiencia() {
-        return this.puntosDeExperiencia;
-    }
+    public Integer getPuntosDeExperiencia() {return this.puntosDeExperiencia;}
 
-    public Nivel getNivel() {
-        return this.nivel;
-    }
+    public Nivel getNivel() {return this.nivel;}
 
-    public List<Bicho> getBichos() {
-        return this.bichos;
-    }
+    public List<Bicho> getBichos() {return this.bichos;}
+
+    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
+
+    public Bicho getBichoParaDuelo() {return bichoParaDuelo;}
 
     public Boolean tieneBicho(Integer idBicho){
         return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
     }
 
-    public void setBichoParaDuelo(Bicho bicho) {
-        this.bichoParaDuelo = bicho;
-    }
-
-    public Bicho getBichoParaDuelo() {
-        return bichoParaDuelo;
-    }
+    public void setBichoParaDuelo(Bicho bicho) {this.bichoParaDuelo = bicho;}
 
     public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada) {
         this.puntosDeExperiencia = this.puntosDeExperiencia + cantidadDePuntosDeExperienciaGanada;
@@ -83,33 +73,28 @@ public class Entrenador {
         }
     }
 
-    public void ubicarseEn(Ubicacion ubicacion) {
-        this.ubicacionActual = ubicacion;
-    }
+    public void ubicarseEn(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
 
     private Boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
 
-    public Boolean tieneMasDeUnBicho() {
-        return this.bichos.size() > 1;
-    }
+    public Boolean tieneMasDeUnBicho() {return this.bichos.size() > 1;}
 
     public void abandonar(Bicho bichoAAbandonar) {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
 
-    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
-
-    public void moverseA(Ubicacion ubicacion) {
-        this.ubicacionActual = ubicacion;
+    public ResultadoCombate duelo(Bicho bichoParaDuelo){
+        setBichoParaDuelo(bichoParaDuelo);
+        return  getUbicacionActual().comenzarDuelo(this);
     }
+
+    public void moverseA(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
 
     public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
         return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
     }
 
-    public Bicho buscar() {
-        return this.getUbicacionActual().bichomonPara(this);
-    }
+    public Bicho buscar() {return this.getUbicacionActual().bichomonPara(this);}
 }
