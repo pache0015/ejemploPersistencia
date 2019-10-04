@@ -6,12 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-abstract class JDBCDAO {
+public abstract class JDBCDAO {
 
     /**
      * Ejecuta un bloque de codigo contra una conexion.
      */
-    <T> T executeWithConnection(ConnectionBlock<T> bloque) {
+    protected <T> T executeWithConnection(ConnectionBlock<T> bloque) {
         Connection connection = this.openConnection();
         try {
             return bloque.executeWith(connection);
