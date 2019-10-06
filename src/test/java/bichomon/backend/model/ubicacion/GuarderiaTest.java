@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorAbandonoImposible;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,8 +48,8 @@ public class GuarderiaTest extends UbicacionTest {
         try {
             entrenador.abandonar(bichoAAbandonar);
             fail();
-        } catch(UbicacionIncorrectaException e) {
-            assertEquals(UbicacionIncorrectaException.MENSAJE_ERROR, e.getMessage());
+        } catch(ErrorAbandonoImposible e) {
+            assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
         }
     }
 

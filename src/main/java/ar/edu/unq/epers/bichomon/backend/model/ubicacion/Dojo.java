@@ -37,7 +37,7 @@ public class Dojo extends Ubicacion {
 
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new UbicacionIncorrectaException();
+        throw new ErrorAbandonoImposible();
     }
 
     @Override

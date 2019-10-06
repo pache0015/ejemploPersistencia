@@ -30,7 +30,7 @@ public class Guarderia extends Ubicacion {
             entrenador.soltarBicho(bichoAAbandonar);
             abandonos.add(new Abandono(bichoAAbandonar, entrenador));
         } else {
-            throw new UbicacionIncorrectaException();
+            throw new ErrorAbandonoImposible();
         }
     }
 

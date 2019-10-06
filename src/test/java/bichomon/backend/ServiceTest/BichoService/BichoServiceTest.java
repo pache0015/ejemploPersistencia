@@ -78,7 +78,7 @@ public class BichoServiceTest {
         assertEquals(bichoRecuperado.getEspecie().getNombre(), bicho.getEspecie().getNombre());
     }
 
-    @Test(expected = UbicacionIncorrectaException.class)
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnDojo() {
         Dojo dojo = new Dojo("Dojo");
         entrenador.moverseA(dojo);
@@ -90,7 +90,7 @@ public class BichoServiceTest {
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
     }
 
-    @Test(expected = UbicacionIncorrectaException.class)
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnPueblo() {
         Pueblo pueblo = new Pueblo("Pueblo");
         entrenador.moverseA(pueblo);
@@ -105,7 +105,7 @@ public class BichoServiceTest {
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
     }
 
-    @Test(expected = UbicacionIncorrectaException.class)
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnaGuarderiaSiEsElUnicoQueTiene() {
         Guarderia guaderia = new Guarderia("Guarderia");
         entrenador.moverseA(guaderia);
