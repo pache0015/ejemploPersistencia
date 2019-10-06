@@ -57,5 +57,15 @@ public class PuebloTest extends UbicacionTest {
         }
     }
 
-    //TODO: Testear bichomonPara(Entrenador entrenador)
+    @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_un_pueblo() {
+        Especie especie = nuevaEspecie("Especie");
+        pueblo.agregarEspecie(especie, 100);
+
+        entrenador.ubicarseEn(pueblo);
+
+        assertEquals(entrenador.getBichos().size(), 0);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 1);
+    }
 }

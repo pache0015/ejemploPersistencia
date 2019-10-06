@@ -14,7 +14,7 @@ public class Entrenador {
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bicho> bichos;
     @OneToOne
     private Bicho bichoParaDuelo;
@@ -41,23 +41,37 @@ public class Entrenador {
         this.nivel = this.proveedor.getNivelDeEntrenador(this.getPuntosDeExperiencia());
     }
 
-    public String getNombre() {return this.nombre;}
+    public String getNombre() {
+        return this.nombre;
+    }
 
-    public Integer getPuntosDeExperiencia() {return this.puntosDeExperiencia;}
+    public Integer getPuntosDeExperiencia() {
+        return this.puntosDeExperiencia;
+    }
 
-    public Nivel getNivel() {return this.nivel;}
+    public Nivel getNivel() {
+        return this.nivel;
+    }
 
-    public List<Bicho> getBichos() {return this.bichos;}
+    public List<Bicho> getBichos() {
+        return this.bichos;
+    }
 
-    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
+    public Ubicacion getUbicacionActual() {
+        return this.ubicacionActual;
+    }
 
-    public Bicho getBichoParaDuelo() {return bichoParaDuelo;}
+    public Bicho getBichoParaDuelo() {
+        return bichoParaDuelo;
+    }
 
-    public Boolean tieneBicho(Integer idBicho){
+    public Boolean tieneBicho(Integer idBicho) {
         return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
     }
 
-    public void setBichoParaDuelo(Bicho bicho) {this.bichoParaDuelo = bicho;}
+    public void setBichoParaDuelo(Bicho bicho) {
+        this.bichoParaDuelo = bicho;
+    }
 
     public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada) {
         this.puntosDeExperiencia = this.puntosDeExperiencia + cantidadDePuntosDeExperienciaGanada;
@@ -74,13 +88,17 @@ public class Entrenador {
         }
     }
 
-    public void ubicarseEn(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
+    public void ubicarseEn(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
 
     private Boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
 
-    public Boolean tieneMasDeUnBicho() {return this.bichos.size() > 1;}
+    public Boolean tieneMasDeUnBicho() {
+        return this.bichos.size() > 1;
+    }
 
     public void abandonar(Bicho bichoAAbandonar) {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
@@ -90,18 +108,24 @@ public class Entrenador {
         bichos.remove(bichoASoltar);
     }
 
-    public ResultadoCombate duelo(Bicho bichoParaDuelo){
+    public ResultadoCombate duelo(Bicho bichoParaDuelo) {
         setBichoParaDuelo(bichoParaDuelo);
-        return  getUbicacionActual().comenzarDuelo(this);
+        return getUbicacionActual().comenzarDuelo(this);
     }
 
-    public void moverseA(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
+    public void moverseA(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
 
     public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
         return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
     }
 
-    public Bicho buscar() {return this.getUbicacionActual().bichomonPara(this);}
+    public Bicho buscar() {
+        Bicho bichoEncontrado = this.getUbicacionActual().bichomonPara(this);
+        bichos.add(bichoEncontrado);
+        return bichoEncontrado;
+    }
 
     public Boolean puedeAbandonar() {
         return this.tieneMasDeUnBicho();

@@ -29,7 +29,8 @@ public class Bicho {
     private LocalDate fechaDeCaptura;
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Condicion condicionDeEvolucion;
-    private List<Entrenador> historialDeEntrenadores;
+    @ManyToMany
+    private List<Entrenador> historialDeEntrenadores = new ArrayList<>();
 
     @Column
     private Double energia;
@@ -41,7 +42,6 @@ public class Bicho {
 
     public Bicho(Especie especie) {
         this.especie = especie;
-        this.historialDeEntrenadores = new ArrayList<Entrenador>();
     }
 
     public Bicho(Especie especie, String nombre) {

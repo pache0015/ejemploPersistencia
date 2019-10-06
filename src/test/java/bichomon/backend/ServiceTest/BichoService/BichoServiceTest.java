@@ -84,7 +84,6 @@ public class BichoServiceTest {
         entrenador.moverseA(dojo);
         entrenador.capturarBichomon(bicho, 10);
 
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
@@ -99,7 +98,6 @@ public class BichoServiceTest {
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
 
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
@@ -114,7 +112,6 @@ public class BichoServiceTest {
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
 
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
@@ -131,7 +128,6 @@ public class BichoServiceTest {
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
 
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());

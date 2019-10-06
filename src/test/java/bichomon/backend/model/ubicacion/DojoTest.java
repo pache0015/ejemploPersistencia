@@ -62,4 +62,16 @@ public class DojoTest extends UbicacionTest {
             assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
         }
     }
+
+    @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_un_dojo() {
+        Bicho bicho = nuevoBicho("Bicho");
+        entrenador.ubicarseEn(dojo);
+        entrenador.capturarBichomon(bicho, 10);
+        dojo.declararCampeones(entrenador, bicho);
+
+        assertEquals(entrenador.getBichos().size(), 1);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 2);
+    }
 }
