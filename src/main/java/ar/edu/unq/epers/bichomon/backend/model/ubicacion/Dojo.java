@@ -5,7 +5,7 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
+import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,20 +15,22 @@ import java.util.stream.IntStream;
 
 @Entity
 public class Dojo extends Ubicacion {
-
+    //TODO: Pasar a ManyToOne
     @OneToOne
     private Entrenador entrenadorCampeon;
-    @OneToOne
+    //TODO: Pasar a ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Bicho> bichos;
-    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private GestorDeFichasDeCampeones gestor;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dojo_nombre")
+    private List<FichaDeCampeon> fichas;
 
     public Dojo(String nombre) {
         super(nombre);
         bichos = new ArrayList<>();
-        this.gestor = new GestorDeFichasDeCampeones();
+        fichas = new ArrayList<>();
 
     }
 
@@ -55,8 +57,11 @@ public class Dojo extends Ubicacion {
     }
 
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
-        gestor.finDeCampeon(entrenadorCampeon, LocalDate.now());
-        gestor.addNuevoCampeon(entrenador, bicho, LocalDate.now());
+        LocalDate fechaDeCambio = LocalDate.now();
+        if (hayFichasDeCampeones()) {
+            getUltimaFichaCampeon().setFechaFin(fechaDeCambio);
+        }
+        fichas.add(new FichaDeCampeon(entrenador, bicho, fechaDeCambio));
 
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
@@ -77,6 +82,14 @@ public class Dojo extends Ubicacion {
     public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
         Duelo duelo = new Duelo(entrenador,  this);
         return duelo.pelear();
+    }
+
+    public FichaDeCampeon getUltimaFichaCampeon() {
+        return fichas.get(fichas.size() - 1);
+    }
+
+    public Boolean hayFichasDeCampeones() {
+        return fichas.size() > 0;
     }
 
     public Bicho getBichoCampeon() {

@@ -40,7 +40,6 @@ public class BichoServiceTest {
 
     @Before
     public void setUp(){
-        SessionFactoryProvider.destroy();
         guarderia = new Guarderia("guarderia");
         nivel = new Nivel(2, 1,99);
         List niveles = new ArrayList<Nivel>();
@@ -60,6 +59,7 @@ public class BichoServiceTest {
 
     @After
     public void cleanup() {
+        SessionFactoryProvider.destroy();
     }
 
     @Test
