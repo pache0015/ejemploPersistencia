@@ -38,18 +38,16 @@ public class Dojo extends Ubicacion {
     }
 
     @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return false;
-    }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new UbicacionIncorrectaException();
+        throw new ErrorAbandonoImposible();
     }
 
     @Override
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return bichos;
+    public Bicho bichomonPara(Entrenador entrenador) {
+        if (bichoCampeon == null) {
+            throw new ErrorDeBusquedaNoExitosa();
+        }
+        return new Bicho(bichoCampeon.getEspecieRaiz(), "Hije del campeón");
     }
 
     public Boolean tieneCampeon() {
@@ -65,13 +63,6 @@ public class Dojo extends Ubicacion {
 
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
-        llenarDojo(bicho.getEspecieRaiz());
-    }
-
-
-    private void llenarDojo(Especie especie) {
-        IntStream.range(0, 10).mapToObj(i -> new Bicho(especie, "Hije del campeón"))
-                .forEach(nuevoBicho -> bichos.add(nuevoBicho));
     }
 
     public Entrenador getEntrenadorCampeon(){

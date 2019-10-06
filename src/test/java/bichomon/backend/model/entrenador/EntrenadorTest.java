@@ -2,12 +2,16 @@ package bichomon.backend.model.entrenador;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.*;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 public class EntrenadorTest {
 
@@ -91,6 +95,13 @@ public class EntrenadorTest {
         }catch (LimiteBicho error){
             Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
         }
+    }
 
+    @Test
+    public void un_entrenador_puede_abandonar_un_pokemon_en_principio_si_tiene_mas_de_uno() throws LimiteBicho {
+        Especie especie = new Especie("Especie", TipoBicho.TIERRA);
+        entrenador.capturarBichomon(new Bicho(especie), 100);
+        entrenador.capturarBichomon(new Bicho(especie), 10);
+        assertTrue(entrenador.puedeAbandonar());
     }
 }

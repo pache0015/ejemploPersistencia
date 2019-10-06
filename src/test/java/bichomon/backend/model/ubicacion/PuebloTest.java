@@ -4,8 +4,8 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorAbandonoImposible;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Pueblo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,18 +23,13 @@ public class PuebloTest extends UbicacionTest {
     }
 
     @Test
-    public void un_pueblo_no_puede_dejar_abandonar_a_un_entrenador() {
-        assertFalse(pueblo.puedeDejarAbandonar(entrenador));
-    }
-
-    @Test
     public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoAAbandonar, 10);
         try {
             pueblo.recibirAbandonado(entrenador, bichoAAbandonar);
-        } catch (UbicacionIncorrectaException e) {
-            assertEquals(UbicacionIncorrectaException.MENSAJE_ERROR, e.getMessage());
+        } catch (ErrorAbandonoImposible e) {
+            assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
         }
     }
 
@@ -62,5 +57,15 @@ public class PuebloTest extends UbicacionTest {
         }
     }
 
-    //TODO: Testear bichomonPara(Entrenador entrenador)
+    @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_un_pueblo() {
+        Especie especie = nuevaEspecie("Especie");
+        pueblo.agregarEspecie(especie, 100);
+
+        entrenador.ubicarseEn(pueblo);
+
+        assertEquals(entrenador.getBichos().size(), 0);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 1);
+    }
 }
