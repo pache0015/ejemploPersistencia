@@ -23,12 +23,6 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
     @Override
     public List<Entrenador> recuperarCampeones() {
         Session session = TransactionRunner.getCurrentSession();
-/*
-        String hql = "select e from Entrenador e "
-                + "inner join Dojo d "
-                + "inner join FichaDeCampeon f "
-                + "order by f.fechaInicio asc";
-*/
 
         String hql = "select f.campeon from FichaDeCampeon f "
                 + "where f.fechaFin is null "

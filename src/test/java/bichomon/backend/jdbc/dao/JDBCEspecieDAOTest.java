@@ -1,5 +1,5 @@
 package bichomon.backend.jdbc.dao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class JDBCEspecieDAOTest {
-    private EspecieDAO dao = new JDBCEspecieDAO();
+    private EspecieDao dao = new JDBCEspecieDAO();
     private DataServiceImp dataService = new DataServiceImp();
     private Especie especie;
     private String nombreBichomon = "Pikachu";

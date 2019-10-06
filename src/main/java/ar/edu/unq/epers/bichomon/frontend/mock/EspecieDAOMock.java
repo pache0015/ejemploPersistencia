@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 
 /**
- * Esta es una implementacion mock de {@link EspecieDAO}
+ * Esta es una implementacion mock de {@link EspecieDao}
  * 
  */
-public class EspecieDAOMock implements EspecieDAO {
+public class EspecieDAOMock implements EspecieDao {
 
 	private static Map<String, Especie> DATA = new HashMap<>();
 	
@@ -88,6 +88,11 @@ public class EspecieDAOMock implements EspecieDAO {
 	@Override
 	public List<Especie> recuperarTodos() {
 		return new ArrayList<>(DATA.values());
+	}
+
+	@Override
+	public Especie recuperarEspecieLider() {
+		return null;
 	}
 
 	@Override

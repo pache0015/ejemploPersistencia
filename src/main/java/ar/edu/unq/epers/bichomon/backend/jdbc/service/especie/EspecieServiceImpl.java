@@ -2,16 +2,16 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.especie;
 
 import java.util.List;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 
 public class EspecieServiceImpl implements EspecieService {
 
-	private EspecieDAO especieDAO;
+	private EspecieDao especieDAO;
 
-	public EspecieServiceImpl(EspecieDAO dao){
+	public EspecieServiceImpl(EspecieDao dao){
 		this.especieDAO = dao;
 	}
 	

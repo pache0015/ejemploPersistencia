@@ -14,7 +14,7 @@ import java.util.List;
 public class TestFactory {
 
     public static Entrenador nuevoEntrenador(String nombre, Ubicacion ubicacion) {
-        Nivel nivel = new Nivel(2, 1,99);
+        Nivel nivel = new Nivel(3, 1,99);
         List niveles = new ArrayList<Nivel>();
         niveles.add(nivel);
         ProveedorDeNiveles proveedor = new ProveedorDeNiveles(niveles);
