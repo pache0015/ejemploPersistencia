@@ -67,6 +67,7 @@ public class Entrenador {
     public void capturarBichomon(Bicho unBichoCapturado, Integer puntosDeExperienciaGanados) {
         if (this.puedeAgregarBichomon()) {
             this.bichos.add(unBichoCapturado);
+            unBichoCapturado.agregarEntrenadorAlHistorial(this);
             this.ganarEnergia(puntosDeExperienciaGanados);
         } else {
             throw new LimiteBicho("Tu lista esta llena, sube de nivel para caputar mas bichomons");
