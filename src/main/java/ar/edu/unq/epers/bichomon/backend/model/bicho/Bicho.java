@@ -1,10 +1,13 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
@@ -26,6 +29,7 @@ public class Bicho {
     private LocalDate fechaDeCaptura;
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Condicion condicionDeEvolucion;
+    private List<Entrenador> historialDeEntrenadores;
 
     @Column
     private Double energia;
@@ -37,6 +41,7 @@ public class Bicho {
 
     public Bicho(Especie especie) {
         this.especie = especie;
+        this.historialDeEntrenadores = new ArrayList<Entrenador>();
     }
 
     public Bicho(Especie especie, String nombre) {
@@ -134,5 +139,12 @@ public class Bicho {
 
     public void aumentarEnergiaDeBichoPorDuelo() {
         this.setEnergia((Math.random() * 5.0) + 1.0);
+    }
+
+    public void agregarEntrenadorAlHistorial(Entrenador entrenador){
+        this.historialDeEntrenadores.add(entrenador);
+    }
+    public boolean noTuvoEntrenador(Entrenador entrenador) {
+        return !this.historialDeEntrenadores.contains(entrenador);
     }
 }
