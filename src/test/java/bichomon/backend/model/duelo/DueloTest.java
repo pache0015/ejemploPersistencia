@@ -52,24 +52,25 @@ public class DueloTest {
         proveedor = new ProveedorDeNiveles(niveles);
 
         campeon = new Entrenador("campeon", new Dojo("Guarderia"), proveedor);
-        campeon.setBichoParaDuelo(bicho);
+        bicho.setEntrenadorDueño(campeon);
 
         retador = new Entrenador("Entrenador", new Dojo("Guarderia"), proveedor);
-        retador.setBichoParaDuelo(bicho1);
+        bicho1.setEntrenadorDueño(retador);
+
         fechaInicio = LocalDate.now();
         ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
         gestor = new GestorDeFichasDeCampeones();
 
         dojo = new Dojo("prueba");
         dojo.declararCampeones(campeon, bicho);
-        duelo = new Duelo(retador, dojo);
+        duelo = new Duelo(bicho1, dojo);
 
     }
 
-    @Test
-    public void seLePideAlCampeonElBichoParaDuelo(){
-        Assert.assertEquals(bicho,campeon.getBichoParaDuelo());
-    }
+    //@Test
+    //public void seLePideAlCampeonElBichoParaDuelo(){
+      //  Assert.assertEquals(bicho,campeon.getBichoParaDuelo());
+    //}
     @Test
     public void alPelearLaListaDeAtaquesTieneAlMenosUnAtaque(){
         duelo.pelear();

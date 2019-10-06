@@ -28,7 +28,9 @@ public abstract class Ubicacion {
     }
 
     public abstract Entrenador getEntrenadorCampeon();
-    public abstract ResultadoCombate comenzarDuelo(Entrenador entrenador);
+    public abstract Bicho getBichoCampeon();
+    public abstract ResultadoCombate comenzarDuelo(Bicho bicho);
 
     public abstract void declararCampeones(Entrenador entrenador, Bicho bicho);
+
 }

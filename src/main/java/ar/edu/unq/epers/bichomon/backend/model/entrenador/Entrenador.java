@@ -16,8 +16,6 @@ public class Entrenador {
     private Integer puntosDeExperiencia;
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bicho> bichos;
-    @OneToOne
-    private Bicho bichoParaDuelo;
     @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacionActual;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -51,13 +49,9 @@ public class Entrenador {
 
     public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
 
-    public Bicho getBichoParaDuelo() {return bichoParaDuelo;}
-
     public Boolean tieneBicho(Integer idBicho){
         return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
     }
-
-    public void setBichoParaDuelo(Bicho bicho) {this.bichoParaDuelo = bicho;}
 
     public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada) {
         this.puntosDeExperiencia = this.puntosDeExperiencia + cantidadDePuntosDeExperienciaGanada;
@@ -68,6 +62,7 @@ public class Entrenador {
         if (this.puedeAgregarBichomon()) {
             this.bichos.add(unBichoCapturado);
             this.ganarEnergia(puntosDeExperienciaGanados);
+            unBichoCapturado.setEntrenadorDueño(this);
         } else {
             throw new LimiteBicho("Tu lista esta llena, sube de nivel para caputar mas bichomons");
         }
@@ -86,8 +81,7 @@ public class Entrenador {
     }
 
     public ResultadoCombate duelo(Bicho bichoParaDuelo){
-        setBichoParaDuelo(bichoParaDuelo);
-        return  getUbicacionActual().comenzarDuelo(this);
+        return  getUbicacionActual().comenzarDuelo(bichoParaDuelo);
     }
 
     public void moverseA(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}

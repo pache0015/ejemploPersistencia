@@ -72,10 +72,11 @@ public class Dojo extends Ubicacion {
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
     }
+    public Bicho getBichoCAmpeon(){return bichoCampeon;}
 
     @Override
-    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
-        Duelo duelo = new Duelo(entrenador,  this);
+    public ResultadoCombate comenzarDuelo(Bicho bicho) {
+        Duelo duelo = new Duelo(bicho,  this);
         return duelo.pelear();
     }
 

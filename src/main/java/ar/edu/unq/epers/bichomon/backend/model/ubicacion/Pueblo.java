@@ -65,7 +65,12 @@ public class Pueblo extends Ubicacion {
     }
 
     @Override
-    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
+    public Bicho getBichoCampeon() {
+        throw new UbicacionIncorrectaException();
+    }
+
+    @Override
+    public ResultadoCombate comenzarDuelo(Bicho bicho) {
         throw new UbicacionIncorrectaException();
     }
 

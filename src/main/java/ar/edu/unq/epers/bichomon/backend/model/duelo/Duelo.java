@@ -9,18 +9,22 @@ import java.util.List;
 
 
 public class Duelo {
-    private Entrenador retador;
-    private Entrenador campeonActual;
+    private Bicho retador;
+    private Bicho bichoCampeonActual;
+    private Entrenador entrenadorCampeonActual;
+    private Entrenador entrenadorRetador;
     private List<Ataque> ataques;
     private Bicho atacante;
     private Bicho atacado;
     private Ubicacion gym;
 
-    public Duelo(Entrenador retador, Ubicacion gym){
+    public Duelo(Bicho retador, Ubicacion gym){
         this.retador = retador;
         this.ataques = new ArrayList<>();
-        this.campeonActual = gym.getEntrenadorCampeon();
+        this.entrenadorRetador = retador.getEntrenadorDueño();
         this.gym = gym;
+        this.bichoCampeonActual = gym.getBichoCampeon();
+        this.entrenadorCampeonActual = bichoCampeonActual.getEntrenadorDueño();
 
     }
     private void cargarAtaque(Bicho atacante, Bicho rival, Double energiaAtacante) {
@@ -36,9 +40,8 @@ public class Duelo {
         return bicho1.puedeSeguir() && bicho2.puedeSeguir();
     }
 
-    private Entrenador obtenerGanador() {
-        Bicho bichoCampeon = campeonActual.getBichoParaDuelo();
-        if (bichoCampeon.puedeSeguir() || hayTimeout()) return campeonActual;
+    private Bicho obtenerGanador() {
+        if (bichoCampeonActual.puedeSeguir() || hayTimeout()) return bichoCampeonActual;
         return retador;
     }
     private void intercambiarAtacanteYAtacado(){
@@ -48,8 +51,8 @@ public class Duelo {
     }
     public ResultadoCombate pelear(){
 
-        atacante = retador.getBichoParaDuelo();
-        atacado = campeonActual.getBichoParaDuelo();
+        atacante = retador;
+        atacado = bichoCampeonActual;
 
         while (puedenSeguir(atacante, atacado) && !hayTimeout()){
             Double energiaDeAtaque = atacante.atacar(atacado);
@@ -57,12 +60,12 @@ public class Duelo {
             intercambiarAtacanteYAtacado();
         }
 
-        Entrenador ganador = obtenerGanador();
+        Bicho ganador = obtenerGanador();
 
-        gym.declararCampeones(ganador, ganador.getBichoParaDuelo());
+        gym.declararCampeones(ganador.getEntrenadorDueño(), ganador);
 
         aumentarEnergiaDeBichosPorDuelo();
-        return new ResultadoCombate(ganador, ganador.getBichoParaDuelo(), ataques);
+        return new ResultadoCombate(ganador.getEntrenadorDueño(), ganador, ataques);
     }
     private void aumentarEnergiaDeBichosPorDuelo() {
         atacado.aumentarEnergiaDeBichoPorDuelo();
