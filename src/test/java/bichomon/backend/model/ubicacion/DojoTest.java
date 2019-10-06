@@ -6,6 +6,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,12 @@ public class DojoTest extends UbicacionTest {
     @Test
     public void un_dojo_sin_campeon_no_tiene_bichos() {
         assertFalse(dojo.tieneCampeon());
-        assertTrue(dojo.bichomonesPara(entrenador).isEmpty());
+        try {
+            dojo.bichomonPara(entrenador);
+            fail();
+        } catch (ErrorDeBusquedaNoExitosa e) {
+            assertEquals(ErrorDeBusquedaNoExitosa.MENSAJE_ERROR, e.getMessage());
+        }
     }
 
     @Test
@@ -33,7 +39,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
 
-        assertFalse(dojo.bichomonesPara(entrenador).isEmpty());
+        assertNotNull(dojo.bichomonPara(entrenador));
     }
 
     @Test
@@ -42,12 +48,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bichoCampeon, 10);
         dojo.declararCampeones(entrenador, bichoCampeon);
 
-        assertTrue(dojo.bichomonesPara(entrenador).stream().allMatch(bicho -> bicho.getEspecie().equals(bichoCampeon.getEspecieRaiz())));
-    }
-
-    @Test
-    public void un_dojo_no_puede_dejar_abandonar_en_ningun_caso() {
-        assertFalse(dojo.puedeDejarAbandonar(entrenador));
+        assertEquals(dojo.bichomonPara(entrenador).getEspecie(), bichoCampeon.getEspecieRaiz());
     }
 
     @Test

@@ -15,17 +15,11 @@ public abstract class Ubicacion {
         this.nombre = nombre;
     }
 
-    public abstract Boolean puedeDejarAbandonar(Entrenador entrenador);
-
     public abstract void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar);
-
-    public abstract List<Bicho> bichomonesPara(Entrenador entrenador);
 
     protected Ubicacion() {
     }
-    public Bicho bichomonPara(Entrenador entrenador) {
-        return bichomonesPara(entrenador).get(0);
-    }
+    public abstract Bicho bichomonPara(Entrenador entrenador);
 
     public abstract Entrenador getEntrenadorCampeon();
     public abstract ResultadoCombate comenzarDuelo(Entrenador entrenador);

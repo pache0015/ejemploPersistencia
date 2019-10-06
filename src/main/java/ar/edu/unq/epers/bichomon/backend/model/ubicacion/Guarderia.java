@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Entity
 public class Guarderia extends Ubicacion {
@@ -32,10 +32,9 @@ public class Guarderia extends Ubicacion {
     private boolean nuncaFueDueñoDeBicho(Entrenador entrenador, Bicho bichoAAbandonar) {
         return bichoAAbandonar.noTuvoEntrenador(entrenador);
     }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        if (puedeDejarAbandonar(entrenador)) {
+        if (entrenador.puedeAbandonar()) {
+            entrenador.soltarBicho(bichoAAbandonar);
             abandonos.add(new Abandono(bichoAAbandonar, entrenador));
         } else {
             throw new UbicacionIncorrectaException();
@@ -46,10 +45,13 @@ public class Guarderia extends Ubicacion {
         return abandonos.size();
     }
 
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).collect(Collectors.toList());
+    public Bicho bichomonPara(Entrenador entrenador) {
+        try {
+            return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).findFirst().get();
+        } catch (NoSuchElementException e) {
+            throw new ErrorDeBusquedaNoExitosa();
+        }
     }
-
 
     @Override
     public Entrenador getEntrenadorCampeon() {

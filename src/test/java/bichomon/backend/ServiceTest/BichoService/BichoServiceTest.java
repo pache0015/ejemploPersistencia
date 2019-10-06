@@ -84,8 +84,6 @@ public class BichoServiceTest {
         entrenador.moverseA(dojo);
         entrenador.capturarBichomon(bicho, 10);
 
-
-
         bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
