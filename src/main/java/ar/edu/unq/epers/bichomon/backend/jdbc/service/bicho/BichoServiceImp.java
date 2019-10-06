@@ -70,8 +70,7 @@ public class BichoServiceImp implements BichoService {
                 resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
                 return resultadoCombate;
             }
-
-           return   null;
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
     }
 
@@ -83,7 +82,7 @@ public class BichoServiceImp implements BichoService {
             if (entrenadorRecuperado.tieneBicho(idBicho)) {
                 return bichoRecuperado.puedeEvolucionar();
             }
-            return null;
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
     }
 
@@ -96,7 +95,7 @@ public class BichoServiceImp implements BichoService {
                 bichoRecuperado.evolucionar();
                 return bichoRecuperado;
             }
-            return null;
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
     }
 
