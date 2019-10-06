@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class Guarderia extends Ubicacion {
@@ -42,10 +41,9 @@ public class Guarderia extends Ubicacion {
         return abandonos.size();
     }
 
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).collect(Collectors.toList());
+    public Bicho bichomonPara(Entrenador entrenador) {
+        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).findFirst().orElse(null);
     }
-
 
     @Override
     public Entrenador getEntrenadorCampeon() {

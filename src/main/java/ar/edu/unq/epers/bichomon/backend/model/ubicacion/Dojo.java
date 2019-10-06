@@ -46,8 +46,11 @@ public class Dojo extends Ubicacion {
     }
 
     @Override
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return bichos;
+    public Bicho bichomonPara(Entrenador entrenador) {
+        if (bichoCampeon == null) {
+            return null;
+        }
+        return new Bicho(bichoCampeon.getEspecieRaiz(), "Hije del campeón");
     }
 
     public Boolean tieneCampeon() {
@@ -60,13 +63,6 @@ public class Dojo extends Ubicacion {
 
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
-        llenarDojo(bicho.getEspecieRaiz());
-    }
-
-
-    private void llenarDojo(Especie especie) {
-        IntStream.range(0, 10).mapToObj(i -> new Bicho(especie, "Hije del campeón"))
-                .forEach(nuevoBicho -> bichos.add(nuevoBicho));
     }
 
     public Entrenador getEntrenadorCampeon(){

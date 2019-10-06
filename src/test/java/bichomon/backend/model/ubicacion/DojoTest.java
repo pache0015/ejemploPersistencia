@@ -24,7 +24,7 @@ public class DojoTest extends UbicacionTest {
     @Test
     public void un_dojo_sin_campeon_no_tiene_bichos() {
         assertFalse(dojo.tieneCampeon());
-        assertTrue(dojo.bichomonesPara(entrenador).isEmpty());
+        assertNull(dojo.bichomonPara(entrenador));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
 
-        assertFalse(dojo.bichomonesPara(entrenador).isEmpty());
+        assertNotNull(dojo.bichomonPara(entrenador));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bichoCampeon, 10);
         dojo.declararCampeones(entrenador, bichoCampeon);
 
-        assertTrue(dojo.bichomonesPara(entrenador).stream().allMatch(bicho -> bicho.getEspecie().equals(bichoCampeon.getEspecieRaiz())));
+        assertEquals(dojo.bichomonPara(entrenador).getEspecie(), bichoCampeon.getEspecieRaiz());
     }
 
     @Test

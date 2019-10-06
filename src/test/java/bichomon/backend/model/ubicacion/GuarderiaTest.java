@@ -73,7 +73,7 @@ public class GuarderiaTest extends UbicacionTest {
 
         entrenador.abandonar(bichoAAbandonar);
 
-        assertFalse(guarderia.bichomonesPara(entrenador).contains(bichoAAbandonar));
+        assertNotEquals(guarderia.bichomonPara(entrenador), bichoAAbandonar);
     }
 
     @Test
@@ -87,6 +87,6 @@ public class GuarderiaTest extends UbicacionTest {
 
         Entrenador entrenadorDos = this.nuevoEntrenador("Entrenador_Dos");
 
-        assertTrue(guarderia.bichomonesPara(entrenadorDos).contains(bichoAAbandonar));
+        assertEquals(guarderia.bichomonPara(entrenadorDos), bichoAAbandonar);
     }
 }
