@@ -23,11 +23,6 @@ public class PuebloTest extends UbicacionTest {
     }
 
     @Test
-    public void un_pueblo_no_puede_dejar_abandonar_a_un_entrenador() {
-        assertFalse(pueblo.puedeDejarAbandonar(entrenador));
-    }
-
-    @Test
     public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoAAbandonar, 10);

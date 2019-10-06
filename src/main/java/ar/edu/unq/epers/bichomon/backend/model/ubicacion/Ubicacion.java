@@ -15,8 +15,6 @@ public abstract class Ubicacion {
         this.nombre = nombre;
     }
 
-    public abstract Boolean puedeDejarAbandonar(Entrenador entrenador);
-
     public abstract void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar);
 
     protected Ubicacion() {

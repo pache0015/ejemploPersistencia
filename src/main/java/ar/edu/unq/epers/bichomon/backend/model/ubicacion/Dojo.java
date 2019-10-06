@@ -36,11 +36,6 @@ public class Dojo extends Ubicacion {
     }
 
     @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return false;
-    }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
         throw new UbicacionIncorrectaException();
     }

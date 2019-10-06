@@ -29,18 +29,6 @@ public class GuarderiaTest extends UbicacionTest {
     }
 
     @Test
-    public void un_entrenador_no_puede_abandonar_su_ultimo_pokemon_en_este_lugar() {
-        assertFalse(guarderia.puedeDejarAbandonar(entrenador));
-    }
-
-    @Test
-    public void un_entrenador_puede_abandonar_un_pokemon_en_este_lugar_si_tiene_mas_de_uno() throws LimiteBicho {
-        entrenador.capturarBichomon(nuevoBicho("Bicho Uno"), 10);
-        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
-        assertTrue(guarderia.puedeDejarAbandonar(entrenador));
-    }
-
-    @Test
     public void la_cantidad_de_bichos_en_guarderia_aumenta_cuando_un_jugador_abandona_un_pokemon() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
         entrenador.capturarBichomon(bichoAAbandonar, 10);

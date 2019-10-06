@@ -101,4 +101,8 @@ public class Entrenador {
     }
 
     public Bicho buscar() {return this.getUbicacionActual().bichomonPara(this);}
+
+    public Boolean puedeAbandonar() {
+        return this.tieneMasDeUnBicho();
+    }
 }
