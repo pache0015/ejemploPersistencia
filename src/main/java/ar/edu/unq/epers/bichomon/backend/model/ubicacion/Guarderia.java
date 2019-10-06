@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 public class Guarderia extends Ubicacion {
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Abandono> abandonos = new ArrayList<>();
+    private List<Bicho> abandonados = new ArrayList<>();
 
     public Guarderia(String nombre) {
         super(nombre);
@@ -24,30 +24,22 @@ public class Guarderia extends Ubicacion {
     public Guarderia() {
     }
 
-    @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return entrenador.tieneMasDeUnBicho();
-    }
-
-    private boolean nuncaFueDueñoDeBicho(Entrenador entrenador, Bicho bichoAAbandonar) {
-        return bichoAAbandonar.noTuvoEntrenador(entrenador);
-    }
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
         if (entrenador.puedeAbandonar()) {
             entrenador.soltarBicho(bichoAAbandonar);
-            abandonos.add(new Abandono(bichoAAbandonar, entrenador));
+            abandonados.add(bichoAAbandonar);
         } else {
             throw new ErrorAbandonoImposible();
         }
     }
 
     public Integer cantidadDeBichos() {
-        return abandonos.size();
+        return abandonados.size();
     }
 
     public Bicho bichomonPara(Entrenador entrenador) {
         try {
-            return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).findFirst().get();
+            return abandonados.stream().filter(abandonado -> abandonado.noTuvoEntrenador(entrenador)).findFirst().get();
         } catch (NoSuchElementException e) {
             throw new ErrorDeBusquedaNoExitosa();
         }
