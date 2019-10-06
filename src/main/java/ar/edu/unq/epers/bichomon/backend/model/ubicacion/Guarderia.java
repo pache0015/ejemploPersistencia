@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Entity
 public class Guarderia extends Ubicacion {
@@ -42,7 +43,11 @@ public class Guarderia extends Ubicacion {
     }
 
     public Bicho bichomonPara(Entrenador entrenador) {
-        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).findFirst().orElse(null);
+        try {
+            return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).findFirst().get();
+        } catch (NoSuchElementException e) {
+            throw new ErrorDeBusquedaNoExitosa();
+        }
     }
 
     @Override

@@ -48,7 +48,7 @@ public class Dojo extends Ubicacion {
     @Override
     public Bicho bichomonPara(Entrenador entrenador) {
         if (bichoCampeon == null) {
-            return null;
+            throw new ErrorDeBusquedaNoExitosa();
         }
         return new Bicho(bichoCampeon.getEspecieRaiz(), "Hije del campeón");
     }

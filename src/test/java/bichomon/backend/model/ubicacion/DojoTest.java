@@ -6,6 +6,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,12 @@ public class DojoTest extends UbicacionTest {
     @Test
     public void un_dojo_sin_campeon_no_tiene_bichos() {
         assertFalse(dojo.tieneCampeon());
-        assertNull(dojo.bichomonPara(entrenador));
+        try {
+            dojo.bichomonPara(entrenador);
+            fail();
+        } catch (ErrorDeBusquedaNoExitosa e) {
+            assertEquals(ErrorDeBusquedaNoExitosa.MENSAJE_ERROR, e.getMessage());
+        }
     }
 
     @Test
