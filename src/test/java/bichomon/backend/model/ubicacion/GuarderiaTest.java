@@ -94,4 +94,18 @@ public class GuarderiaTest extends UbicacionTest {
 
         assertEquals(guarderia.bichomonPara(entrenadorDos), bichoAAbandonar);
     }
+
+    @Test
+    public void un_entrenador_tiene_menos_bichomones_luego_de_abandonar_en_una_guarderia() {
+        Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
+        entrenador.capturarBichomon(bichoAAbandonar, 01);
+        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
+        entrenador.ubicarseEn(guarderia);
+
+        assertEquals(entrenador.getBichos().size(), 2);
+
+        entrenador.abandonar(bichoAAbandonar);
+
+        assertEquals(entrenador.getBichos().size(), 1);
+    }
 }

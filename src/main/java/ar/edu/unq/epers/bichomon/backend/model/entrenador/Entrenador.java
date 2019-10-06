@@ -85,6 +85,10 @@ public class Entrenador {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
 
+    public void soltarBicho(Bicho bichoASoltar) {
+        bichos.remove(bichoASoltar);
+    }
+
     public ResultadoCombate duelo(Bicho bichoParaDuelo){
         setBichoParaDuelo(bichoParaDuelo);
         return  getUbicacionActual().comenzarDuelo(this);

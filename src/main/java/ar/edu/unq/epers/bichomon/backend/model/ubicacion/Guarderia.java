@@ -32,6 +32,7 @@ public class Guarderia extends Ubicacion {
     @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
         if (puedeDejarAbandonar(entrenador)) {
+            entrenador.soltarBicho(bichoAAbandonar);
             abandonos.add(new Abandono(bichoAAbandonar, entrenador));
         } else {
             throw new UbicacionIncorrectaException();

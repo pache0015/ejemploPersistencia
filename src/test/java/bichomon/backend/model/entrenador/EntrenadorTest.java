@@ -2,6 +2,8 @@ package bichomon.backend.model.entrenador;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.*;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,6 +93,5 @@ public class EntrenadorTest {
         }catch (LimiteBicho error){
             Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
         }
-
     }
 }
