@@ -84,6 +84,25 @@ public class GuarderiaTest extends UbicacionTest {
     }
 
     @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_la_guarderia() throws LimiteBicho {
+        Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
+        entrenador.capturarBichomon(bichoAAbandonar, 01);
+        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
+        entrenador.ubicarseEn(guarderia);
+
+        entrenador.abandonar(bichoAAbandonar);
+
+        Entrenador entrenadorDos = this.nuevoEntrenador("Entrenador_Dos");
+        entrenadorDos.ubicarseEn(guarderia);
+
+        assertEquals(entrenadorDos.getBichos().size(), 0);
+
+        entrenadorDos.buscar();
+
+        assertEquals(entrenadorDos.getBichos().size(), 1);
+    }
+
+    @Test
     public void un_entrenador_tiene_menos_bichomones_luego_de_abandonar_en_una_guarderia() {
         Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
         entrenador.capturarBichomon(bichoAAbandonar, 01);

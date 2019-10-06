@@ -24,11 +24,6 @@ public class Guarderia extends Ubicacion {
     public Guarderia() {
     }
 
-    @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return entrenador.tieneMasDeUnBicho();
-    }
-
     private boolean nuncaFueDueñoDeBicho(Entrenador entrenador, Bicho bichoAAbandonar) {
         return bichoAAbandonar.noTuvoEntrenador(entrenador);
     }
