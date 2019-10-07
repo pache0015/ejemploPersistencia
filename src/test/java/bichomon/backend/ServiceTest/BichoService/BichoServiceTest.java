@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
@@ -76,6 +77,16 @@ public class BichoServiceTest {
         Bicho bichoRecuperado = bichoService.buscar(entrenador.getNombre());
 
         assertEquals(bichoRecuperado.getEspecie().getNombre(), bicho.getEspecie().getNombre());
+    }
+    @Test(expected = ErrorBichoNoPerteneceAEntrenador.class)
+    public void seLanzaUnErrorSiElBichoBuscadoNoPerteneceAlEntrenador(){
+        Dojo dojo = new Dojo("Dojo");
+        entrenador.moverseA(dojo);
+
+        bichoService.guardarEntrenador(entrenador);
+        bichoService.guardarBicho(bicho);
+
+        bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId());
     }
 
     @Test(expected = ErrorAbandonoImposible.class)

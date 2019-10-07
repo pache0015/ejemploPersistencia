@@ -6,6 +6,8 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoService;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceDaoImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -40,13 +42,16 @@ public class EspecieServiceDaoTest {
         proveedor = new ProveedorDeNiveles(niveles);
         entrenador = new Entrenador("Alberto", null, proveedor);
     }
-
+    @After
+    public void tearDown(){
+        SessionFactoryProvider.destroy();
+    }
     @Test
     public void test001(){
 
        Assert.assertEquals(0, especieServiceDao.especiesMasPopulares().size());
 
-    }
+        }
     @Test
     public void test002(){
         Especie especie_tierra = new Especie("especie", TipoBicho.TIERRA);

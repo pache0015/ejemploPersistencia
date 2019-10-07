@@ -12,5 +12,6 @@ public interface EntrenadorDao {
     Entrenador recuperar(String nombre_entrenador);
     void guardar(Entrenador entrenador);
 
-    List<Bicho> recuperarEspecie();
+    List<Bicho> recuperarEspeciesMasPopulares();
+
 }

@@ -8,6 +8,5 @@ import java.util.List;
 public interface EspecieServiceDao {
 
     List<Bicho> especiesMasPopulares();
-    List<Especie> especiesMenosPopulares();
 
 }
