@@ -30,7 +30,7 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
                 "group by b.especie order by count(b.especie.cantidadBichos) ASC";
 
         Query<Bicho> query = session.createQuery(hqlQuery);
-        query.setMaxResults(10);
+        query.setMaxResults(2);
         return query.getResultList();
     }
 
