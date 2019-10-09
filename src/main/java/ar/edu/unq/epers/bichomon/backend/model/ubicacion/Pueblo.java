@@ -63,7 +63,7 @@ public class Pueblo extends Ubicacion {
 
     private void chequearProbabilidadesTotales(Integer probabilidadDeAparecer) {
         if (probabilidadTotalesDeAparicion() + probabilidadDeAparecer > 100) {
-            throw new RuntimeException(Pueblo.ERROR_EXCESO_ESPECIES);
+            throw new ProbabilidadEnPuebloError(Pueblo.ERROR_EXCESO_ESPECIES);
         }
     }
 
