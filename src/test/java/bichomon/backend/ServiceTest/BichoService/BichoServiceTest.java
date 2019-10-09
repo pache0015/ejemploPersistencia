@@ -28,7 +28,7 @@ import java.util.List;
 
 public class BichoServiceTest {
 
-    Ubicacion guarderia;
+    Guarderia guarderia;
     Nivel nivel;
     ProveedorDeNiveles proveedor;
     Entrenador entrenador;
@@ -127,12 +127,11 @@ public class BichoServiceTest {
         Bicho otroBicho = new Bicho(especie);
         entrenador.capturarBichomon(otroBicho, 10);
 
-        bichoService.setBichoDao(bichoDao);
-        bichoService.setEntrenadorDao(entrenadorDao);
-
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
+
+        assertEquals(1, guarderia.getBichosAbandonados().size());
     }
 
     @Test

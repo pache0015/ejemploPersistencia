@@ -59,4 +59,6 @@ public class Guarderia extends Ubicacion {
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
         throw new UbicacionIncorrectaException();
     }
+
+    public List<Bicho> getBichosAbandonados() { return this.abandonados; }
 }
