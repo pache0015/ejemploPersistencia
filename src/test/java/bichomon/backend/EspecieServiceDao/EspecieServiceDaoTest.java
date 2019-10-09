@@ -125,6 +125,7 @@ public class EspecieServiceDaoTest {
         entrenadorDos.capturarBichomon(bichoUno, 1);
         entrenadorDos.capturarBichomon(bichoDos,1);
         entrenadorUno.capturarBichomon(bichoTres, 1);
+        entrenadorUno.capturarBichomon(bichoCuatro,1);
 
         bichoService.guardarEntrenador(entrenadorUno);
         bichoService.guardarEntrenador(entrenadorDos);
