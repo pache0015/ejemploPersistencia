@@ -31,6 +31,11 @@ public class FichaDeCampeon {
     public FichaDeCampeon() {
     }
 
+    public FichaDeCampeon(LocalDate fechaInicio, LocalDate fechaFin){
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+    }
+
     public Integer getId(){ return this.id; }
 
     public void setFechaFin(LocalDate fechaFin){
@@ -46,9 +51,16 @@ public class FichaDeCampeon {
     public LocalDate getFechaInicio() {return fechaInicio;}
 
     public long duracionComoCampeon(){
-        String startDate = "2016 01 02";
-        String passedDate = "2016 02 29";
 
+        if(fechaFin != null) {
+            return calcularDias(fechaInicio, fechaFin);
+
+        } else{
+            return calcularDias(fechaInicio, LocalDate.now());
+        }
+    }
+
+    private long calcularDias(LocalDate fechaInicio, LocalDate fechaFin){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
         LocalDate date1 = LocalDate.parse(fechaInicio.toString(), formatter);
         LocalDate date2 = LocalDate.parse(fechaFin.toString(), formatter);

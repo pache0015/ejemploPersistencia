@@ -11,8 +11,9 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 
 public class DueloTest {
     Entrenador retador;
@@ -66,11 +66,6 @@ public class DueloTest {
         duelo = new Duelo(bicho1, dojo);
 
     }
-
-    //@Test
-    //public void seLePideAlCampeonElBichoParaDuelo(){
-      //  Assert.assertEquals(bicho,campeon.getBichoParaDuelo());
-    //}
     @Test
     public void alPelearLaListaDeAtaquesTieneAlMenosUnAtaque(){
         duelo.pelear();
@@ -79,7 +74,7 @@ public class DueloTest {
     @Test
     public void luegoDeUnaPeleaUnBichoTieneMenosEnergiaQueAntes(){
         duelo.pelear();
-        Assert.assertTrue(bicho.getEnergia() < 1000.00);
+        Assert.assertTrue(bicho.getEnergiaPorDuelo() < 1000.00);
     }
     @Test
     public void luegoDeUnDueloElObjetoResultadoNoTieneAtributosNulosYLaListDeAtaquesTieneElementos(){
@@ -97,5 +92,11 @@ public class DueloTest {
     public void luegoDeUnDueloElBichoCampeonAunTieneEnergia(){
         ResultadoCombate resultado = duelo.pelear();
         Assert.assertTrue(resultado.getBichoCampeon().puedeSeguir());
+    }
+
+    @Test(expected = UbicacionIncorrectaException.class)
+    public void unEntrenadorEnUnaUbicacionQueNoEsDojoNoPuedeEstarEnDuelo(){
+        retador.ubicarseEn(new Guarderia("Guarderia"));
+        retador.duelo(bicho);
     }
 }

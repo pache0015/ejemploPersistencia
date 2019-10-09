@@ -27,10 +27,5 @@ public abstract class Ubicacion {
         return bichomonesPara(entrenador).get(0);
     }
 
-    public abstract Entrenador getEntrenadorCampeon();
-    public abstract Bicho getBichoCampeon();
-    public abstract ResultadoCombate comenzarDuelo(Bicho bicho);
-
-    public abstract void declararCampeones(Entrenador entrenador, Bicho bicho);
-
+    public abstract ResultadoCombate comenzarDuelo(Bicho bichoParaDuelo);
 }

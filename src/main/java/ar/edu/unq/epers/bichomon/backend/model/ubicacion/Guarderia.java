@@ -46,24 +46,9 @@ public class Guarderia extends Ubicacion {
         return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).collect(Collectors.toList());
     }
 
-
-    @Override
-    public Entrenador getEntrenadorCampeon() {
-        throw new UbicacionIncorrectaException();
-    }
-
-    @Override
-    public Bicho getBichoCampeon() {
-        throw new UbicacionIncorrectaException();
-    }
-
     @Override
     public ResultadoCombate comenzarDuelo(Bicho bicho) {
         throw new UbicacionIncorrectaException();
     }
 
-    @Override
-    public void declararCampeones(Entrenador entrenador, Bicho bicho) {
-        throw new UbicacionIncorrectaException();
-    }
 }

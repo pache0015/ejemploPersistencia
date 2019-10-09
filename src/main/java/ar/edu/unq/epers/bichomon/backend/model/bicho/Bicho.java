@@ -33,6 +33,8 @@ public class Bicho {
     @Column
     private Double energia;
 
+    private Double energiaParaDuelo;
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,19 +71,20 @@ public class Bicho {
      */
     public Double getEnergia() {return this.energia;}
 
-    public void setEnergia(Double energia) {this.energia = energia;}
+    public void setEnergia(Double energia) {
+        this.energia = energia;
+        this.energiaParaDuelo = energia;
+    }
 
     public Boolean puedeSeguir() {return this.getEnergia() > 0;}
 
-    public Double atacar(Bicho atacado) {
-        Double energiaPorAtaque = this.energiaPorAtaque();
+    public Double atacar(Bicho atacado, Double valor) {
+        Double energiaPorAtaque = energia * valor;
         atacado.recibirAtaque(energiaPorAtaque);
         return energiaPorAtaque;
     }
 
-    private Double energiaPorAtaque() {return energia * (Math.random() * 1.0) + 0.5;}
-
-    private void recibirAtaque(Double energia) {this.energia -= energia;}
+    private void recibirAtaque(Double energia) {this.energiaParaDuelo -= energia;}
 
     public Integer getId() {return this.id;}
 
@@ -108,13 +111,17 @@ public class Bicho {
 
     public LocalDate getFechaDeCaptura() {return fechaDeCaptura;}
 
-    public Boolean puedeEvolucionar() {
-        return condicionDeEvolucion.evaluar(this);
-    }
+    public Boolean puedeEvolucionar() {return condicionDeEvolucion.evaluar(this);}
     public void setEntrenadorDueño(Entrenador entrenador){this.entrenadorDueño = entrenador;}
     public Entrenador getEntrenadorDueño(){return this.entrenadorDueño;}
 
     public void aumentarEnergiaDeBichoPorDuelo() {
         this.setEnergia((Math.random() * 5.0) + 1.0);
+    }
+
+    public void restaurarEnergia(){energiaParaDuelo = energia;}
+
+    public Double getEnergiaPorDuelo() {
+        return  this.energiaParaDuelo;
     }
 }

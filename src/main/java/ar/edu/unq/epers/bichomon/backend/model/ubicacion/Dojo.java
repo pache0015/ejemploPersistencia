@@ -5,6 +5,7 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 
 import javax.persistence.*;
@@ -74,7 +75,7 @@ public class Dojo extends Ubicacion {
     }
     public Bicho getBichoCAmpeon(){return bichoCampeon;}
 
-    @Override
+
     public ResultadoCombate comenzarDuelo(Bicho bicho) {
         Duelo duelo = new Duelo(bicho,  this);
         return duelo.pelear();
@@ -86,5 +87,9 @@ public class Dojo extends Ubicacion {
 
     public void setBichoCampeon(Bicho bichoCampeon) {
         this.bichoCampeon = bichoCampeon;
+    }
+
+    public List<FichaDeCampeon> fichasDeCampeones(){
+        return gestor.getAllFichas();
     }
 }
