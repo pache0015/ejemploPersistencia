@@ -1,13 +1,10 @@
 package bichomon.backend.ServiceTest.BichoService;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
@@ -24,6 +21,9 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 
 public class BichoServiceTest {
 
@@ -69,9 +69,9 @@ public class BichoServiceTest {
         entrenador.moverseA(pueblo);
         bichoService.guardarEntrenador(entrenador);
 
-        BusquedaExitosa busquedaExitosa = Mockito.mock(BusquedaExitosa.class);
-        Mockito.when(busquedaExitosa.busquedaExitosa()).thenReturn(true);
-        doReturn(busquedaExitosa).when(bichoService).getBusqueda();
+        ResultadoDeBusqueda resultadoDeBusqueda = Mockito.mock(ResultadoDeBusqueda.class);
+        Mockito.when(resultadoDeBusqueda.busquedaExitosa()).thenReturn(true);
+        doReturn(resultadoDeBusqueda).when(bichoService).getBusqueda();
 
         Bicho bichoRecuperado = bichoService.buscar(entrenador.getNombre());
 
