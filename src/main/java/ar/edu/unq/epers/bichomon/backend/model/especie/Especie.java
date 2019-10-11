@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.model.especie;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
 
 import javax.persistence.*;
 
@@ -32,6 +33,9 @@ public class Especie {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Especie evolucionDeEspecie;
 
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Condicion condicionDeEvolucion;
+
 	public Especie(String nombre, TipoBicho tipo) {
 		this.nombre = nombre;
 		this.tipo = tipo;
@@ -51,6 +55,10 @@ public class Especie {
 
 	public Especie() {
 	}
+
+    public void setCondicionDeEvolucion(Condicion condicion) {
+        this.condicionDeEvolucion = condicion;
+    }
 
     /**
 	 * @return el nombre de la especie (por ejemplo: Perromon)
@@ -137,8 +145,11 @@ public class Especie {
 		return new Bicho(this, nombreBicho);
 	}
 
-
     public Especie getEvolucionDeEspecie() {
         return evolucionDeEspecie;
+    }
+
+    public Boolean evaluarEvolucion(Bicho bicho) {
+        return condicionDeEvolucion.evaluar(bicho);
     }
 }

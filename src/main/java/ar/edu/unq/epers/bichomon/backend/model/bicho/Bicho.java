@@ -1,6 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
-import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 import javax.persistence.*;
@@ -24,8 +24,8 @@ public class Bicho {
     private Integer victorias;
     @Column
     private LocalDate fechaDeCaptura;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private Condicion condicionDeEvolucion;
+    /*@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Condicion condicionDeEvolucion;*/
 
     @Column
     private Double energia;
@@ -34,6 +34,9 @@ public class Bicho {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @OneToOne
+    private Entrenador entrenadorDueño;
 
     public Bicho(Especie especie) {
         this.especie = especie;
@@ -103,10 +106,6 @@ public class Bicho {
         return especie;
     }
 
-    public void setCondicionDeEvolucion(Condicion condicion) {
-        this.condicionDeEvolucion = condicion;
-    }
-
     public void evolucionar() {
         if (puedeEvolucionar())
             especie = especie.getEvolucionDeEspecie();
@@ -129,10 +128,18 @@ public class Bicho {
     }
 
     public Boolean puedeEvolucionar() {
-        return condicionDeEvolucion.evaluar(this);
+        return especie.evaluarEvolucion(this);
     }
 
     public void aumentarEnergiaDeBichoPorDuelo() {
         this.setEnergia((Math.random() * 5.0) + 1.0);
+    }
+
+    public int nivelEntrenador() {
+        return entrenadorDueño.getNivel().numeroNivel;
+    }
+
+    public void setEntrenador(Entrenador entrenador) {
+        this.entrenadorDueño = entrenador;
     }
 }

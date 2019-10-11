@@ -142,16 +142,22 @@ public class BichoServiceTest {
     @Test
     public void siUnBichoNoCumpleLaCondicionDeEvolucionNoPuedeEvolucionar(){
         bicho.setEnergia(1d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        especie.setCondicionDeEvolucion(condicionBasadaEnEnergia());
         entrenador.capturarBichomon(bicho, 10);
         bichoService.guardarEntrenador(entrenador);
 
         assertFalse(bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId()));
     }
+
+    public CondicionBasadaEnEnergia condicionBasadaEnEnergia() {
+        return getCondicionBasadaEnEnergia(3);
+    }
+
     @Test
     public void unBichoSabeSiPuedeEvolucionarONo(){
         bicho.setEnergia(10d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        int cantidadDeEnergia = 3;
+        especie.setCondicionDeEvolucion(getCondicionBasadaEnEnergia(cantidadDeEnergia));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
@@ -159,10 +165,14 @@ public class BichoServiceTest {
         assertTrue(bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId()));
     }
 
+    public CondicionBasadaEnEnergia getCondicionBasadaEnEnergia(int cantidadDeEnergia) {
+        return new CondicionBasadaEnEnergia(cantidadDeEnergia);
+    }
+
     @Test
     public void unBichoSiCumpleLaCondicionDeEvolucionPuedeEvolucionar(){
         bicho.setEnergia(10d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        especie.setCondicionDeEvolucion(getCondicionBasadaEnEnergia(3));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
