@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.especie;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 
 import java.util.List;
@@ -10,26 +11,26 @@ import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionR
 
 public class EspecieServiceDaoImp implements EspecieServiceDao {
 
-    private EntrenadorDao entrenadorDao;
+    private EspecieDao especieDao;
     private GuarderiaDao guarderiaDao;
 
-    public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
-        this.entrenadorDao = entrenadorDao;
+    public void setEspecieDao(EspecieDao especieDao) {
+        this.especieDao = especieDao;
     }
     public void setGuarderiaDao(GuarderiaDao guarderiaDao){ this.guarderiaDao = guarderiaDao; }
 
     @Override
-    public List<Bicho> especiesMasPopulares() {
+    public List<Especie> especiesMasPopulares() {
         return run(()-> {
-            return this.entrenadorDao.recuperarEspeciesMasPopulares();
+            return this.especieDao.recuperarEspeciesMasPopulares();
         });
     }
 
 
     @Override
-    public List<Bicho> especiesMenosPopulares() {
+    public List<Especie> especiesMenosPopulares() {
         return run(() -> {
-            return this.guarderiaDao.recuperarEspeciesMenosPopulares();
+            return this.especieDao.recuperarEspeciesMenosPopulares();
         });
     }
     @Override

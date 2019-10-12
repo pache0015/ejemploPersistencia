@@ -23,16 +23,5 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
         return session.get(Entrenador.class, nombre_entrenador);
     }
 
-    @Override
-    public List<Bicho> recuperarEspeciesMasPopulares() {
-        Session session = TransactionRunner.getCurrentSession();
-        String hqlQuery = "select b.especie from Bicho b " +
-                "group by b.especie order by count(b.especie.cantidadBichos) ASC";
-
-        Query<Bicho> query = session.createQuery(hqlQuery);
-        query.setMaxResults(2);
-        return query.getResultList();
-    }
-
 
 }

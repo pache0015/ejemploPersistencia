@@ -20,7 +20,7 @@
         <property name="show_sql">false</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hbm2ddl.auto">update</property>
 
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho" />
         <mapping class="ar.edu.unq.epers.bichomon.backend.model.especie.Especie" />

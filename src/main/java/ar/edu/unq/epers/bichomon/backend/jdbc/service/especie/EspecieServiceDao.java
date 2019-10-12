@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface EspecieServiceDao {
 
-    List<Bicho> especiesMasPopulares();
-    List<Bicho> especiesMenosPopulares();
+    List<Especie> especiesMasPopulares();
+    List<Especie> especiesMenosPopulares();
     void guardarGuarderia(Guarderia guarderia);
 
 }
