@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,6 +30,7 @@ public class GestorDeFichasTest {
     List fichas = new ArrayList<FichaDeCampeon>();
     FichaDeCampeon ficha;
     GestorDeFichasDeCampeones gestor;
+    Dojo dojo;
 
     @Before
     public void setup(){
@@ -37,9 +39,10 @@ public class GestorDeFichasTest {
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);
-        campeon = new Entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
+        dojo = new Dojo("Guarderia");
+        campeon = new Entrenador("Entrenador", dojo, proveedor);
         fechaInicio = LocalDate.now();
-        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
+        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio, dojo);
         gestor = new GestorDeFichasDeCampeones();
     }
 

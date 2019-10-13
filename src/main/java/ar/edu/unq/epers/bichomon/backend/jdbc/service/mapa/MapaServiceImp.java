@@ -16,6 +16,8 @@ import org.hibernate.query.Query;
 
 import java.time.LocalDate;
 
+import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
+
 public class MapaServiceImp implements MapaService {
 
     private EntrenadorDao entrenadorDao;
@@ -37,39 +39,28 @@ public class MapaServiceImp implements MapaService {
 
     @Override
     public void mover(String entrenador, String ubicacion) {
+       run(() -> {
+           Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
+           Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
 
-        Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
-        Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
-        entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
-
+           entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
+       });
     }
 
     @Override
     public int cantidadDeEntrenadores(String ubicacion) {
-
-        String ubicadosEn = ubicacion;
-
-        Session session = TransactionRunner.getCurrentSession();
-        String  hql = "select nombre from Entrenador where ubicacionActual = 'ubicadosEn' ";
-        Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
-
-        return query.getResultList().size();
+        return entrenadorDao.recuperarTodosEnUbicacion(ubicacion).size();
     }
 
     @Override
     public Bicho campeon(String dojo) {
         try {
-            String dojou = dojo;
-            Session session = TransactionRunner.getCurrentSession();
-            String hql = "select nombre from Dojo where nombre = 'dojou'";
-            Query<Dojo> query = session.createQuery(hql, Dojo.class);
-
-
-            return query.getResultList().get(0).getBichoCampeon();
+            return ubicacionDao.recuperarDojo(dojo).getBichoCAmpeon();
 
         } catch (RuntimeException e){
             throw new NoHayCampeonException();
         }
+
     }
 
     @Override
@@ -79,6 +70,13 @@ public class MapaServiceImp implements MapaService {
         String dojou = dojo;
         Session session = TransactionRunner.getCurrentSession();
         String hql = "select nombre from Dojo where nombre = 'dojou'";
+
+        String hql2 = "select d from Dojo d where nombre = 'dojo'";
+
+
+
+   //   Query<Dojo> query2 = session.createNativeQuery("SELECT DATEDIFF select d.bichoCampeon from Dojo d order by max ");
+   //     Query<Dojo> query = session.createQuery(hql2, Dojo.class);
         Query<Dojo> query = session.createQuery(hql, Dojo.class);
 
         Dojo dojoRecuperado = query.getResultList().get(0);

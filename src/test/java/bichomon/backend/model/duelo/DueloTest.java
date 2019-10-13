@@ -58,7 +58,7 @@ public class DueloTest {
         bicho1.setEntrenadorDueño(retador);
 
         fechaInicio = LocalDate.now();
-        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
+        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio, dojo);
         gestor = new GestorDeFichasDeCampeones();
 
         dojo = new Dojo("prueba");

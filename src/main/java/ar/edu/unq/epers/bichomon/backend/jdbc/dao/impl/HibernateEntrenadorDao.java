@@ -5,6 +5,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateDAO;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -24,10 +25,13 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
 
     @Override
     public List<Entrenador> recuperarTodosEnUbicacion(String ubicacion) {
-        Session session = TransactionRunner.getCurrentSession();
-        session.createQuery("");
-        return null;
-// select nombre n from entrenadores where ubicacionActual.n = ubicacion
 
+        String ubicadosEn = ubicacion;
+
+        Session session = TransactionRunner.getCurrentSession();
+        String  hql = "select nombre from Entrenador where ubicacionActual = 'ubicadosEn' ";
+        Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
+
+        return query.getResultList();
     }
 }

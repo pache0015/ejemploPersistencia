@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.hibernate.Session;
 
@@ -14,5 +15,11 @@ public class HibernateUbicacionDao extends HibernateDAO<Ubicacion> implements Ub
     public Ubicacion recuperar(String nombre) {
         Session session = TransactionRunner.getCurrentSession();
         return session.get(Ubicacion.class, nombre);
+    }
+
+    @Override
+    public Dojo recuperarDojo(String dojo) {
+        Session session = TransactionRunner.getCurrentSession();
+        return session.get(Dojo.class, dojo);
     }
 }

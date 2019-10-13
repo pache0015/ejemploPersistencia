@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,15 +17,18 @@ public class GestorDeFichasDeCampeones {
     protected Integer id;
     @OneToMany(cascade=CascadeType.ALL)
     private List<FichaDeCampeon> fichas;
+    @OneToOne
+    private Dojo dojo;
 
     public List<FichaDeCampeon> getAllFichas() {return fichas;}
 
     public GestorDeFichasDeCampeones(){
         this.fichas = new ArrayList<>();
+        this.dojo = dojo;
     }
     public void addNuevoCampeon(Entrenador entrenador, Bicho bicho, LocalDate fechaInicio) {
         if(!contieneCampeon(entrenador, fechaInicio)){
-            fichas.add(new FichaDeCampeon(entrenador, bicho, fechaInicio));
+            fichas.add(new FichaDeCampeon(entrenador, bicho, fechaInicio, dojo));
         }
     }
 

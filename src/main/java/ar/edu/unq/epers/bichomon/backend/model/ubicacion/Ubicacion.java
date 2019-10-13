@@ -28,4 +28,6 @@ public abstract class Ubicacion {
     }
 
     public abstract ResultadoCombate comenzarDuelo(Bicho bichoParaDuelo);
+
+    public String getNombre(){return nombre;}
 }

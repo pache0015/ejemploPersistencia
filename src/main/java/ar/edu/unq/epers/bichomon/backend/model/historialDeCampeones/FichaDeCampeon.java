@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -21,11 +22,14 @@ public class FichaDeCampeon {
     private LocalDate fechaFin;
     @OneToOne
     private Bicho bichoCampeon;
+    @ManyToOne
+    private Dojo dojo;
 
-    public FichaDeCampeon(Entrenador campeon, Bicho bicho, LocalDate fechaInicio){
+    public FichaDeCampeon(Entrenador campeon, Bicho bicho, LocalDate fechaInicio, Dojo dojo){
         this.campeon = campeon;
         this.bichoCampeon = bicho;
         this.fechaInicio = fechaInicio;
+        this.dojo = dojo;
     }
 
     public FichaDeCampeon() {
