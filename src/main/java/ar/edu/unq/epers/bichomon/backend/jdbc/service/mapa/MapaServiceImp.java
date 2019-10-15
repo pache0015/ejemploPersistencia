@@ -39,54 +39,60 @@ public class MapaServiceImp implements MapaService {
 
     @Override
     public void mover(String entrenador, String ubicacion) {
-       run(() -> {
-           Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
-           Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
+        run(() -> {
+            Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
+            Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
 
-           entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
-       });
+            entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
+
+            entrenadorDao.actualizarUbicacion(ubicacionRecuperada);
+        });
     }
 
     @Override
     public int cantidadDeEntrenadores(String ubicacion) {
-        return entrenadorDao.recuperarTodosEnUbicacion(ubicacion).size();
+        return run(() -> {
+            return entrenadorDao.recuperarTodosEnUbicacion(ubicacion).size();
+        });
     }
 
     @Override
     public Bicho campeon(String dojo) {
-        try {
-            return ubicacionDao.recuperarDojo(dojo).getBichoCAmpeon();
+        return run(() -> {
+            try {
+                return ubicacionDao.recuperarDojo(dojo).getBichoCAmpeon();
 
-        } catch (RuntimeException e){
-            throw new NoHayCampeonException();
-        }
+            } catch (RuntimeException e) {
+                throw new NoHayCampeonException();
+            }
+        });
 
     }
 
     @Override
     public Bicho campeonHistorico(String dojo) {
-        Bicho bichoHistorico = null;
+        return run(() -> {
+            Bicho bichoHistorico = null;
 
-        String dojou = dojo;
-        Session session = TransactionRunner.getCurrentSession();
-        String hql = "select nombre from Dojo where nombre = 'dojou'";
+            String dojou = dojo;
+            Session session = TransactionRunner.getCurrentSession();
+            String hql = "select nombre from Dojo where nombre = 'dojou'";
 
-        String hql2 = "select d from Dojo d where nombre = 'dojo'";
+            String hql2 = "select d from Dojo d where nombre = 'dojo'";
 
+            //   Query<Dojo> query2 = session.createNativeQuery("SELECT DATEDIFF select d.bichoCampeon from Dojo d order by max ");
+            //     Query<Dojo> query = session.createQuery(hql2, Dojo.class);
+            Query<Dojo> query = session.createQuery(hql, Dojo.class);
 
+            Dojo dojoRecuperado = query.getResultList().get(0);
 
-   //   Query<Dojo> query2 = session.createNativeQuery("SELECT DATEDIFF select d.bichoCampeon from Dojo d order by max ");
-   //     Query<Dojo> query = session.createQuery(hql2, Dojo.class);
-        Query<Dojo> query = session.createQuery(hql, Dojo.class);
-
-        Dojo dojoRecuperado = query.getResultList().get(0);
-
-        FichaDeCampeon fichaMasDuradera = new FichaDeCampeon(LocalDate.now(), LocalDate.now() );
-        for (FichaDeCampeon ficha : dojoRecuperado.fichasDeCampeones()){
-            if (ficha.duracionComoCampeon() > fichaMasDuradera.duracionComoCampeon()){
-                fichaMasDuradera = ficha;
+            FichaDeCampeon fichaMasDuradera = new FichaDeCampeon(LocalDate.now(), LocalDate.now());
+            for (FichaDeCampeon ficha : dojoRecuperado.fichasDeCampeones()) {
+                if (ficha.duracionComoCampeon() > fichaMasDuradera.duracionComoCampeon()) {
+                    fichaMasDuradera = ficha;
+                }
             }
-        }
-        return fichaMasDuradera.getBichoCampeon();
+            return fichaMasDuradera.getBichoCampeon();
+        });
     }
 }

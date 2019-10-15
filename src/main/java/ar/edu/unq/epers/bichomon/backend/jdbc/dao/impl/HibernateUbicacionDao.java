@@ -11,6 +11,7 @@ public class HibernateUbicacionDao extends HibernateDAO<Ubicacion> implements Ub
     public HibernateUbicacionDao() {
         super(Ubicacion.class);
     }
+
     @Override
     public Ubicacion recuperar(String nombre) {
         Session session = TransactionRunner.getCurrentSession();

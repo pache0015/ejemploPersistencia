@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface EntrenadorDao {
     void guardar(Entrenador entrenador);
     List<Entrenador> recuperarTodosEnUbicacion(String ubicacion);
 
+    void actualizarUbicacion(Ubicacion ubicacionRecuperada);
 }

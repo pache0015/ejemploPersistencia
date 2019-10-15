@@ -7,7 +7,6 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa.MapaService;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa.MapaServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -19,6 +18,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -42,6 +42,7 @@ public class MapaServiceTest {
     Dojo dojo;
     MapaServiceImp mapaService;
     UbicacionDao ubicacionDao;
+    Entrenador entrenador2;
 
     @Before
     public void setUp(){
@@ -56,6 +57,7 @@ public class MapaServiceTest {
         especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon);
         bicho = new Bicho(especie);
         entrenador = new Entrenador("ASH", guarderia ,proveedor);
+        entrenador2 = new Entrenador("ASHU", guarderia ,proveedor);
         bichoService = Mockito.spy(new BichoServiceImp());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
@@ -77,9 +79,24 @@ public class MapaServiceTest {
         mapaService.setEntrenadorDao(entrenadorDao);
         mapaService.setBichoDao(bichoDao);
 
-        entrenadorDao.guardar(entrenador);
+        bichoService.guardarEntrenador(entrenador);
 
         mapaService.mover(entrenador.getNombre(), dojo.getNombre());
         Assert.assertEquals("gym", entrenador.getUbicacionActual().getNombre());
+    }
+    // Error.
+
+
+
+    @Test
+    public void dosEntrenadoresEnLaMismaUbicacionSonGuardadosyLuegoSePideLaCantidadDeEentrenadoresEnEsaUbicacion(){
+        mapaService.setUbicacionDao(ubicacionDao);
+        mapaService.setEntrenadorDao(entrenadorDao);
+        mapaService.setBichoDao(bichoDao);
+
+        bichoService.guardarEntrenador(entrenador);
+        bichoService.guardarEntrenador(entrenador2);
+
+        Assert.assertEquals(2, mapaService.cantidadDeEntrenadores(guarderia.getNombre()));
     }
 }
