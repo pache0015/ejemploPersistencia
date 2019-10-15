@@ -14,7 +14,6 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,13 @@ public class BichoTest {
     Especie reptilmon;
     Especie largartomon;
     Bicho bicho;
+
     Nivel nivel;
     ProveedorDeNiveles proveedor;
     Entrenador entrenador;
+    Nivel nivelUno = new Nivel(1, 1, 99);
+    List<Nivel> niveles = new ArrayList<>();
+
 
     @Before
     public void setUp() {
@@ -41,7 +44,7 @@ public class BichoTest {
     public void cuandoCumpleUnaCondicionBasadaEnEnergiaEvolucionaYCambiaSuEspecie(){
         bicho.setEnergia(1d);
 
-        bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
+        largartomon.setCondicionDeEvolucion(condicionDeEnergia(0));
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
@@ -51,7 +54,7 @@ public class BichoTest {
     public void cuandoNoCumpleUnaCondicionBasadaEnEnergiaNoEvoluciona(){
         bicho.setEnergia(0d);
 
-        bicho.setCondicionDeEvolucion(condicionDeEnergia(0));
+        largartomon.setCondicionDeEvolucion(condicionDeEnergia(0));
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), largartomon);
@@ -61,7 +64,7 @@ public class BichoTest {
     public void cuandoCumpleUnaCondicionBasadaEnVictoriasEvolucionaYCambiaSuEspecie(){
         bicho.setVictorias(3);
 
-        bicho.setCondicionDeEvolucion(condicionDeVictorias(2));
+        largartomon.setCondicionDeEvolucion(condicionDeVictorias(2));
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
@@ -77,7 +80,7 @@ public class BichoTest {
 
         LocalDate localDate = LocalDate.of(2019, Month.JANUARY, 2);
         Long tiempoEnDias = (long)1;
-        bicho.setCondicionDeEvolucion(condicionDeEdad(localDate, tiempoEnDias));
+        largartomon.setCondicionDeEvolucion(condicionDeEdad(localDate, tiempoEnDias));
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
@@ -94,7 +97,7 @@ public class BichoTest {
         condiciones.add(condicionDeVictorias(1));
 
         bicho.setVictorias(3);bicho.setEnergia(3d);
-        bicho.setCondicionDeEvolucion(new CondicionMultiple(condiciones));
+        largartomon.setCondicionDeEvolucion(new CondicionMultiple(condiciones));
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
@@ -105,14 +108,15 @@ public class BichoTest {
 
     @Test
     public void cuandoSuEntrenadorLLeguaAUnDeterminadoNivelEvoluciona() {
+        bicho.setEntrenador(entrenador);
         Condicion condicionDeNivel = getCondicionDeNivel(1);
-        bicho.setCondicionDeEvolucion(condicionDeNivel);
+        largartomon.setCondicionDeEvolucion(condicionDeNivel);
         Assert.assertEquals(bicho.getEspecie(), largartomon);
         bicho.evolucionar();
         Assert.assertEquals(bicho.getEspecie(), reptilmon);
     }
 
-    private CondicionBasadaEnNivelEntrenador getCondicionDeNivel(Integer nivelNcesarioParaEvolucionar) {
-        return new CondicionBasadaEnNivelEntrenador(entrenador, nivelNcesarioParaEvolucionar);
+    public CondicionBasadaEnNivelEntrenador getCondicionDeNivel(Integer nivelNcesarioParaEvolucionar) {
+        return new CondicionBasadaEnNivelEntrenador(nivelNcesarioParaEvolucionar);
     }
 }

@@ -5,8 +5,12 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Entity
@@ -63,7 +67,7 @@ public class Pueblo extends Ubicacion {
 
     private void chequearProbabilidadesTotales(Integer probabilidadDeAparecer) {
         if (probabilidadTotalesDeAparicion() + probabilidadDeAparecer > 100) {
-            throw new RuntimeException(Pueblo.ERROR_EXCESO_ESPECIES);
+            throw new ProbabilidadEnPuebloError(Pueblo.ERROR_EXCESO_ESPECIES);
         }
     }
 
