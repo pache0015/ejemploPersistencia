@@ -2,13 +2,13 @@ package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
 
 import java.time.LocalTime;
 
-public class BusquedaExitosa {
+public class ResultadoDeBusqueda {
 
     private LocalTime factorTiempo;
     private int factorNivel;
     private int factorPoblacion;
 
-    public BusquedaExitosa(LocalTime factorTiempo, int factorNivel, int factorPoblacion){
+    public ResultadoDeBusqueda(LocalTime factorTiempo, int factorNivel, int factorPoblacion) {
         this.factorTiempo = factorTiempo;
         this.factorNivel = factorNivel;
         this.factorPoblacion = factorPoblacion;

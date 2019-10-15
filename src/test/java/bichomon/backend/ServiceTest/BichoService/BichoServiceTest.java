@@ -1,13 +1,10 @@
 package bichomon.backend.ServiceTest.BichoService;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
-
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -18,13 +15,15 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 
 public class BichoServiceTest {
 
@@ -57,7 +56,7 @@ public class BichoServiceTest {
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
         pueblo = new Pueblo("Pueblo");
-        dojo= new Dojo("Dojo");
+        dojo = new Dojo("Dojo");
 
 
 
@@ -72,16 +71,17 @@ public class BichoServiceTest {
         entrenador.moverseA(pueblo);
         bichoService.guardarEntrenador(entrenador);
 
-        BusquedaExitosa busquedaExitosa = Mockito.mock(BusquedaExitosa.class);
-        Mockito.when(busquedaExitosa.busquedaExitosa()).thenReturn(true);
-        doReturn(busquedaExitosa).when(bichoService).getBusqueda();
+        ResultadoDeBusqueda resultadoDeBusqueda = Mockito.mock(ResultadoDeBusqueda.class);
+        Mockito.when(resultadoDeBusqueda.busquedaExitosa()).thenReturn(true);
+        doReturn(resultadoDeBusqueda).when(bichoService).getBusqueda();
 
         Bicho bichoRecuperado = bichoService.buscar(entrenador.getNombre());
 
         assertEquals(bichoRecuperado.getEspecie().getNombre(), bicho.getEspecie().getNombre());
     }
+
     @Test(expected = ErrorBichoNoPerteneceAEntrenador.class)
-    public void seLanzaUnErrorSiElBichoBuscadoNoPerteneceAlEntrenador(){
+    public void seLanzaUnErrorSiElBichoBuscadoNoPerteneceAlEntrenador() {
         entrenador.moverseA(dojo);
 
         bichoService.guardarEntrenador(entrenador);
@@ -137,16 +137,22 @@ public class BichoServiceTest {
     @Test
     public void siUnBichoNoCumpleLaCondicionDeEvolucionNoPuedeEvolucionar(){
         bicho.setEnergia(1d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        especie.setCondicionDeEvolucion(condicionBasadaEnEnergia());
         entrenador.capturarBichomon(bicho, 10);
         bichoService.guardarEntrenador(entrenador);
 
         assertFalse(bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId()));
     }
+
+    public CondicionBasadaEnEnergia condicionBasadaEnEnergia() {
+        return getCondicionBasadaEnEnergia(3);
+    }
+
     @Test
     public void unBichoSabeSiPuedeEvolucionarONo(){
         bicho.setEnergia(10d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        int cantidadDeEnergia = 3;
+        especie.setCondicionDeEvolucion(getCondicionBasadaEnEnergia(cantidadDeEnergia));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
@@ -154,10 +160,14 @@ public class BichoServiceTest {
         assertTrue(bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId()));
     }
 
+    public CondicionBasadaEnEnergia getCondicionBasadaEnEnergia(int cantidadDeEnergia) {
+        return new CondicionBasadaEnEnergia(cantidadDeEnergia);
+    }
+
     @Test
     public void unBichoSiCumpleLaCondicionDeEvolucionPuedeEvolucionar(){
         bicho.setEnergia(10d);
-        bicho.setCondicionDeEvolucion(new CondicionBasadaEnEnergia(3));
+        especie.setCondicionDeEvolucion(getCondicionBasadaEnEnergia(3));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);

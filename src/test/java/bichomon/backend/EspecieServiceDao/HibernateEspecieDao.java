@@ -11,7 +11,9 @@ import java.util.List;
 
 public class HibernateEspecieDao extends HibernateDAO<Especie> implements EspecieDao {
 
-    public HibernateEspecieDao() { super(Especie.class);}
+    public HibernateEspecieDao() {
+        super(Especie.class);
+    }
 
     @Override
     public Especie recuperar(String nombre_especie) {
@@ -23,8 +25,8 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
     public List<Especie> recuperarEspeciesMasPopulares() {
         Session session = TransactionRunner.getCurrentSession();
 
-        String query =  "select especie from Entrenador entrenador JOIN entrenador.bichos bicho JOIN bicho.especie especie " +
-                        "GROUP BY especie ORDER BY count(bicho) DESC";
+        String query = "select especie from Entrenador entrenador JOIN entrenador.bichos bicho JOIN bicho.especie especie " +
+                "GROUP BY especie ORDER BY count(bicho) DESC";
 
         Query<Especie> resultQuery = session.createQuery(query);
         resultQuery.setMaxResults(2);
@@ -36,8 +38,8 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
     public List<Especie> recuperarEspeciesMenosPopulares() {
         Session session = TransactionRunner.getCurrentSession();
 
-        String query =  "select especie from Guarderia guarderia JOIN guarderia.abandonados bicho JOIN bicho.especie especie " +
-                        "GROUP BY especie ORDER BY count(bicho) DESC";
+        String query = "select especie from Guarderia guarderia JOIN guarderia.abandonados bicho JOIN bicho.especie especie " +
+                "GROUP BY especie ORDER BY count(bicho) DESC";
 
 
         Query<Especie> resultQuery = session.createQuery(query);

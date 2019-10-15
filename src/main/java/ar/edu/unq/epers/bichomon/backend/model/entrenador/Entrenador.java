@@ -65,12 +65,12 @@ public class Entrenador {
         return bichoParaDuelo;
     }
 
-    public Boolean tieneBicho(Integer idBicho) {
-        return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
-    }
-
     public void setBichoParaDuelo(Bicho bicho) {
         this.bichoParaDuelo = bicho;
+    }
+
+    public Boolean tieneBicho(Integer idBicho) {
+        return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
     }
 
     public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada) {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Duelo {
     private Entrenador retador;
-    private Entrenador campeonActual;
+    private Entrenador retado;
     private List<Ataque> ataques;
     private Bicho atacante;
     private Bicho atacado;
@@ -19,7 +19,7 @@ public class Duelo {
     public Duelo(Entrenador retador, Ubicacion gym){
         this.retador = retador;
         this.ataques = new ArrayList<>();
-        this.campeonActual = gym.getEntrenadorCampeon();
+        this.retado = gym.getEntrenadorCampeon();
         this.gym = gym;
 
     }
@@ -37,8 +37,8 @@ public class Duelo {
     }
 
     private Entrenador obtenerGanador() {
-        Bicho bichoCampeon = campeonActual.getBichoParaDuelo();
-        if (bichoCampeon.puedeSeguir() || hayTimeout()) return campeonActual;
+        Bicho bichoCampeon = retado.getBichoParaDuelo();
+        if (bichoCampeon.puedeSeguir() || hayTimeout()) return retado;
         return retador;
     }
     private void intercambiarAtacanteYAtacado(){
@@ -49,7 +49,7 @@ public class Duelo {
     public ResultadoCombate pelear(){
 
         atacante = retador.getBichoParaDuelo();
-        atacado = campeonActual.getBichoParaDuelo();
+        atacado = retado.getBichoParaDuelo();
 
         while (puedenSeguir(atacante, atacado) && !hayTimeout()){
             Double energiaDeAtaque = atacante.atacar(atacado);

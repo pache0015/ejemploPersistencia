@@ -1,15 +1,15 @@
 package bichomon.backend.model.ubicacion;
 
-import static org.junit.Assert.*;
-
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorAbandonoImposible;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class DojoTest extends UbicacionTest {
 

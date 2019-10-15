@@ -13,9 +13,10 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class EspecieServiceDaoTest {
     private Especie especie_agua;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         bichoService.setEntrenadorDao(entrenadorDao);
         especieServiceDao.setEspecieDao(especieDao);
         especieServiceDao.setGuarderiaDao(guarderiaDao);
@@ -51,28 +52,32 @@ public class EspecieServiceDaoTest {
         especie_fuego = new Especie("especie_fuego", TipoBicho.FUEGO);
         especie_agua = new Especie("especie_agua", TipoBicho.AGUA);
     }
+
     @After
-    public void tearDown(){
-        TransactionRunner.run(() ->{
+    public void tearDown() {
+        TransactionRunner.run(() -> {
             especieDao.borrarTodo();
         });
     }
-    @Test
-    public void test001(){
 
-       Assert.assertEquals(0, especieServiceDao.especiesMasPopulares().size());
-
-        }
     @Test
-    public void test002(){
+    public void test001() {
+
+        Assert.assertEquals(0, especieServiceDao.especiesMasPopulares().size());
+
+    }
+
+    @Test
+    public void test002() {
         Bicho bicho = new Bicho(especie_fuego);
         entrenadorUno.capturarBichomon(bicho, 1);
         bichoService.guardarEntrenador(entrenadorUno);
 
         Assert.assertEquals(1, especieServiceDao.especiesMasPopulares().size());
     }
+
     @Test
-    public void test003(){
+    public void test003() {
         Bicho bicho = new Bicho(especie_fuego);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_tierra);
@@ -97,7 +102,7 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test004(){
+    public void test004() {
         Bicho bicho = new Bicho(especie_tierra);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_agua);
@@ -123,7 +128,7 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test005(){
+    public void test005() {
         Bicho bicho = new Bicho(especie_tierra);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_agua);
@@ -132,9 +137,9 @@ public class EspecieServiceDaoTest {
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorDos.capturarBichomon(bichoUno, 1);
-        entrenadorDos.capturarBichomon(bichoDos,1);
+        entrenadorDos.capturarBichomon(bichoDos, 1);
         entrenadorUno.capturarBichomon(bichoTres, 1);
-        entrenadorDos.capturarBichomon(bichoCuatro,1);
+        entrenadorDos.capturarBichomon(bichoCuatro, 1);
 
         entrenadorUno.abandonar(bicho);
         //entrenadorDos.abandonar(bichoCuatro);

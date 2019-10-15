@@ -60,5 +60,7 @@ public class Guarderia extends Ubicacion {
         throw new UbicacionIncorrectaException();
     }
 
-    public List<Bicho> getBichosAbandonados() { return this.abandonados; }
+    public List<Bicho> getBichosAbandonados() {
+        return this.abandonados;
+    }
 }
