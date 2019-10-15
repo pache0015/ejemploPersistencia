@@ -23,27 +23,19 @@ public class Pueblo extends Ubicacion {
     }
 
     @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return false;
-    }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new UbicacionIncorrectaException();
+        throw new ErrorAbandonoImposible();
     }
 
     @Override
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
+    public Bicho bichomonPara(Entrenador entrenador) {
 
         Random randomGenerator = new Random();
         ProbabilidadEspecie probabilidadEspecieEncontrada = especiesYProbabilidades.stream()
                 .filter(probabilidadEspecie -> probabilidadEspecie.probabilidad > randomGenerator.nextInt(101))
                 .findFirst().get();
 
-        Bicho bichoElegido = new Bicho(probabilidadEspecieEncontrada.especie);
-        List<Bicho> bichosParaEntrenador = new ArrayList<>();
-        bichosParaEntrenador.add(bichoElegido);
-        return bichosParaEntrenador;
+        return new Bicho(probabilidadEspecieEncontrada.especie);
     }
     @Override
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
@@ -71,7 +63,7 @@ public class Pueblo extends Ubicacion {
 
     private void chequearProbabilidadesTotales(Integer probabilidadDeAparecer) {
         if (probabilidadTotalesDeAparicion() + probabilidadDeAparecer > 100) {
-            throw new RuntimeException(Pueblo.ERROR_EXCESO_ESPECIES);
+            throw new ProbabilidadEnPuebloError(Pueblo.ERROR_EXCESO_ESPECIES);
         }
     }
 

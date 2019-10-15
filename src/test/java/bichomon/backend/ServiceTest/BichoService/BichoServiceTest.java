@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class BichoServiceTest {
 
-    Ubicacion guarderia;
+    Guarderia guarderia;
     Nivel nivel;
     ProveedorDeNiveles proveedor;
     Entrenador entrenador;
@@ -37,6 +38,8 @@ public class BichoServiceTest {
     BichoServiceImp bichoService;
     BichoDao bichoDao;
     EntrenadorDao entrenadorDao;
+    Pueblo pueblo;
+    Dojo dojo;
 
     @Before
     public void setUp(){
@@ -53,18 +56,18 @@ public class BichoServiceTest {
         bichoService = Mockito.spy(new BichoServiceImp());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
+        pueblo = new Pueblo("Pueblo");
+        dojo= new Dojo("Dojo");
+
+
 
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
     }
 
-    @After
-    public void cleanup() {
-    }
 
     @Test
     public void se_busca_un_bicho_por_nombre_de_entrenador() {
-        Pueblo pueblo = new Pueblo("Pueblo");
         pueblo.agregarEspecie(especie, 100);
         entrenador.moverseA(pueblo);
         bichoService.guardarEntrenador(entrenador);
@@ -77,46 +80,41 @@ public class BichoServiceTest {
 
         assertEquals(bichoRecuperado.getEspecie().getNombre(), bicho.getEspecie().getNombre());
     }
+    @Test(expected = ErrorBichoNoPerteneceAEntrenador.class)
+    public void seLanzaUnErrorSiElBichoBuscadoNoPerteneceAlEntrenador(){
+        entrenador.moverseA(dojo);
 
-    @Test(expected = UbicacionIncorrectaException.class)
+        bichoService.guardarEntrenador(entrenador);
+        bichoService.guardarBicho(bicho);
+
+        bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId());
+    }
+
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnDojo() {
-        Dojo dojo = new Dojo("Dojo");
         entrenador.moverseA(dojo);
         entrenador.capturarBichomon(bicho, 10);
 
-
-
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
     }
 
-    @Test(expected = UbicacionIncorrectaException.class)
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnPueblo() {
-        Pueblo pueblo = new Pueblo("Pueblo");
         entrenador.moverseA(pueblo);
         entrenador.capturarBichomon(bicho, 10);
 
-        bichoService.setBichoDao(bichoDao);
-        bichoService.setEntrenadorDao(entrenadorDao);
-
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
     }
 
-    @Test(expected = UbicacionIncorrectaException.class)
+    @Test(expected = ErrorAbandonoImposible.class)
     public void unEntrenadorNoPuedeAbandonarASuBichoEnUnaGuarderiaSiEsElUnicoQueTiene() {
-        Guarderia guaderia = new Guarderia("Guarderia");
-        entrenador.moverseA(guaderia);
+        entrenador.moverseA(guarderia);
         entrenador.capturarBichomon(bicho, 10);
 
-        bichoService.setBichoDao(bichoDao);
-        bichoService.setEntrenadorDao(entrenadorDao);
-
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
@@ -124,19 +122,16 @@ public class BichoServiceTest {
 
     @Test
     public void unEntrenadorPuedeAbandonarASuBichoEnUnaGuarderiaSiTieneOtro() {
-        Guarderia guaderia = new Guarderia("Guarderia");
-        entrenador.moverseA(guaderia);
+        entrenador.moverseA(guarderia);
         entrenador.capturarBichomon(bicho, 10);
         Bicho otroBicho = new Bicho(especie);
         entrenador.capturarBichomon(otroBicho, 10);
 
-        bichoService.setBichoDao(bichoDao);
-        bichoService.setEntrenadorDao(entrenadorDao);
-
-        bichoService.guardarBicho(bicho);
         bichoService.guardarEntrenador(entrenador);
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
+
+        assertEquals(1, guarderia.getBichosAbandonados().size());
     }
 
     @Test
