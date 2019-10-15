@@ -91,9 +91,8 @@ public class EspecieServiceDaoTest {
         List<Especie> especiesMasPopulares = especieServiceDao.especiesMasPopulares();
 
         Assert.assertEquals(2, especiesMasPopulares.size());
-        Assert.assertTrue(especiesMasPopulares.stream().anyMatch(obj ->
-                obj.getNombre().equals("especie_tierra") || obj.getNombre().equals("especie_fuego")
-        ));
+        Assert.assertTrue(especiesMasPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
+        Assert.assertTrue(especiesMasPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_fuego")));
 
     }
 
@@ -101,7 +100,7 @@ public class EspecieServiceDaoTest {
     public void test004(){
         Bicho bicho = new Bicho(especie_tierra);
         Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_tierra);
+        Bicho bichoDos = new Bicho(especie_agua);
         Bicho bichoTres = new Bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
@@ -111,15 +110,15 @@ public class EspecieServiceDaoTest {
 
         entrenadorUno.abandonar(bicho);
         entrenadorUno.abandonar(bichoUno);
-        entrenadorUno.abandonar(bichoDos);
+        entrenadorUno.abandonar(bichoTres);
 
         bichoService.guardarEntrenador(entrenadorUno);
-        especieServiceDao.guardarGuarderia(guarderia);
 
-        List<Especie> especiesMenosPopulares = new ArrayList<>();
-        especiesMenosPopulares.add(especie_tierra);
+        List<Especie> especiesMenosPopulares = especieServiceDao.especiesMenosPopulares();
 
-        Assert.assertEquals(especiesMenosPopulares , especieServiceDao.especiesMenosPopulares());
+        Assert.assertEquals(2, especieServiceDao.especiesMenosPopulares().size());
+        Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_fuego")));
+        Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
 
     }
 
@@ -135,16 +134,18 @@ public class EspecieServiceDaoTest {
         entrenadorDos.capturarBichomon(bichoUno, 1);
         entrenadorDos.capturarBichomon(bichoDos,1);
         entrenadorUno.capturarBichomon(bichoTres, 1);
-        entrenadorUno.capturarBichomon(bichoCuatro,1);
+        entrenadorDos.capturarBichomon(bichoCuatro,1);
+
+        entrenadorUno.abandonar(bicho);
+        //entrenadorDos.abandonar(bichoCuatro);
+        //entrenadorDos.abandonar(bichoDos);
 
         bichoService.guardarEntrenador(entrenadorUno);
         bichoService.guardarEntrenador(entrenadorDos);
 
-        List<Especie> especiesMasPopulares = new ArrayList<>();
-        especiesMasPopulares.add(especie_tierra);
-        especiesMasPopulares.add(especie_fuego);
+        List<Especie> especiesMenosPopulares = especieServiceDao.especiesMenosPopulares();
 
-        Assert.assertEquals(especiesMasPopulares , especieServiceDao.especiesMenosPopulares());
+        Assert.assertEquals(1, especiesMenosPopulares.size());
 
     }
 
