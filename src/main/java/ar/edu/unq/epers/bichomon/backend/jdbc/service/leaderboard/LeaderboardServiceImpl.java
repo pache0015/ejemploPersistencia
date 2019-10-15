@@ -37,4 +37,11 @@ public class LeaderboardServiceImpl extends Service implements LeaderboardServic
             return especieDao.recuperarEspecieLider();
         });
     }
+
+    @Override
+    public List<Entrenador> lideres() {
+        return run(() -> {
+            return entrenadorDao.recuperarLideres();
+        });
+    }
 }

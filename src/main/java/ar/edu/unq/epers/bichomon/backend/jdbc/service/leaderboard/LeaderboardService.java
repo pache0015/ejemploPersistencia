@@ -8,4 +8,5 @@ import java.util.List;
 public interface LeaderboardService {
     List<Entrenador> campeones();
     Especie especieLider();
+    List<Entrenador> lideres();
 }

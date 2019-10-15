@@ -43,6 +43,7 @@ public class LeaderboardServiceTest {
         service.setEspecieDao(especieDao);
         dojo = new Dojo("Alto dojo");
         bicho = nuevoBicho();
+        bicho.setEnergia(0.0);
         entrenador = nuevoEntrenador("Hola", dojo);
         entrenador.capturarBichomon(bicho, 30);
     }
@@ -138,5 +139,30 @@ public class LeaderboardServiceTest {
         Especie especieLider = service.especieLider();
 
         assertEquals("Otra Especie", especieLider.getNombre());
+    }
+
+    @Test
+    public void se_retornan_los_lideres() {
+        Especie especie = new Especie("Especie", TipoBicho.TIERRA);
+        Bicho primerBicho = new Bicho(especie);
+        primerBicho.setEnergia(100.0);
+        Bicho segundoBicho = new Bicho(especie);
+        segundoBicho.setEnergia(50.0);
+        Bicho tercerBicho = new Bicho(especie);
+        tercerBicho.setEnergia(30.0);
+
+        Entrenador otroEntrenador = nuevoEntrenador("Guachin", dojo);
+
+        entrenador.capturarBichomon(primerBicho, 10);
+        otroEntrenador.capturarBichomon(segundoBicho, 20);
+        otroEntrenador.capturarBichomon(tercerBicho, 0);
+
+        service.guardarEntrenador(entrenador);
+        service.guardarEntrenador(otroEntrenador);
+
+        List<Entrenador> lideres = service.lideres();
+
+        assertEquals(lideres.get(0).getNombre(), "Hola");
+        assertEquals(lideres.get(1).getNombre(), "Guachin");
     }
 }

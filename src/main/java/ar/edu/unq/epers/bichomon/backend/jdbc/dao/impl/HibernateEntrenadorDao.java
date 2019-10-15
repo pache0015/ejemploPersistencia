@@ -33,4 +33,17 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
 
         return query.getResultList();
     }
+
+    @Override
+    public List<Entrenador> recuperarLideres() {
+        Session session = TransactionRunner.getCurrentSession();
+
+        String hql = "select e from Entrenador e inner join e.bichos b " +
+                "group by e order by sum(b.energia) desc";
+
+        Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
+        query.setMaxResults(10);
+
+        return query.getResultList();
+    }
 }

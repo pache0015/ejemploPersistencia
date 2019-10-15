@@ -10,4 +10,5 @@ public interface EntrenadorDao {
     Entrenador recuperar(String nombre_entrenador);
     void guardar(Entrenador entrenador);
     List<Entrenador> recuperarCampeones();
+    List<Entrenador> recuperarLideres();
 }
