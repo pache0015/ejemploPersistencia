@@ -1,14 +1,15 @@
 package bichomon.backend.model.ubicacion;
 
-import static org.junit.Assert.*;
-
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorAbandonoImposible;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class DojoTest extends UbicacionTest {
 
@@ -24,7 +25,12 @@ public class DojoTest extends UbicacionTest {
     @Test
     public void un_dojo_sin_campeon_no_tiene_bichos() {
         assertFalse(dojo.tieneCampeon());
-        assertTrue(dojo.bichomonesPara(entrenador).isEmpty());
+        try {
+            dojo.bichomonPara(entrenador);
+            fail();
+        } catch (ErrorDeBusquedaNoExitosa e) {
+            assertEquals(ErrorDeBusquedaNoExitosa.MENSAJE_ERROR, e.getMessage());
+        }
     }
 
     @Test
@@ -33,7 +39,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
 
-        assertFalse(dojo.bichomonesPara(entrenador).isEmpty());
+        assertNotNull(dojo.bichomonPara(entrenador));
     }
 
     @Test
@@ -42,12 +48,7 @@ public class DojoTest extends UbicacionTest {
         entrenador.capturarBichomon(bichoCampeon, 10);
         dojo.declararCampeones(entrenador, bichoCampeon);
 
-        assertTrue(dojo.bichomonesPara(entrenador).stream().allMatch(bicho -> bicho.getEspecie().equals(bichoCampeon.getEspecieRaiz())));
-    }
-
-    @Test
-    public void un_dojo_no_puede_dejar_abandonar_en_ningun_caso() {
-        assertFalse(dojo.puedeDejarAbandonar(entrenador));
+        assertEquals(dojo.bichomonPara(entrenador).getEspecie(), bichoCampeon.getEspecieRaiz());
     }
 
     @Test
@@ -57,8 +58,20 @@ public class DojoTest extends UbicacionTest {
         try {
             dojo.recibirAbandonado(entrenador, bichoAAbandonar);
             fail();
-        } catch (UbicacionIncorrectaException e) {
-            assertEquals(UbicacionIncorrectaException.MENSAJE_ERROR, e.getMessage());
+        } catch (ErrorAbandonoImposible e) {
+            assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
         }
+    }
+
+    @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_un_dojo() {
+        Bicho bicho = nuevoBicho("Bicho");
+        entrenador.ubicarseEn(dojo);
+        entrenador.capturarBichomon(bicho, 10);
+        dojo.declararCampeones(entrenador, bicho);
+
+        assertEquals(entrenador.getBichos().size(), 1);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 2);
     }
 }

@@ -5,6 +5,8 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
@@ -24,8 +26,8 @@ public class Bicho {
     private Integer victorias;
     @Column
     private LocalDate fechaDeCaptura;
-    /*@ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private Condicion condicionDeEvolucion;*/
+    @ManyToMany
+    private List<Entrenador> historialDeEntrenadores = new ArrayList<>();
 
     @Column
     private Double energia;
@@ -141,5 +143,13 @@ public class Bicho {
 
     public void setEntrenador(Entrenador entrenador) {
         this.entrenadorDueño = entrenador;
+    }
+
+    public void agregarEntrenadorAlHistorial(Entrenador entrenador) {
+        this.historialDeEntrenadores.add(entrenador);
+    }
+
+    public boolean noTuvoEntrenador(Entrenador entrenador) {
+        return !this.historialDeEntrenadores.contains(entrenador);
     }
 }

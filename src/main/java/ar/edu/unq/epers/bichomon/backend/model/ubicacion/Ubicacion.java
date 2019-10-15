@@ -1,9 +1,13 @@
 package ar.edu.unq.epers.bichomon.backend.model.ubicacion;
+
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import javax.persistence.*;
-import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -15,17 +19,12 @@ public abstract class Ubicacion {
         this.nombre = nombre;
     }
 
-    public abstract Boolean puedeDejarAbandonar(Entrenador entrenador);
-
     public abstract void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar);
-
-    public abstract List<Bicho> bichomonesPara(Entrenador entrenador);
 
     protected Ubicacion() {
     }
-    public Bicho bichomonPara(Entrenador entrenador) {
-        return bichomonesPara(entrenador).get(0);
-    }
+
+    public abstract Bicho bichomonPara(Entrenador entrenador);
 
     public abstract Entrenador getEntrenadorCampeon();
     public abstract ResultadoCombate comenzarDuelo(Entrenador entrenador);

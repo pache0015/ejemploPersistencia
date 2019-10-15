@@ -14,7 +14,7 @@ public class Entrenador {
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bicho> bichos;
     @OneToOne
     private Bicho bichoParaDuelo;
@@ -41,23 +41,37 @@ public class Entrenador {
         this.nivel = this.proveedor.getNivelDeEntrenador(this.getPuntosDeExperiencia());
     }
 
-    public String getNombre() {return this.nombre;}
-
-    public Integer getPuntosDeExperiencia() {return this.puntosDeExperiencia;}
-
-    public Nivel getNivel() {return this.nivel;}
-
-    public List<Bicho> getBichos() {return this.bichos;}
-
-    public Ubicacion getUbicacionActual(){return this.ubicacionActual;}
-
-    public Bicho getBichoParaDuelo() {return bichoParaDuelo;}
-
-    public Boolean tieneBicho(Integer idBicho){
-        return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
+    public String getNombre() {
+        return this.nombre;
     }
 
-    public void setBichoParaDuelo(Bicho bicho) {this.bichoParaDuelo = bicho;}
+    public Integer getPuntosDeExperiencia() {
+        return this.puntosDeExperiencia;
+    }
+
+    public Nivel getNivel() {
+        return this.nivel;
+    }
+
+    public List<Bicho> getBichos() {
+        return this.bichos;
+    }
+
+    public Ubicacion getUbicacionActual() {
+        return this.ubicacionActual;
+    }
+
+    public Bicho getBichoParaDuelo() {
+        return bichoParaDuelo;
+    }
+
+    public void setBichoParaDuelo(Bicho bicho) {
+        this.bichoParaDuelo = bicho;
+    }
+
+    public Boolean tieneBicho(Integer idBicho) {
+        return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
+    }
 
     public void ganarEnergia(Integer cantidadDePuntosDeExperienciaGanada) {
         this.puntosDeExperiencia = this.puntosDeExperiencia + cantidadDePuntosDeExperienciaGanada;
@@ -67,34 +81,53 @@ public class Entrenador {
     public void capturarBichomon(Bicho unBichoCapturado, Integer puntosDeExperienciaGanados) {
         if (this.puedeAgregarBichomon()) {
             this.bichos.add(unBichoCapturado);
+            unBichoCapturado.agregarEntrenadorAlHistorial(this);
             this.ganarEnergia(puntosDeExperienciaGanados);
         } else {
             throw new LimiteBicho("Tu lista esta llena, sube de nivel para caputar mas bichomons");
         }
     }
 
-    public void ubicarseEn(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
+    public void ubicarseEn(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
 
     private Boolean puedeAgregarBichomon() {
         return this.nivel.llegoAlLimite(this.bichos.size());
     }
 
-    public Boolean tieneMasDeUnBicho() {return this.bichos.size() > 1;}
+    public Boolean tieneMasDeUnBicho() {
+        return this.bichos.size() > 1;
+    }
 
     public void abandonar(Bicho bichoAAbandonar) {
         ubicacionActual.recibirAbandonado(this, bichoAAbandonar);
     }
 
-    public ResultadoCombate duelo(Bicho bichoParaDuelo){
-        setBichoParaDuelo(bichoParaDuelo);
-        return  getUbicacionActual().comenzarDuelo(this);
+    public void soltarBicho(Bicho bichoASoltar) {
+        bichos.remove(bichoASoltar);
     }
 
-    public void moverseA(Ubicacion ubicacion) {this.ubicacionActual = ubicacion;}
+    public ResultadoCombate duelo(Bicho bichoParaDuelo) {
+        setBichoParaDuelo(bichoParaDuelo);
+        return getUbicacionActual().comenzarDuelo(this);
+    }
+
+    public void moverseA(Ubicacion ubicacion) {
+        this.ubicacionActual = ubicacion;
+    }
 
     public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
         return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
     }
 
-    public Bicho buscar() {return this.getUbicacionActual().bichomonPara(this);}
+    public Bicho buscar() {
+        Bicho bichoEncontrado = this.getUbicacionActual().bichomonPara(this);
+        bichos.add(bichoEncontrado);
+        return bichoEncontrado;
+    }
+
+    public Boolean puedeAbandonar() {
+        return this.tieneMasDeUnBicho();
+    }
 }
