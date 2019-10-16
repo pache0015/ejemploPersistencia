@@ -1,12 +1,11 @@
 package bichomon.backend.ServiceTest.BichoService;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -37,7 +36,7 @@ public class BichoServiceTest {
     Bicho bicho;
     BichoServiceImp bichoService;
     BichoDao bichoDao;
-    EntrenadorDao entrenadorDao;
+    HibernateEntrenadorDao entrenadorDao;
     Pueblo pueblo;
     Dojo dojo;
 
@@ -63,8 +62,10 @@ public class BichoServiceTest {
     }
 
     @After
-    public void cleanup() {
-        SessionFactoryProvider.destroy();
+    public void cleanUp() {
+        TransactionRunner.run(() -> {
+            new HibernateEntrenadorDao().borrarTodo();
+        });
     }
 
     @Test
@@ -133,7 +134,10 @@ public class BichoServiceTest {
 
         bichoService.abandonar(entrenador.getNombre(), bicho.getId());
 
-        assertEquals(1, guarderia.getBichosAbandonados().size());
+        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
+        Guarderia guarderiaRecuperada = (Guarderia)entrenadorRecuperado.getUbicacionActual();
+
+        assertEquals(1, guarderiaRecuperada.getBichosAbandonados().size());
     }
 
     @Test

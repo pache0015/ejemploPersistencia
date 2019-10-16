@@ -6,6 +6,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.NoSuchElementException;
 @Entity
 public class Guarderia extends Ubicacion {
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Bicho> abandonados = new ArrayList<>();
 
     public Guarderia(String nombre) {
