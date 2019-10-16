@@ -31,8 +31,8 @@ public class BichoTest {
 
     @Before
     public void setUp() {
-        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
+        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA, largartomon);
+        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon, largartomon);
         bicho = new Bicho(largartomon, "helloworld");
         List niveles = new ArrayList<Nivel>();
         nivel = new Nivel(1, 1, 99);
@@ -119,4 +119,9 @@ public class BichoTest {
     public CondicionBasadaEnNivelEntrenador getCondicionDeNivel(Integer nivelNcesarioParaEvolucionar) {
         return new CondicionBasadaEnNivelEntrenador(nivelNcesarioParaEvolucionar);
     }
+    @Test
+    public void unBichoSabeCualEsSuEspecieRaiz(){
+        Assert.assertEquals(largartomon, bicho.getEspecieRaiz());
+    }
+
 }

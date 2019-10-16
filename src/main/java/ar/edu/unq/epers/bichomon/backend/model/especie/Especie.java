@@ -32,7 +32,8 @@ public class Especie {
 	private Integer cantidadBichos;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Especie evolucionDeEspecie;
-
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Especie especieRaiz;
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Condicion condicionDeEvolucion;
 
@@ -40,11 +41,17 @@ public class Especie {
 		this.nombre = nombre;
 		this.tipo = tipo;
 	}
+	public Especie(String nombre, TipoBicho tipo, Especie especieRaiz) {
+		this.nombre = nombre;
+		this.tipo = tipo;
+		this.especieRaiz = especieRaiz;
+	}
 
-	public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie) {
+	public Especie(String nombre, TipoBicho tipoBicho, Especie evolucionDeEspecie, Especie especieRaiz) {
 		this.nombre = nombre;
 		this.tipo = tipoBicho;
 		this.evolucionDeEspecie = evolucionDeEspecie;
+		this.especieRaiz = this;
 	}
 
 	public Especie(Integer id, String nombre, TipoBicho tipo) {
@@ -152,4 +159,8 @@ public class Especie {
     public Boolean evaluarEvolucion(Bicho bicho) {
         return condicionDeEvolucion.evaluar(bicho);
     }
+
+	public Especie getEspecieRaiz() {
+		return this.especieRaiz;
+	}
 }

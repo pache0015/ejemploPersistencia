@@ -49,7 +49,7 @@ public class BichoServiceTest {
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);
         reptilmon = new Especie("reptilmon", TipoBicho.TIERRA);
-        especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon);
+        especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon, especie);
         bicho = new Bicho(especie);
         entrenador = new Entrenador("ASH", null ,proveedor);
         bichoService = Mockito.spy(new BichoServiceImp());
