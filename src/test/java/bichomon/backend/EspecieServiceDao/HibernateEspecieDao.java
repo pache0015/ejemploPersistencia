@@ -29,7 +29,7 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
                 "GROUP BY especie ORDER BY count(bicho) DESC";
 
         Query<Especie> resultQuery = session.createQuery(query);
-        resultQuery.setMaxResults(2);
+        resultQuery.setMaxResults(10);
 
         return resultQuery.getResultList();
     }
@@ -43,7 +43,7 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
 
 
         Query<Especie> resultQuery = session.createQuery(query);
-        resultQuery.setMaxResults(2);
+        resultQuery.setMaxResults(10);
 
         return resultQuery.getResultList();
     }
