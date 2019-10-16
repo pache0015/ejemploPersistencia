@@ -14,7 +14,7 @@ public class Entrenador {
     private String nombre;
     @Column
     private Integer puntosDeExperiencia;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Bicho> bichos;
     @OneToOne
     private Bicho bichoParaDuelo;
