@@ -1,7 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
 import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCDAO;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCEspecieDAO extends JDBCDAO implements EspecieDAO {
+public class JDBCEspecieDAO extends JDBCDAO implements EspecieDao {
 
     public JDBCEspecieDAO() {
     }
@@ -76,6 +76,11 @@ public class JDBCEspecieDAO extends JDBCDAO implements EspecieDAO {
             ps.close();
             return especiesRecuperadas;
         });
+    }
+
+    @Override
+    public Especie recuperarEspecieLider() {
+        return null;
     }
 
     private Especie getEspecieResultante(ResultSet resultSet) throws SQLException {

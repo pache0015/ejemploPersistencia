@@ -4,6 +4,9 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 
 public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements EntrenadorDao {
@@ -17,5 +20,30 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
         return session.get(Entrenador.class, nombre_entrenador);
     }
 
+    @Override
+    public List<Entrenador> recuperarCampeones() {
+        Session session = TransactionRunner.getCurrentSession();
 
+        String hql = "select f.campeon from FichaDeCampeon f "
+                + "where f.fechaFin is null "
+                + "order by fechaInicio asc";
+
+        Query<Entrenador> query = session.createQuery(hql,  Entrenador.class);
+        query.setMaxResults(10);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Entrenador> recuperarLideres() {
+        Session session = TransactionRunner.getCurrentSession();
+
+        String hql = "select e from Entrenador e inner join e.bichos b " +
+                "group by e order by sum(b.energia) desc";
+
+        Query<Entrenador> query = session.createQuery(hql, Entrenador.class);
+        query.setMaxResults(10);
+
+        return query.getResultList();
+    }
 }

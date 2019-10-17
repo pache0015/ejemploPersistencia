@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -11,10 +12,7 @@ import java.time.LocalTime;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-public class BichoServiceImp implements BichoService {
-
-    private EntrenadorDao entrenadorDao;
-    private BichoDao bichoDao;
+public class BichoServiceImp extends Service implements BichoService {
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
         this.entrenadorDao = entrenadorDao;
@@ -96,15 +94,5 @@ public class BichoServiceImp implements BichoService {
             }
             throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
-    }
-
-    @Override
-    public void guardarBicho(Bicho bicho) {
-        run(() -> this.bichoDao.guardar(bicho));
-    }
-
-    @Override
-    public void guardarEntrenador(Entrenador entrenador) {
-        run(() -> this.entrenadorDao.guardar(entrenador));
     }
 }

@@ -9,9 +9,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
-import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,8 +18,6 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 public class DueloTest {
     Entrenador retador;
@@ -35,7 +31,6 @@ public class DueloTest {
     Nivel nivel;
     List fichas = new ArrayList<FichaDeCampeon>();
     FichaDeCampeon ficha;
-    GestorDeFichasDeCampeones gestor;
     Bicho bicho1;
     Dojo dojo;
     Duelo duelo;
@@ -58,7 +53,6 @@ public class DueloTest {
         retador.setBichoParaDuelo(bicho1);
         fechaInicio = LocalDate.now();
         ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
-        gestor = new GestorDeFichasDeCampeones();
 
         dojo = new Dojo("prueba");
         dojo.declararCampeones(campeon, bicho);

@@ -1,7 +1,7 @@
 package bichomon.backend.service.especie;
 
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
@@ -19,7 +19,7 @@ public class EspecieEntrenadorDaoServiceTest {
     private Especie unaEspecie;
     private DataServiceImp dataService = new DataServiceImp();
     private EspecieServiceImpl unaEspecieService;
-    private EspecieDAO dao;
+    private EspecieDao dao;
 
     @Before
     public void setUp() {
