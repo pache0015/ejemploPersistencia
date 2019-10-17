@@ -3,7 +3,7 @@ package bichomon.backend.ServiceTest.BichoService;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -34,7 +34,7 @@ public class BichoServiceTest {
     Especie especie;
     Especie reptilmon;
     Bicho bicho;
-    BichoServiceImp bichoService;
+    BichoServiceImpl bichoService;
     BichoDao bichoDao;
     HibernateEntrenadorDao entrenadorDao;
     Pueblo pueblo;
@@ -51,7 +51,7 @@ public class BichoServiceTest {
         especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon, especie);
         bicho = new Bicho(especie);
         entrenador = new Entrenador("ASH", null ,proveedor);
-        bichoService = Mockito.spy(new BichoServiceImp());
+        bichoService = Mockito.spy(new BichoServiceImpl());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
         pueblo = new Pueblo("Pueblo");

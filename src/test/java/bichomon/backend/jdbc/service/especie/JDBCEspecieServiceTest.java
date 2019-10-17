@@ -1,25 +1,26 @@
-package bichomon.backend.service.especie;
-
+package bichomon.backend.jdbc.service.especie;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import org.junit.*;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class EspecieEntrenadorDaoServiceTest {
+public class JDBCEspecieServiceTest {
 
     private Especie unaEspecie;
-    private DataServiceImp dataService = new DataServiceImp();
+    private DataServiceImpl dataService = new DataServiceImpl();
     private EspecieServiceImpl unaEspecieService;
     private EspecieDao especieDao;
     private UbicacionDao ubicacionDao;

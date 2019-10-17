@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-public class BichoServiceImp extends Service implements BichoService {
+public class BichoServiceImpl extends Service implements BichoService {
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
         this.entrenadorDao = entrenadorDao;
