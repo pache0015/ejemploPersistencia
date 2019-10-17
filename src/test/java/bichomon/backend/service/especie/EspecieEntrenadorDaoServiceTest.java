@@ -2,6 +2,8 @@ package bichomon.backend.service.especie;
 
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.GuarderiaDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateGuarderiaDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
@@ -19,7 +21,8 @@ public class EspecieEntrenadorDaoServiceTest {
     private Especie unaEspecie;
     private DataServiceImp dataService = new DataServiceImp();
     private EspecieServiceImpl unaEspecieService;
-    private EspecieDao dao;
+    private EspecieDao especieDao;
+    private GuarderiaDao guarderiaDao;
 
     @Before
     public void setUp() {
@@ -30,8 +33,9 @@ public class EspecieEntrenadorDaoServiceTest {
         unaEspecie.setNombre("asd");
         unaEspecie.setTipo(TipoBicho.ELECTRICIDAD);
 
-        dao = new JDBCEspecieDAO();
-        unaEspecieService = new EspecieServiceImpl(dao);
+        especieDao = new JDBCEspecieDAO();
+        guarderiaDao = new HibernateGuarderiaDao();
+        unaEspecieService = new EspecieServiceImpl(especieDao, guarderiaDao);
 
         unaEspecieService.crearEspecie(unaEspecie);
     }

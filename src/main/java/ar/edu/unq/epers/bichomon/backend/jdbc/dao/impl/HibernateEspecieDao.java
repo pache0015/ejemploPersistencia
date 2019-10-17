@@ -23,11 +23,6 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
     }
 
     @Override
-    public Especie recuperar(String nombreEspecie) {
-        return null;
-    }
-
-    @Override
     public List<Especie> recuperarTodos() {
         return null;
     }
@@ -42,5 +37,38 @@ public class HibernateEspecieDao extends HibernateDAO<Especie> implements Especi
         query.setMaxResults(1);
 
         return query.getSingleResult();
+    }
+
+    @Override
+    public Especie recuperar(String nombre_especie) {
+        Session session = TransactionRunner.getCurrentSession();
+        return session.get(Especie.class, nombre_especie);
+    }
+
+    @Override
+    public List<Especie> recuperarEspeciesMasPopulares() {
+        Session session = TransactionRunner.getCurrentSession();
+
+        String query = "select especie from Entrenador entrenador JOIN entrenador.bichos bicho JOIN bicho.especie especie " +
+                "GROUP BY especie ORDER BY count(bicho) DESC";
+
+        Query<Especie> resultQuery = session.createQuery(query);
+        resultQuery.setMaxResults(10);
+
+        return resultQuery.getResultList();
+    }
+
+    @Override
+    public List<Especie> recuperarEspeciesMenosPopulares() {
+        Session session = TransactionRunner.getCurrentSession();
+
+        String query = "select especie from Guarderia guarderia JOIN guarderia.abandonados bicho JOIN bicho.especie especie " +
+                "GROUP BY especie ORDER BY count(bicho) DESC";
+
+
+        Query<Especie> resultQuery = session.createQuery(query);
+        resultQuery.setMaxResults(10);
+
+        return resultQuery.getResultList();
     }
 }

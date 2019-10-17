@@ -1,5 +1,6 @@
-package ar.edu.unq.epers.bichomon.backend.jdbc.service.especie;
+package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.GuarderiaDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateDAO;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
