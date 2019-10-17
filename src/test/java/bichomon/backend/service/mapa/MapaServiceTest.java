@@ -5,6 +5,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa.MapaServiceImp;
@@ -78,6 +79,9 @@ public class MapaServiceTest {
 
     @After
     public void cleanup() {
+        TransactionRunner.run(() -> {
+            new HibernateEspecieDao().borrarTodo();
+        });
     }
 
     @Test

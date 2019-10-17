@@ -4,32 +4,31 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.Duelo;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
-import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Entity
 public class Dojo extends Ubicacion {
-
+    //TODO: Pasar a ManyToOne
     @OneToOne
     private Entrenador entrenadorCampeon;
+    //TODO: Pasar a ManyToOne
     @OneToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Bicho> bichos;
-    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private GestorDeFichasDeCampeones gestor;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dojo_nombre")
+    private List<FichaDeCampeon> fichas;
 
     public Dojo(String nombre) {
         super(nombre);
         bichos = new ArrayList<>();
-        this.gestor = new GestorDeFichasDeCampeones();
+        fichas = new ArrayList<>();
 
     }
 
@@ -37,18 +36,16 @@ public class Dojo extends Ubicacion {
     }
 
     @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return false;
-    }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        throw new UbicacionIncorrectaException();
+        throw new ErrorAbandonoImposible();
     }
 
     @Override
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return bichos;
+    public Bicho bichomonPara(Entrenador entrenador) {
+        if (bichoCampeon == null) {
+            throw new ErrorDeBusquedaNoExitosa();
+        }
+        return new Bicho(bichoCampeon.getEspecieRaiz(), "Hije del campeón");
     }
 
     public Boolean tieneCampeon() {
@@ -56,18 +53,14 @@ public class Dojo extends Ubicacion {
     }
 
     public void declararCampeones(Entrenador entrenador, Bicho bicho) {
-        gestor.finDeCampeon(entrenadorCampeon, LocalDate.now());
-        gestor.addNuevoCampeon(entrenador, bicho, LocalDate.now());
+        LocalDate fechaDeCambio = LocalDate.now();
+        if (hayFichasDeCampeones()) {
+            getUltimaFichaCampeon().setFechaFin(fechaDeCambio);
+        }
+        fichas.add(new FichaDeCampeon(entrenador, bicho, fechaDeCambio, this));
 
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
-        llenarDojo(bicho.getEspecieRaiz());
-    }
-
-
-    private void llenarDojo(Especie especie) {
-        IntStream.range(0, 10).mapToObj(i -> new Bicho(especie, "Hije del campeón"))
-                .forEach(nuevoBicho -> bichos.add(nuevoBicho));
     }
 
     public Entrenador getEntrenadorCampeon(){
@@ -81,15 +74,19 @@ public class Dojo extends Ubicacion {
         return duelo.pelear();
     }
 
+    public FichaDeCampeon getUltimaFichaCampeon() {
+        return fichas.get(fichas.size() - 1);
+    }
+
+    public Boolean hayFichasDeCampeones() {
+        return fichas.size() > 0;
+    }
+
     public Bicho getBichoCampeon() {
         return bichoCampeon;
     }
 
     public void setBichoCampeon(Bicho bichoCampeon) {
         this.bichoCampeon = bichoCampeon;
-    }
-
-    public List<FichaDeCampeon> fichasDeCampeones(){
-        return gestor.getAllFichas();
     }
 }

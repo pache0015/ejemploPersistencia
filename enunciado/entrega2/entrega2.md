@@ -82,7 +82,7 @@ La probabilidad que una busqueda de bichos en un cualquier localización resulte
 Esto se traduce a:
 
 ````
-busquedaExitosa = factorTiempo * factorNivel * factorPoblacion * random(0, 1) > 0.5
+resultadoDeBusqueda = factorTiempo * factorNivel * factorPoblacion * random(0, 1) > 0.5
 ````
 
 No es necesario codificar la lógica exacta para obtener dichos factores (factorTiempo, factorNivel y factorPoblacion). Por ahora solo deberemos delegar en una interfaz que encapsulará dicho calculo sin proveer una implementación real para la misma. <br/>

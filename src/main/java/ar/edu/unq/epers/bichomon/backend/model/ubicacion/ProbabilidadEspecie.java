@@ -7,8 +7,8 @@ import javax.persistence.*;
 @Entity
 public class ProbabilidadEspecie {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    public Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id;
     @OneToOne(cascade = CascadeType.ALL)
     public Especie especie;
     @Column

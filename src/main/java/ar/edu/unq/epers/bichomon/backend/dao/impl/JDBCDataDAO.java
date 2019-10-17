@@ -26,7 +26,7 @@ public class JDBCDataDAO extends JDBCDAO {
         Connection connection = this.openConnection();
         ScriptRunner scriptRunner = new ScriptRunner(connection);
         try {
-            Reader reader = new BufferedReader(new FileReader("src/resources/create_all.sql"));
+            Reader reader = new BufferedReader(new FileReader("src/main/resources/create_all.sql"));
             scriptRunner.setLogWriter(null);
             scriptRunner.runScript(reader);
         } catch (FileNotFoundException e) {

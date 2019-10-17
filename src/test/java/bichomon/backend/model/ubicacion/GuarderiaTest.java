@@ -1,14 +1,16 @@
 package bichomon.backend.model.ubicacion;
 
-import static org.junit.Assert.*;
-
-import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.LimiteBicho;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorAbandonoImposible;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ErrorDeBusquedaNoExitosa;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 public class GuarderiaTest extends UbicacionTest {
@@ -25,18 +27,6 @@ public class GuarderiaTest extends UbicacionTest {
     @Test
     public void una_guarderia_recien_creada_no_tiene_bichos_abandonados() {
         assertEquals(guarderia.cantidadDeBichos(), (Integer)0);
-    }
-
-    @Test
-    public void un_entrenador_no_puede_abandonar_su_ultimo_pokemon_en_este_lugar() {
-        assertFalse(guarderia.puedeDejarAbandonar(entrenador));
-    }
-
-    @Test
-    public void un_entrenador_puede_abandonar_un_pokemon_en_este_lugar_si_tiene_mas_de_uno() throws LimiteBicho {
-        entrenador.capturarBichomon(nuevoBicho("Bicho Uno"), 10);
-        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
-        assertTrue(guarderia.puedeDejarAbandonar(entrenador));
     }
 
     @Test
@@ -59,8 +49,8 @@ public class GuarderiaTest extends UbicacionTest {
         try {
             entrenador.abandonar(bichoAAbandonar);
             fail();
-        } catch(UbicacionIncorrectaException e) {
-            assertEquals(UbicacionIncorrectaException.MENSAJE_ERROR, e.getMessage());
+        } catch (ErrorAbandonoImposible e) {
+            assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
         }
     }
 
@@ -73,7 +63,11 @@ public class GuarderiaTest extends UbicacionTest {
 
         entrenador.abandonar(bichoAAbandonar);
 
-        assertFalse(guarderia.bichomonesPara(entrenador).contains(bichoAAbandonar));
+        try {
+            guarderia.bichomonPara(entrenador);
+        } catch (ErrorDeBusquedaNoExitosa e) {
+            assertEquals(ErrorDeBusquedaNoExitosa.MENSAJE_ERROR, e.getMessage());
+        }
     }
 
     @Test
@@ -87,6 +81,39 @@ public class GuarderiaTest extends UbicacionTest {
 
         Entrenador entrenadorDos = this.nuevoEntrenador("Entrenador_Dos");
 
-        assertTrue(guarderia.bichomonesPara(entrenadorDos).contains(bichoAAbandonar));
+        assertEquals(guarderia.bichomonPara(entrenadorDos), bichoAAbandonar);
+    }
+
+    @Test
+    public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_la_guarderia() throws LimiteBicho {
+        Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
+        entrenador.capturarBichomon(bichoAAbandonar, 01);
+        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
+        entrenador.ubicarseEn(guarderia);
+
+        entrenador.abandonar(bichoAAbandonar);
+
+        Entrenador entrenadorDos = this.nuevoEntrenador("Entrenador_Dos");
+        entrenadorDos.ubicarseEn(guarderia);
+
+        assertEquals(entrenadorDos.getBichos().size(), 0);
+
+        entrenadorDos.buscar();
+
+        assertEquals(entrenadorDos.getBichos().size(), 1);
+    }
+
+    @Test
+    public void un_entrenador_tiene_menos_bichomones_luego_de_abandonar_en_una_guarderia() {
+        Bicho bichoAAbandonar = nuevoBicho("Bicho Uno");
+        entrenador.capturarBichomon(bichoAAbandonar, 01);
+        entrenador.capturarBichomon(nuevoBicho("Bicho Dos"), 10);
+        entrenador.ubicarseEn(guarderia);
+
+        assertEquals(entrenador.getBichos().size(), 2);
+
+        entrenador.abandonar(bichoAAbandonar);
+
+        assertEquals(entrenador.getBichos().size(), 1);
     }
 }

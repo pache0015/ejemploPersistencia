@@ -6,12 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-abstract class JDBCDAO {
+public abstract class JDBCDAO {
 
     /**
      * Ejecuta un bloque de codigo contra una conexion.
      */
-    <T> T executeWithConnection(ConnectionBlock<T> bloque) {
+    protected <T> T executeWithConnection(ConnectionBlock<T> bloque) {
         Connection connection = this.openConnection();
         try {
             return bloque.executeWith(connection);
@@ -30,7 +30,7 @@ abstract class JDBCDAO {
     Connection openConnection() {
         try {
 
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&useSSL=false");
         } catch (SQLException e) {
             throw new RuntimeException("No se puede establecer una conexion", e);
         }

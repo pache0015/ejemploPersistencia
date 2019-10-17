@@ -1,16 +1,19 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCEspecieDAO implements EspecieDAO {
+public class JDBCEspecieDAO extends JDBCDAO implements EspecieDao {
 
     public JDBCEspecieDAO() {
     }
@@ -26,14 +29,9 @@ public class JDBCEspecieDAO implements EspecieDAO {
                 return null;
             });
         } catch (RuntimeException e) {
-            if (e.getMessage().contains("Duplicate entry")) {
-                throw new EspecieExistente(especie.getNombre());
-            } else if(e.getMessage().equals("")) {
-                throw new RuntimeException("No se puede establecer una conexion", e);
-            }
+            throw new EspecieExistente(especie.getNombre());
         }
     }
-
 
     @Override
     public void actualizar(Especie especie) {
@@ -80,6 +78,11 @@ public class JDBCEspecieDAO implements EspecieDAO {
         });
     }
 
+    @Override
+    public Especie recuperarEspecieLider() {
+        return null;
+    }
+
     private Especie getEspecieResultante(ResultSet resultSet) throws SQLException {
         Especie especie = new Especie(resultSet.getInt("id"), resultSet.getString("nombre"), TipoBicho.valueOf(resultSet.getString("tipo")));
         especie.setAltura(resultSet.getInt("altura"));
@@ -94,42 +97,5 @@ public class JDBCEspecieDAO implements EspecieDAO {
         ps.setInt(3, especie.getAltura());
         ps.setString(4, especie.getTipo().toString());
         ps.setInt(5, especie.getCantidadBichos());
-    }
-    /**
-     * Ejecuta un bloque de codigo contra una conexion.
-     */
-    private <T> T executeWithConnection(ConnectionBlock<T> bloque) {
-        Connection connection = this.openConnection();
-        try {
-            return bloque.executeWith(connection);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            this.closeConnection(connection);
-        }
-    }
-    /**
-     * Establece una conexion a la url especificada
-     *
-     * @return la conexion establecida
-     */
-    private Connection openConnection() {
-        try {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/bichomonJDBC?user=root&password=root&useSSL=false& ");
-        } catch (SQLException e) {
-            throw new RuntimeException("No se puede establecer una conexion", e);
-        }
-    }
-    /**
-     * Cierra una conexion con la base de datos (libera los recursos utilizados por la misma)
-     *
-     * @param connection - la conexion a cerrar.
-     */
-    private void closeConnection(Connection connection) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al cerrar la conexion", e);
-        }
     }
 }

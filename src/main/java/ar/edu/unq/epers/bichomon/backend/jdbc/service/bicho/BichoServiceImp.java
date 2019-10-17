@@ -2,23 +2,18 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.BusquedaExitosa;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ResultadoDeBusqueda;
 
 
 import java.time.LocalTime;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-public class BichoServiceImp implements BichoService {
-
-    private EntrenadorDao entrenadorDao;
-    private BichoDao bichoDao;
-    private UbicacionDao ubicacionDao;
+public class BichoServiceImp extends Service implements BichoService {
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
         this.entrenadorDao = entrenadorDao;
@@ -34,7 +29,7 @@ public class BichoServiceImp implements BichoService {
             try {
                 Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(nombreEntrenador);
 
-                BusquedaExitosa busqueda = getBusqueda();
+                ResultadoDeBusqueda busqueda = getBusqueda();
                 if (busqueda.busquedaExitosa()) {
                     return entrenadorRecuperado.buscar();
                 }
@@ -45,8 +40,8 @@ public class BichoServiceImp implements BichoService {
         });
     }
 
-    public BusquedaExitosa getBusqueda() {
-        return new BusquedaExitosa(LocalTime.now(), 1, 1);
+    public ResultadoDeBusqueda getBusqueda() {
+        return new ResultadoDeBusqueda(LocalTime.now(), 1, 1);
     }
 
 
@@ -66,15 +61,13 @@ public class BichoServiceImp implements BichoService {
         return run(() -> {
             ResultadoCombate resultadoCombate;
 
-                Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
-                Bicho bichoRecuperado = this.bichoDao.recuperar(idBicho);
-
-                if (entrenadorRecuperado.tieneBicho(idBicho)) {
-                    resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
-                    return resultadoCombate;
-                }
-
-           return   null;
+            Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
+            Bicho bichoRecuperado = this.bichoDao.recuperar(idBicho);
+            if(entrenadorRecuperado.tieneBicho(idBicho)){
+                resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
+                return resultadoCombate;
+            }
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
     }
 
@@ -86,7 +79,7 @@ public class BichoServiceImp implements BichoService {
             if (entrenadorRecuperado.tieneBicho(idBicho)) {
                 return bichoRecuperado.puedeEvolucionar();
             }
-            return null;
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
     }
 
@@ -99,22 +92,7 @@ public class BichoServiceImp implements BichoService {
                 bichoRecuperado.evolucionar();
                 return bichoRecuperado;
             }
-            return null;
+            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
         });
-    }
-
-    @Override
-    public void guardarBicho(Bicho bicho) {
-        run(() -> this.bichoDao.guardar(bicho));
-    }
-
-    @Override
-    public void guardarEntrenador(Entrenador entrenador) {
-        run(() -> this.entrenadorDao.guardar(entrenador));
-    }
-
-    @Override
-    public void guardarUbicacion(Ubicacion ubicacion){
-        run(()-> this.ubicacionDao.guardar(ubicacion));
     }
 }

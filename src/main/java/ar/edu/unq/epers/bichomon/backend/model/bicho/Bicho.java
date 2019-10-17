@@ -1,11 +1,12 @@
 package ar.edu.unq.epers.bichomon.backend.model.bicho;
 
-import ar.edu.unq.epers.bichomon.backend.model.condicion.Condicion;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Un {@link Bicho} existente en el sistema, el mismo tiene un nombre
@@ -25,10 +26,8 @@ public class Bicho {
     private Integer victorias;
     @Column
     private LocalDate fechaDeCaptura;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private Condicion condicionDeEvolucion;
-    @OneToOne
-    private Entrenador entrenadorDueño;
+    @ManyToMany
+    private List<Entrenador> historialDeEntrenadores = new ArrayList<>();
 
     @Column
     private Double energia;
@@ -39,6 +38,9 @@ public class Bicho {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @OneToOne
+    private Entrenador entrenadorDueño;
 
     public Bicho(Especie especie) {
         this.especie = especie;
@@ -88,10 +90,8 @@ public class Bicho {
 
     public Integer getId() {return this.id;}
 
-    public Especie getEspecieRaiz() {return especie;}
-
-    public void setCondicionDeEvolucion(Condicion condicion) {
-        this.condicionDeEvolucion = condicion;
+    public Especie getEspecieRaiz() {
+        return especie.getEspecieRaiz();
     }
 
     public void evolucionar() {
@@ -111,9 +111,9 @@ public class Bicho {
 
     public LocalDate getFechaDeCaptura() {return fechaDeCaptura;}
 
-    public Boolean puedeEvolucionar() {return condicionDeEvolucion.evaluar(this);}
-    public void setEntrenadorDueño(Entrenador entrenador){this.entrenadorDueño = entrenador;}
-    public Entrenador getEntrenadorDueño(){return this.entrenadorDueño;}
+    public Boolean puedeEvolucionar() {
+        return especie.evaluarEvolucion(this);
+    }
 
     public void aumentarEnergiaDeBichoPorDuelo() {
         this.setEnergia((Math.random() * 5.0) + 1.0);
@@ -122,6 +122,24 @@ public class Bicho {
     public void restaurarEnergia(){energiaParaDuelo = energia;}
 
     public Double getEnergiaPorDuelo() {
-        return  this.energiaParaDuelo;
+        return this.energiaParaDuelo;
     }
+
+    public int nivelEntrenador() {
+        return entrenadorDueño.getNivel().numeroNivel;
+    }
+
+    public void setEntrenador(Entrenador entrenador) {
+        this.entrenadorDueño = entrenador;
+    }
+
+    public void agregarEntrenadorAlHistorial(Entrenador entrenador) {
+        this.historialDeEntrenadores.add(entrenador);
+    }
+
+    public boolean noTuvoEntrenador(Entrenador entrenador) {
+        return !this.historialDeEntrenadores.contains(entrenador);
+    }
+
+    public Entrenador getEntrenadorDueño(){return this.entrenadorDueño;}
 }

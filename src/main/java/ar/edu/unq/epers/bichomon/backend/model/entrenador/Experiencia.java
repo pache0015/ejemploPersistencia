@@ -16,12 +16,13 @@ public class Experiencia {
         this.accion = accion;
         this.puntos = puntosGanados;
     }
+    public Experiencia() {}
+
     public Integer puntosDeExperiencia(){
         return this.puntos;
     }
     public Long getId(){
         return this.id;
     }
-    public Experiencia() {
-    }
+
 }

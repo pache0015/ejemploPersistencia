@@ -9,7 +9,6 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
-import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.GestorDeFichasDeCampeones;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
@@ -21,7 +20,6 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class DueloTest {
     Entrenador retador;
@@ -35,14 +33,13 @@ public class DueloTest {
     Nivel nivel;
     List fichas = new ArrayList<FichaDeCampeon>();
     FichaDeCampeon ficha;
-    GestorDeFichasDeCampeones gestor;
     Bicho bicho1;
     Dojo dojo;
     Duelo duelo;
     @Before
     public void setup(){
         reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
+        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon, largartomon);
         bicho = new Bicho(reptilmon, "helloworld");
         bicho1 = new Bicho(largartomon, "blabla");
         bicho.setEnergia(1000.00);
@@ -52,14 +49,13 @@ public class DueloTest {
         proveedor = new ProveedorDeNiveles(niveles);
 
         campeon = new Entrenador("campeon", new Dojo("Guarderia"), proveedor);
-        bicho.setEntrenadorDueño(campeon);
+        bicho.setEntrenador(campeon);
 
         retador = new Entrenador("Entrenador", new Dojo("Guarderia"), proveedor);
-        bicho1.setEntrenadorDueño(retador);
+        bicho1.setEntrenador(retador);
 
         fechaInicio = LocalDate.now();
         ficha = new FichaDeCampeon(campeon, bicho, fechaInicio, dojo);
-        gestor = new GestorDeFichasDeCampeones();
 
         dojo = new Dojo("prueba");
         dojo.declararCampeones(campeon, bicho);

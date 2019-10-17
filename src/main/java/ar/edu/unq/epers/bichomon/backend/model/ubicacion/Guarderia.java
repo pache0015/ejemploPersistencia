@@ -6,16 +6,17 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Entity
 public class Guarderia extends Ubicacion {
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Abandono> abandonos = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Bicho> abandonados = new ArrayList<>();
 
     public Guarderia(String nombre) {
         super(nombre);
@@ -24,26 +25,25 @@ public class Guarderia extends Ubicacion {
     public Guarderia() {
     }
 
-    @Override
-    public Boolean puedeDejarAbandonar(Entrenador entrenador) {
-        return entrenador.tieneMasDeUnBicho();
-    }
-
-    @Override
     public void recibirAbandonado(Entrenador entrenador, Bicho bichoAAbandonar) {
-        if (puedeDejarAbandonar(entrenador)) {
-            abandonos.add(new Abandono(bichoAAbandonar, entrenador));
+        if (entrenador.puedeAbandonar()) {
+            entrenador.soltarBicho(bichoAAbandonar);
+            abandonados.add(bichoAAbandonar);
         } else {
-            throw new UbicacionIncorrectaException();
+            throw new ErrorAbandonoImposible();
         }
     }
 
     public Integer cantidadDeBichos() {
-        return abandonos.size();
+        return abandonados.size();
     }
 
-    public List<Bicho> bichomonesPara(Entrenador entrenador) {
-        return abandonos.stream().filter((abandono -> !abandono.abandonador.getNombre().equals(entrenador.getNombre()))).map(abandono -> abandono.bichoAbandonado).collect(Collectors.toList());
+    public Bicho bichomonPara(Entrenador entrenador) {
+        try {
+            return abandonados.stream().filter(abandonado -> abandonado.noTuvoEntrenador(entrenador)).findFirst().get();
+        } catch (NoSuchElementException e) {
+            throw new ErrorDeBusquedaNoExitosa();
+        }
     }
 
     @Override
@@ -51,4 +51,7 @@ public class Guarderia extends Ubicacion {
         throw new UbicacionIncorrectaException();
     }
 
+    public List<Bicho> getBichosAbandonados() {
+        return this.abandonados;
+    }
 }

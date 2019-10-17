@@ -11,4 +11,3 @@ public interface UbicacionDao {
     Dojo recuperarDojo(String dojo);
 
 }
-
