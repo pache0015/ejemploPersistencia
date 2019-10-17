@@ -13,6 +13,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import bichomon.backend.factory.Factory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,11 +25,13 @@ import java.util.List;
 
 public class EspecieServiceDaoTest {
 
+    private Factory factory = new Factory();
     private EspecieServiceDaoImp especieServiceDao = new EspecieServiceDaoImp();
     private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private HibernateEspecieDao especieDao = new HibernateEspecieDao();
     private Nivel nivel = new Nivel(10, 1, 99);
-    private BichoServiceImp bichoService = new BichoServiceImp();
+    private BichoServiceImp bichoService = factory.bichoServiceImpl();
+
     private List<Nivel> niveles = new ArrayList<>();
     private ProveedorDeNiveles proveedor;
     private Entrenador entrenadorUno;

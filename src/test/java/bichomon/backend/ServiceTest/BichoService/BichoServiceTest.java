@@ -1,13 +1,11 @@
 package bichomon.backend.ServiceTest.BichoService;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
-import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
@@ -28,6 +26,7 @@ import static org.mockito.Mockito.doReturn;
 
 public class BichoServiceTest {
 
+    Factory factory;
     Guarderia guarderia;
     Nivel nivel;
     ProveedorDeNiveles proveedor;
@@ -40,25 +39,25 @@ public class BichoServiceTest {
     HibernateEntrenadorDao entrenadorDao;
     Pueblo pueblo;
     Dojo dojo;
-    Factory factory;
 
     @Before
     public void setUp(){
         factory = new Factory();
-        guarderia = factory.guarderia();
-        nivel = new Nivel(2, 1,99);
+        guarderia = factory.guarderia("guarderia");
+        nivel = factory.nivel(2, 1, 99);
         List niveles = new ArrayList<Nivel>();
         niveles.add(nivel);
         proveedor = factory.proveedorDeNiveles(niveles);
         this.reptilmon = factory.especieSinEvolucion("reptilmon", TipoBicho.TIERRA);
         this.especie = factory.especieConEvolucionYRaiz("especiemon", TipoBicho.TIERRA, this.reptilmon, this.especie);
-        bicho = new Bicho(this.especie);
-        entrenador = new Entrenador("ASH", null ,proveedor);
+        Especie especie = this.especie;
+        bicho = factory.bicho(especie);
+        entrenador = factory.entrenador("ASH", null, this.proveedor);
         bichoService = Mockito.spy(new BichoServiceImp());
-        bichoDao = new HibernateBichoDao();
-        entrenadorDao = new HibernateEntrenadorDao();
-        pueblo = new Pueblo("Pueblo");
-        dojo = new Dojo("Dojo");
+        bichoDao = factory.hibernateBichoDAO();
+        entrenadorDao = factory.hibernateEntrenadorDAO();
+        pueblo = factory.pueblo();
+        dojo = factory.dojo();
 
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
@@ -67,7 +66,7 @@ public class BichoServiceTest {
     @After
     public void cleanUp() {
         TransactionRunner.run(() -> {
-            new HibernateEntrenadorDao().borrarTodo();
+            factory.hibernateEntrenadorDAO().borrarTodo();
         });
     }
 
@@ -130,7 +129,7 @@ public class BichoServiceTest {
     public void unEntrenadorPuedeAbandonarASuBichoEnUnaGuarderiaSiTieneOtro() {
         entrenador.moverseA(guarderia);
         entrenador.capturarBichomon(bicho, 10);
-        Bicho otroBicho = new Bicho(especie);
+        Bicho otroBicho = factory.bicho(especie);
         entrenador.capturarBichomon(otroBicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
@@ -146,22 +145,17 @@ public class BichoServiceTest {
     @Test
     public void siUnBichoNoCumpleLaCondicionDeEvolucionNoPuedeEvolucionar(){
         bicho.setEnergia(1d);
-        especie.setCondicionDeEvolucion(condicionBasadaEnEnergia());
+        especie.setCondicionDeEvolucion(factory.condicionBasadaEnEnergia(3));
         entrenador.capturarBichomon(bicho, 10);
         bichoService.guardarEntrenador(entrenador);
 
         assertFalse(bichoService.puedeEvolucionar(entrenador.getNombre(), bicho.getId()));
     }
 
-    public CondicionBasadaEnEnergia condicionBasadaEnEnergia() {
-        return factory.getCondicionBasadaEnEnergia(3);
-    }
-
     @Test
     public void unBichoSabeSiPuedeEvolucionarONo(){
         bicho.setEnergia(10d);
-        int cantidadDeEnergia = 3;
-        especie.setCondicionDeEvolucion(factory.getCondicionBasadaEnEnergia(cantidadDeEnergia));
+        especie.setCondicionDeEvolucion(factory.condicionBasadaEnEnergia(3));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
@@ -172,7 +166,7 @@ public class BichoServiceTest {
     @Test
     public void unBichoSiCumpleLaCondicionDeEvolucionPuedeEvolucionar(){
         bicho.setEnergia(10d);
-        especie.setCondicionDeEvolucion(factory.getCondicionBasadaEnEnergia(3));
+        especie.setCondicionDeEvolucion(factory.condicionBasadaEnEnergia(3));
         entrenador.capturarBichomon(bicho, 10);
 
         bichoService.guardarEntrenador(entrenador);
