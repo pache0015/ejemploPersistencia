@@ -8,7 +8,10 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-public class HibernateEspecieDao implements EspecieDao {
+public class HibernateEspecieDao extends HibernateDAO<Especie> implements EspecieDao {
+
+    public HibernateEspecieDao() { super(Especie.class); }
+
     @Override
     public void guardar(Especie especie) {
 

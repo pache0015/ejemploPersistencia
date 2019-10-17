@@ -7,6 +7,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.leaderboard.LeaderboardServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -50,7 +51,9 @@ public class LeaderboardServiceTest {
 
     @After
     public void cleanup() {
-        SessionFactoryProvider.destroy();
+        TransactionRunner.run(() -> {
+            especieDao.borrarTodo();
+        });
     }
 
     @Test
