@@ -28,9 +28,7 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		EspecieDao especieDao = new HibernateEspecieDao();
-		UbicacionDao ubicacionDao = new HibernateUbicacionDao();
-		return new EspecieServiceImpl(especieDao, ubicacionDao);
+		return new EspecieServiceImpl();
 	}
 	
 	/**

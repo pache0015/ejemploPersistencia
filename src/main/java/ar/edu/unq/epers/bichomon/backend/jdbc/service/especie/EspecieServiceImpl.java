@@ -2,29 +2,17 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.especie;
 
 import java.util.List;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-
-public class EspecieServiceImpl implements EspecieService {
-
-	private EspecieDao especieDao;
-	private UbicacionDao ubicacionDao;
-
-	public EspecieServiceImpl(EspecieDao especieDao, UbicacionDao ubicacionDao){
-		this.especieDao = especieDao;
-		this.ubicacionDao = ubicacionDao;
-	}
-	
+public class EspecieServiceImpl extends Service implements EspecieService {
 
 	@Override
 	public void crearEspecie(Especie especie){
 		especieDao.guardar(especie);
 	}
-	
 
 	@Override
 	public Especie getEspecie(String nombreEspecie){
@@ -35,12 +23,10 @@ public class EspecieServiceImpl implements EspecieService {
 		return especie;
 	}
 
-
 	@Override
 	public List<Especie> getAllEspecies(){
 		return especieDao.recuperarTodos();
 	}
-
 
 	@Override
 	public Bicho crearBicho(String nombreEspecie, String nombreBicho){
@@ -56,7 +42,6 @@ public class EspecieServiceImpl implements EspecieService {
 			return this.especieDao.recuperarEspeciesMasPopulares();
 		});
 	}
-
 
 	@Override
 	public List<Especie> especiesMenosPopulares() {

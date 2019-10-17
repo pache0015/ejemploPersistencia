@@ -27,7 +27,7 @@ public class HibernateEspecieServiceTest {
 
     private HibernateEspecieDao especieDao = new HibernateEspecieDao();
     private UbicacionDao ubicacionDao = new HibernateUbicacionDao();
-    private EspecieServiceImpl especieService = new EspecieServiceImpl(especieDao, ubicacionDao);
+    private EspecieServiceImpl especieService = new EspecieServiceImpl();
     private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private Nivel nivel = new Nivel(10, 1, 99);
     private BichoServiceImpl bichoService = new BichoServiceImpl();
@@ -43,6 +43,8 @@ public class HibernateEspecieServiceTest {
 
     @Before
     public void setUp() {
+        especieService.setEspecieDao(especieDao);
+        especieService.setUbicacionDao(ubicacionDao);
         bichoService.setEntrenadorDao(entrenadorDao);
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);

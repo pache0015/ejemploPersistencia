@@ -35,8 +35,8 @@ public class JDBCEspecieServiceTest {
         unaEspecie.setTipo(TipoBicho.ELECTRICIDAD);
 
         especieDao = new JDBCEspecieDAO();
-        ubicacionDao = new HibernateUbicacionDao();
-        unaEspecieService = new EspecieServiceImpl(especieDao, ubicacionDao);
+        unaEspecieService = new EspecieServiceImpl();
+        unaEspecieService.setEspecieDao(especieDao);
 
         unaEspecieService.crearEspecie(unaEspecie);
     }

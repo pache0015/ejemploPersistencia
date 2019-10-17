@@ -14,14 +14,6 @@ import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionR
 
 public class BichoServiceImpl extends Service implements BichoService {
 
-    public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
-        this.entrenadorDao = entrenadorDao;
-    }
-
-    public void setBichoDao(BichoDao bichoDao) {
-        this.bichoDao = bichoDao;
-    }
-
     @Override
     public Bicho buscar(String nombreEntrenador) {
         return run(() -> {
@@ -42,7 +34,6 @@ public class BichoServiceImpl extends Service implements BichoService {
     public ResultadoDeBusqueda getBusqueda() {
         return new ResultadoDeBusqueda(LocalTime.of(1, 1, 1, 11111), 1, 1);
     }
-
 
     @Override
     public void abandonar(String nombreEntrenador, Integer idBicho) {
