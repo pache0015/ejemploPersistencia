@@ -105,7 +105,7 @@ public class Bicho {
     }
 
     public Especie getEspecieRaiz() {
-        return especie;
+        return especie.getEspecieRaiz();
     }
 
     public void evolucionar() {

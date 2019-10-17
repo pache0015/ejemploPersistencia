@@ -37,7 +37,7 @@ public class DueloTest {
     @Before
     public void setup(){
         reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
-        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon);
+        largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon, largartomon);
         bicho = new Bicho(reptilmon, "helloworld");
         bicho1 = new Bicho(largartomon, "blabla");
         bicho.setEnergia(1000.00);

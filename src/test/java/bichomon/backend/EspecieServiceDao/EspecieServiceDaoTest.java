@@ -34,7 +34,8 @@ public class EspecieServiceDaoTest {
     private Entrenador entrenadorUno;
     private Entrenador entrenadorDos;
     private GuarderiaDao guarderiaDao = new HibernateGuarderiaDao();
-    private Guarderia guarderia = new Guarderia("GuaGuaGuarderia");
+    private Guarderia guarderia = new Guarderia("GuaGuarderia");
+    private Guarderia guarderiaDos = new Guarderia("guarderia");
     private Especie especie_fuego;
     private Especie especie_tierra;
     private Especie especie_agua;
@@ -47,7 +48,7 @@ public class EspecieServiceDaoTest {
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);
         entrenadorUno = new Entrenador("Alberto", guarderia, proveedor);
-        entrenadorDos = new Entrenador("Cristina", guarderia, proveedor);
+        entrenadorDos = new Entrenador("Cristina", guarderiaDos, proveedor);
         especie_tierra = new Especie("especie_tierra", TipoBicho.TIERRA);
         especie_fuego = new Especie("especie_fuego", TipoBicho.FUEGO);
         especie_agua = new Especie("especie_agua", TipoBicho.AGUA);
@@ -61,14 +62,15 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test001() {
+    public void NoSeTieneNingunaEspeciePopularEImpopularDeUnaBaseDeDatosVacia() {
 
         Assert.assertEquals(0, especieServiceDao.especiesMasPopulares().size());
+        Assert.assertEquals(0, especieServiceDao.especiesMenosPopulares().size());
 
     }
 
     @Test
-    public void test002() {
+    public void SeTieneUnaEspeciePorqueUnEntrenadorDelSistemaCaputroUnBicho() {
         Bicho bicho = new Bicho(especie_fuego);
         entrenadorUno.capturarBichomon(bicho, 1);
         bichoService.guardarEntrenador(entrenadorUno);
@@ -77,20 +79,19 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test003() {
+    public void SeTienenLasEspeciesMasPopularesEntreLosBichosCapturadosDeLosEntrenadores() {
         Bicho bicho = new Bicho(especie_fuego);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_tierra);
         Bicho bichoTres = new Bicho(especie_tierra);
         Bicho bichoCuatro = new Bicho(especie_fuego);
-        Bicho bichoCinco = new Bicho(especie_agua);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorUno.capturarBichomon(bichoUno, 1);
         entrenadorUno.capturarBichomon(bichoDos, 1);
         entrenadorUno.capturarBichomon(bichoTres, 1);
         entrenadorUno.capturarBichomon(bichoCuatro, 1);
-        entrenadorUno.capturarBichomon(bichoCinco, 1);
+
 
         bichoService.guardarEntrenador(entrenadorUno);
         List<Especie> especiesMasPopulares = especieServiceDao.especiesMasPopulares();
@@ -102,7 +103,7 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test004() {
+    public void SeObtieneLasEspeciesQuePertenecenAUnaGuarderia() {
         Bicho bicho = new Bicho(especie_tierra);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_agua);
@@ -128,7 +129,7 @@ public class EspecieServiceDaoTest {
     }
 
     @Test
-    public void test005() {
+    public void SeTieneLasEspeciesDeTodasLasGuarderiasDelSistema() {
         Bicho bicho = new Bicho(especie_tierra);
         Bicho bichoUno = new Bicho(especie_tierra);
         Bicho bichoDos = new Bicho(especie_agua);
@@ -142,15 +143,17 @@ public class EspecieServiceDaoTest {
         entrenadorDos.capturarBichomon(bichoCuatro, 1);
 
         entrenadorUno.abandonar(bicho);
-        //entrenadorDos.abandonar(bichoCuatro);
-        //entrenadorDos.abandonar(bichoDos);
+        entrenadorDos.abandonar(bichoCuatro);
+
 
         bichoService.guardarEntrenador(entrenadorUno);
         bichoService.guardarEntrenador(entrenadorDos);
 
         List<Especie> especiesMenosPopulares = especieServiceDao.especiesMenosPopulares();
 
-        Assert.assertEquals(1, especiesMenosPopulares.size());
+        Assert.assertEquals(2, especiesMenosPopulares.size());
+        Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
+        Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_fuego")));
 
     }
 
