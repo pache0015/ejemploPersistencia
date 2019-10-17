@@ -1,7 +1,6 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateDAO;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -37,9 +36,16 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
     }
 
     @Override
-    public void actualizarUbicacion(Ubicacion ubicacionRecuperada) {
+    public void actualizarUbicacion(Entrenador entrenador, Ubicacion ubicacionRecuperada) {
 
         Session session = TransactionRunner.getCurrentSession();
-        
+        //String hql = "update Entrenador e set e.ubicacionActual = :entrenador.ubicacionActual where e.nombre = entrenador.nombre";
+
+        //String hqlUpdate = "update Entrenador e set e.ubicacionActual = :ubicacionRecuperada where e.nombre = : entrenador";
+        //Query updatedEntities = session.createQuery(hqlUpdate);
+        //updatedEntities.setParameter("entrenador", entrenador);
+        //updatedEntities.setParameter("ubicacionRecuperada", ubicacionRecuperada);
+        session.saveOrUpdate(entrenador);
+
     }
 }

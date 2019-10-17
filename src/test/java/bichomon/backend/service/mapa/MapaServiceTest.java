@@ -9,6 +9,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa.MapaServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
@@ -17,6 +18,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 import org.junit.After;
@@ -67,6 +69,11 @@ public class MapaServiceTest {
         ubicacionDao = new HibernateUbicacionDao();
         mapaService = new MapaServiceImp();
 
+
+
+        mapaService.setUbicacionDao(ubicacionDao);
+        mapaService.setEntrenadorDao(entrenadorDao);
+        mapaService.setBichoDao(bichoDao);
     }
 
     @After
@@ -75,28 +82,50 @@ public class MapaServiceTest {
 
     @Test
     public void unEntrenadorCambiaDeUbicacion(){
-        mapaService.setUbicacionDao(ubicacionDao);
-        mapaService.setEntrenadorDao(entrenadorDao);
-        mapaService.setBichoDao(bichoDao);
 
         bichoService.guardarEntrenador(entrenador);
 
+        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
         mapaService.mover(entrenador.getNombre(), dojo.getNombre());
-        Assert.assertEquals("gym", entrenador.getUbicacionActual().getNombre());
+
+        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
+
+        Assert.assertEquals("gym", entrenadorRecuperado.getUbicacionActual().getNombre());
     }
-    // Error.
 
 
 
     @Test
     public void dosEntrenadoresEnLaMismaUbicacionSonGuardadosyLuegoSePideLaCantidadDeEentrenadoresEnEsaUbicacion(){
-        mapaService.setUbicacionDao(ubicacionDao);
-        mapaService.setEntrenadorDao(entrenadorDao);
-        mapaService.setBichoDao(bichoDao);
+
 
         bichoService.guardarEntrenador(entrenador);
         bichoService.guardarEntrenador(entrenador2);
 
         Assert.assertEquals(2, mapaService.cantidadDeEntrenadores(guarderia.getNombre()));
+    }
+
+    @Test(expected = NoHayCampeonException.class)
+    public void unDojoNoTieneCampeon(){
+
+        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+        mapaService.campeon(dojo.getNombre());
+    }
+
+    @Test
+    public void seLePideElCampeonActualAUnDojo(){
+        dojo.setBichoCampeon(bicho);
+
+        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+
+        String nombreBicho =  mapaService.campeon(dojo.getNombre()).getNombre();
+
+        Assert.assertEquals(bicho.getNombre(), nombreBicho);
+    }
+
+    @Test
+    public void SeVerificaElCampeonHistoricoDeUnDojo(){
+
+        //WIP
     }
 }

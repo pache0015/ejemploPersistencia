@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 public interface BichoService {
 
@@ -20,4 +21,5 @@ public interface BichoService {
 
     Bicho evolucionar(String nombreEntrenador, Integer idBicho);
 
+    void guardarUbicacion(Ubicacion ubicacion);
 }

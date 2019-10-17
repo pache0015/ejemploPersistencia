@@ -19,7 +19,7 @@ public class Dojo extends Ubicacion {
 
     @OneToOne
     private Entrenador entrenadorCampeon;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
     @OneToMany
     private List<Bicho> bichos;

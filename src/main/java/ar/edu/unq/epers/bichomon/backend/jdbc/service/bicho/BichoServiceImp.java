@@ -2,10 +2,12 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.BusquedaExitosa;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 
 import java.time.LocalTime;
@@ -16,6 +18,7 @@ public class BichoServiceImp implements BichoService {
 
     private EntrenadorDao entrenadorDao;
     private BichoDao bichoDao;
+    private UbicacionDao ubicacionDao;
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
         this.entrenadorDao = entrenadorDao;
@@ -108,5 +111,10 @@ public class BichoServiceImp implements BichoService {
     @Override
     public void guardarEntrenador(Entrenador entrenador) {
         run(() -> this.entrenadorDao.guardar(entrenador));
+    }
+
+    @Override
+    public void guardarUbicacion(Ubicacion ubicacion){
+        run(()-> this.ubicacionDao.guardar(ubicacion));
     }
 }

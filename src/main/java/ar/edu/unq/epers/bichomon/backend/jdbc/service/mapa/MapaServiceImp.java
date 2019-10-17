@@ -45,7 +45,7 @@ public class MapaServiceImp implements MapaService {
 
             entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
 
-            entrenadorDao.actualizarUbicacion(ubicacionRecuperada);
+            entrenadorDao.actualizarUbicacion(entrenadorRecuperado, ubicacionRecuperada);
         });
     }
 
@@ -57,14 +57,14 @@ public class MapaServiceImp implements MapaService {
     }
 
     @Override
-    public Bicho campeon(String dojo) {
+    public Bicho campeon(String nombreDojo) {
         return run(() -> {
-            try {
-                return ubicacionDao.recuperarDojo(dojo).getBichoCAmpeon();
-
-            } catch (RuntimeException e) {
+            Dojo dojo = ubicacionDao.recuperarDojo(nombreDojo);
+            Bicho posibleCampeon = dojo.getBichoCAmpeon();
+            if (posibleCampeon == null) {
                 throw new NoHayCampeonException();
             }
+            return posibleCampeon;
         });
 
     }
@@ -72,27 +72,13 @@ public class MapaServiceImp implements MapaService {
     @Override
     public Bicho campeonHistorico(String dojo) {
         return run(() -> {
-            Bicho bichoHistorico = null;
-
-            String dojou = dojo;
             Session session = TransactionRunner.getCurrentSession();
-            String hql = "select nombre from Dojo where nombre = 'dojou'";
+            String hql = "select f.bichoCampeon from FichaDeCampeon f where f.dojo.nombre = :nombre order by days(f.fechaFin) - days(f.fechaInicio)";
 
-            String hql2 = "select d from Dojo d where nombre = 'dojo'";
+            Query<Bicho> query = session.createQuery(hql, Bicho.class);
+            query.setParameter("nombre", dojo);
 
-            //   Query<Dojo> query2 = session.createNativeQuery("SELECT DATEDIFF select d.bichoCampeon from Dojo d order by max ");
-            //     Query<Dojo> query = session.createQuery(hql2, Dojo.class);
-            Query<Dojo> query = session.createQuery(hql, Dojo.class);
-
-            Dojo dojoRecuperado = query.getResultList().get(0);
-
-            FichaDeCampeon fichaMasDuradera = new FichaDeCampeon(LocalDate.now(), LocalDate.now());
-            for (FichaDeCampeon ficha : dojoRecuperado.fichasDeCampeones()) {
-                if (ficha.duracionComoCampeon() > fichaMasDuradera.duracionComoCampeon()) {
-                    fichaMasDuradera = ficha;
-                }
-            }
-            return fichaMasDuradera.getBichoCampeon();
+            return query.getSingleResult();
         });
     }
 }

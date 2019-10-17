@@ -11,5 +11,5 @@ public interface EntrenadorDao {
     void guardar(Entrenador entrenador);
     List<Entrenador> recuperarTodosEnUbicacion(String ubicacion);
 
-    void actualizarUbicacion(Ubicacion ubicacionRecuperada);
+    void actualizarUbicacion(Entrenador entrenador, Ubicacion ubicacionRecuperada);
 }
