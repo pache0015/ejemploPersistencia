@@ -1,10 +1,10 @@
 package bichomon.backend.EspecieServiceDao;
 
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.GuarderiaDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateGuarderiaDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -26,8 +26,8 @@ import java.util.List;
 public class EspecieServiceTest {
 
     private HibernateEspecieDao especieDao = new HibernateEspecieDao();
-    private GuarderiaDao guarderiaDao = new HibernateGuarderiaDao();
-    private EspecieServiceImpl especieService = new EspecieServiceImpl(especieDao, guarderiaDao);
+    private UbicacionDao ubicacionDao = new HibernateUbicacionDao();
+    private EspecieServiceImpl especieService = new EspecieServiceImpl(especieDao, ubicacionDao);
     private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private Nivel nivel = new Nivel(10, 1, 99);
     private BichoServiceImp bichoService = new BichoServiceImp();

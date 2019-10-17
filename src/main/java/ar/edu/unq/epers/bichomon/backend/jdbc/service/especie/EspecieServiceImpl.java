@@ -3,7 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.especie;
 import java.util.List;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.GuarderiaDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
@@ -14,11 +14,11 @@ import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionR
 public class EspecieServiceImpl implements EspecieService {
 
 	private EspecieDao especieDao;
-	private GuarderiaDao guarderiaDao;
+	private UbicacionDao ubicacionDao;
 
-	public EspecieServiceImpl(EspecieDao especieDao, GuarderiaDao guarderiaDao){
+	public EspecieServiceImpl(EspecieDao especieDao, UbicacionDao ubicacionDao){
 		this.especieDao = especieDao;
-		this.guarderiaDao = guarderiaDao;
+		this.ubicacionDao = ubicacionDao;
 	}
 	
 
@@ -70,7 +70,7 @@ public class EspecieServiceImpl implements EspecieService {
 	@Override
 	public void guardarGuarderia(Guarderia guarderia) {
 		run(() -> {
-			this.guarderiaDao.guardar(guarderia);
+			this.ubicacionDao.guardar(guarderia);
 		});
 	}
 
