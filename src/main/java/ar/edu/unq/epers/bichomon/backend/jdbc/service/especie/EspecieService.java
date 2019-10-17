@@ -53,6 +53,4 @@ public interface EspecieService {
     List<Especie> especiesMasPopulares();
 
     List<Especie> especiesMenosPopulares();
-
-    void guardarGuarderia(Guarderia guarderia);
 }

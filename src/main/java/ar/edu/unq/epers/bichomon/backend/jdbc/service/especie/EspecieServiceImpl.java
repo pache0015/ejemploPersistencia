@@ -6,8 +6,6 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
 
@@ -66,12 +64,4 @@ public class EspecieServiceImpl implements EspecieService {
 			return this.especieDao.recuperarEspeciesMenosPopulares();
 		});
 	}
-
-	@Override
-	public void guardarGuarderia(Guarderia guarderia) {
-		run(() -> {
-			this.ubicacionDao.guardar(guarderia);
-		});
-	}
-
 }

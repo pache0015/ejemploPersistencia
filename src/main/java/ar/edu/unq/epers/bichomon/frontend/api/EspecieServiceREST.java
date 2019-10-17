@@ -73,10 +73,4 @@ public class EspecieServiceREST implements EspecieService {
 	public List<Especie> especiesMenosPopulares() {
 		return null;
 	}
-
-	@Override
-	public void guardarGuarderia(Guarderia guarderia) {
-
-	}
-
 }
