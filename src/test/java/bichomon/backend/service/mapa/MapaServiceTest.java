@@ -140,6 +140,8 @@ public class MapaServiceTest {
         dojo.setFichas(ficha1);
         dojo.setFichas(ficha2);
 
+      //  TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+
         Assert.assertEquals(bicho, mapaService.campeonHistorico(dojo.getNombre()));
     }
 }

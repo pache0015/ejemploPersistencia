@@ -94,6 +94,7 @@ public class Dojo extends Ubicacion {
 
 
     //Esta mal... Pero no tan mal
+    //Metodo hecho para testar consulta en MapaService campeonHistorico
 
     public void  setFichas(FichaDeCampeon ficha){
         this.fichas.add(ficha);
