@@ -10,4 +10,5 @@ public interface UbicacionDao {
     Ubicacion recuperar(String ubicacion);
     Dojo recuperarDojo(String dojo);
 
+    Integer recuperarIdCampeonHistoricoEnDojo(String dojo);
 }

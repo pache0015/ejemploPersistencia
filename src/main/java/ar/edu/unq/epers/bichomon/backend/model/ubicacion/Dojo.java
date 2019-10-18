@@ -89,4 +89,13 @@ public class Dojo extends Ubicacion {
     public void setBichoCampeon(Bicho bichoCampeon) {
         this.bichoCampeon = bichoCampeon;
     }
+
+
+
+
+    //Esta mal... Pero no tan mal
+
+    public void  setFichas(FichaDeCampeon ficha){
+        this.fichas.add(ficha);
+    }
 }

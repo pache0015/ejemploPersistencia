@@ -17,6 +17,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
@@ -28,6 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class MapaServiceTest {
     Especie especie;
     Especie reptilmon;
     Bicho bicho;
+    Bicho bicho2;
     BichoServiceImp bichoService;
     BichoDao bichoDao;
     EntrenadorDao entrenadorDao;
@@ -59,6 +62,7 @@ public class MapaServiceTest {
         reptilmon = new Especie("reptilmon", TipoBicho.TIERRA);
         especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon);
         bicho = new Bicho(especie);
+        bicho2 = new Bicho(especie);
         entrenador = new Entrenador("ASH", guarderia ,proveedor);
         entrenador2 = new Entrenador("ASHU", guarderia ,proveedor);
         bichoService = Mockito.spy(new BichoServiceImp());
@@ -129,7 +133,13 @@ public class MapaServiceTest {
 
     @Test
     public void SeVerificaElCampeonHistoricoDeUnDojo(){
+        FichaDeCampeon ficha1 = new FichaDeCampeon(entrenador,bicho, LocalDate.of(2018, 10,18), dojo);
 
-        //WIP
+        FichaDeCampeon ficha2 = new FichaDeCampeon(entrenador2,bicho, LocalDate.of(2019, 10,18), dojo);
+
+        dojo.setFichas(ficha1);
+        dojo.setFichas(ficha2);
+
+        Assert.assertEquals(bicho, mapaService.campeonHistorico(dojo.getNombre()));
     }
 }

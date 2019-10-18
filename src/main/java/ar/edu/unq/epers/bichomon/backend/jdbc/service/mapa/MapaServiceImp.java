@@ -72,13 +72,13 @@ public class MapaServiceImp implements MapaService {
     @Override
     public Bicho campeonHistorico(String dojo) {
         return run(() -> {
-            Session session = TransactionRunner.getCurrentSession();
-            String hql = "select f.bichoCampeon from FichaDeCampeon f where f.dojo.nombre = :nombre order by days(f.fechaFin) - days(f.fechaInicio)";
 
-            Query<Bicho> query = session.createQuery(hql, Bicho.class);
-            query.setParameter("nombre", dojo);
+            Integer idBicho =  ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
 
-            return query.getSingleResult();
+            Bicho bichoRecuperado = bichoDao.recuperar(idBicho);
+
+            return bichoRecuperado;
+
         });
     }
 }
