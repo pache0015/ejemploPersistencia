@@ -17,12 +17,11 @@ public class Dojo extends Ubicacion {
     @OneToOne
     private Entrenador entrenadorCampeon;
     //TODO: Pasar a ManyToOne
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Bicho> bichos;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dojo_nombre")
     private List<FichaDeCampeon> fichas;
 
     public Dojo(String nombre) {
@@ -94,6 +93,7 @@ public class Dojo extends Ubicacion {
 
 
     //Esta mal... Pero no tan mal
+    //Metodo hecho para testar consulta en MapaService campeonHistorico
 
     public void  setFichas(FichaDeCampeon ficha){
         this.fichas.add(ficha);

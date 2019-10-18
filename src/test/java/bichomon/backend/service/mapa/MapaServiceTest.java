@@ -135,11 +135,18 @@ public class MapaServiceTest {
     public void SeVerificaElCampeonHistoricoDeUnDojo(){
         FichaDeCampeon ficha1 = new FichaDeCampeon(entrenador,bicho, LocalDate.of(2018, 10,18), dojo);
 
-        FichaDeCampeon ficha2 = new FichaDeCampeon(entrenador2,bicho, LocalDate.of(2019, 10,18), dojo);
+        ficha1.setFechaFin(LocalDate.of(2019, 10,10));
+        FichaDeCampeon ficha2 = new FichaDeCampeon(entrenador2,bicho2, LocalDate.of(2019, 10,17), dojo);
+        ficha2.setFechaFin(LocalDate.now());
 
         dojo.setFichas(ficha1);
         dojo.setFichas(ficha2);
 
-        Assert.assertEquals(bicho, mapaService.campeonHistorico(dojo.getNombre()));
+        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+
+
+
+        Assert.assertEquals(bicho.getNombre(), mapaService.campeonHistorico(dojo.getNombre()).getNombre());
     }
+
 }

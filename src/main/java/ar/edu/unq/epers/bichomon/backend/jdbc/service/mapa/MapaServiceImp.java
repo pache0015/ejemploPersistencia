@@ -73,11 +73,7 @@ public class MapaServiceImp implements MapaService {
     public Bicho campeonHistorico(String dojo) {
         return run(() -> {
 
-            Integer idBicho =  ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
-
-            Bicho bichoRecuperado = bichoDao.recuperar(idBicho);
-
-            return bichoRecuperado;
+            return ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
 
         });
     }

@@ -29,16 +29,16 @@ public class HibernateUbicacionDao extends HibernateDAO<Ubicacion> implements Ub
     }
 
     @Override
-    public Integer recuperarIdCampeonHistoricoEnDojo(String dojo) {
+    public Bicho recuperarIdCampeonHistoricoEnDojo(String dojo) {
         Session session = TransactionRunner.getCurrentSession();
         String hql = "select f.bichoCampeon from FichaDeCampeon f where f.dojo.nombre = :nombre " +
-                "order by case when f.fechaFin is not null then days(f.fechaFin) - days(f.fechaInicio) " +
-                "else days(current_date) - days(f.fechaInicio) end";
-
+                "order by (DATEDIFF(IFNULL(f.fechaFin, current_date ), f.fechaInicio)) asc ";
         Query<Bicho> query = session.createQuery(hql, Bicho.class);
         query.setParameter("nombre", dojo);
 
-        return query.getSingleResult().getId();
+        query.setMaxResults(1);
+
+        return query.getSingleResult();
     }
     @Override
     public Guarderia recuperarGuarderia(String nombre_guarderia) {

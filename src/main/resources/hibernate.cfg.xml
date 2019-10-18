@@ -11,6 +11,7 @@
         <property name="connection.password">root</property>
 
 
+
         <!-- SQL dialect -->
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
