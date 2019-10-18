@@ -3,27 +3,30 @@ package ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+
 @Entity
 public class FichaDeCampeon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Entrenador campeon;
     @Column
     private LocalDate fechaInicio;
     @Column
     private LocalDate fechaFin;
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Dojo dojo;
+
 
     public FichaDeCampeon(Entrenador campeon, Bicho bicho, LocalDate fechaInicio, Dojo dojo){
         this.campeon = campeon;
