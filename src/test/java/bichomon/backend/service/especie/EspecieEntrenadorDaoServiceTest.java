@@ -8,7 +8,10 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
-import org.junit.*;
+import bichomon.backend.factory.Factory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class EspecieEntrenadorDaoServiceTest {
 
     @Before
     public void setUp() {
-        unaEspecie = new Especie("fuego", TipoBicho.AIRE);
+        unaEspecie = Factory.especieSinEvolucion("fuego", TipoBicho.AIRE);
         unaEspecie.setPeso(15);
         unaEspecie.setAltura(198);
         unaEspecie.setCantidadBichos(0);

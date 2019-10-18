@@ -6,6 +6,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.entrenador.Experiencia;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -19,15 +20,23 @@ import java.util.List;
 
 public class Factory {
 
+    public static Experiencia experienciaPorCaptura(int puntosGanados, String accion) {
+        return new Experiencia(puntosGanados, accion);
+    }
+
+    public static Nivel nivel(int numeroNivel, int experienciaMinima, int experienciaMaxima) {
+        return new Nivel(numeroNivel, experienciaMinima, experienciaMaxima);
+    }
+
+    public static ProveedorDeNiveles proveedorDeNiveles(List<Nivel> niveles) {
+        return new ProveedorDeNiveles(niveles);
+    }
+
     public Guarderia guarderia(String nombre) {
         return new Guarderia(nombre);
     }
 
-    public ProveedorDeNiveles proveedorDeNiveles(List niveles) {
-        return new ProveedorDeNiveles(niveles);
-    }
-
-    public Especie especieSinEvolucion(String nombre, TipoBicho tipoBicho) {
+    public static Especie especieSinEvolucion(String nombre, TipoBicho tipoBicho) {
         return new Especie(nombre, tipoBicho);
     }
 
@@ -35,39 +44,35 @@ public class Factory {
         return new Especie(nombre, tipoBicho, evolucionEspecie, raizEspecie);
     }
 
-    public Bicho bicho(Especie especie) {
+    public static Bicho bicho(Especie especie) {
         return new Bicho(especie);
     }
 
-    public Entrenador entrenador(String nombre, Ubicacion ubicacion, ProveedorDeNiveles proveedor) {
+    public static Entrenador entrenador(String nombre, Ubicacion ubicacion, ProveedorDeNiveles proveedor) {
         return new Entrenador(nombre, ubicacion, proveedor);
     }
 
-    public HibernateBichoDao hibernateBichoDAO() {
+    public static HibernateBichoDao hibernateBichoDAO() {
         return new HibernateBichoDao();
     }
 
-    public HibernateEntrenadorDao hibernateEntrenadorDAO() {
+    public static HibernateEntrenadorDao hibernateEntrenadorDAO() {
         return new HibernateEntrenadorDao();
     }
 
-    public Pueblo pueblo() {
+    public static Pueblo pueblo() {
         return new Pueblo("Pueblo");
     }
 
-    public Dojo dojo() {
+    public static Dojo dojo() {
         return new Dojo("Dojo");
     }
 
-    public Nivel nivel(int numeroNivel, int experienciaMinima, int experienciaMaxima) {
-        return new Nivel(numeroNivel, experienciaMinima, experienciaMaxima);
-    }
-
-    public CondicionBasadaEnEnergia condicionBasadaEnEnergia(int cantidadDeEnergia) {
+    public static CondicionBasadaEnEnergia condicionBasadaEnEnergia(int cantidadDeEnergia) {
         return new CondicionBasadaEnEnergia(cantidadDeEnergia);
     }
 
-    public BichoServiceImp bichoServiceImpl() {
+    public static BichoServiceImp bichoServiceImpl() {
         return new BichoServiceImp();
     }
 }

@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +29,12 @@ public class FichaDeCampeonTest {
 
     @Before
     public void setup(){
-        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
+        reptilmon = Factory.especieSinEvolucion("Reptilmon", TipoBicho.TIERRA);
         bicho = new Bicho(reptilmon, "helloworld");
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-        campeon = new Entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        campeon = Factory.entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
         fechaInicio = LocalDate.now();
         ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
     }

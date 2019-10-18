@@ -1,4 +1,4 @@
-package bichomon.backend.ServiceTest;
+package bichomon.backend.factory;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -17,12 +17,12 @@ public class TestFactory {
         Nivel nivel = new Nivel(3, 1,99);
         List niveles = new ArrayList<Nivel>();
         niveles.add(nivel);
-        ProveedorDeNiveles proveedor = new ProveedorDeNiveles(niveles);
-        return new Entrenador(nombre, ubicacion, proveedor);
+        ProveedorDeNiveles proveedor = Factory.proveedorDeNiveles(niveles);
+        return Factory.entrenador(nombre, ubicacion, proveedor);
     }
 
     public static Bicho nuevoBicho() {
-        Especie especie = new Especie("Especie", TipoBicho.TIERRA);
-        return new Bicho(especie);
+        Especie especie = Factory.especieSinEvolucion("Especie", TipoBicho.TIERRA);
+        return Factory.bicho(especie);
     }
 }

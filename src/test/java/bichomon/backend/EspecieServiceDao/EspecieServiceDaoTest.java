@@ -30,15 +30,15 @@ public class EspecieServiceDaoTest {
     private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private HibernateEspecieDao especieDao = new HibernateEspecieDao();
     private Nivel nivel = new Nivel(10, 1, 99);
-    private BichoServiceImp bichoService = factory.bichoServiceImpl();
+    private BichoServiceImp bichoService = Factory.bichoServiceImpl();
 
     private List<Nivel> niveles = new ArrayList<>();
     private ProveedorDeNiveles proveedor;
     private Entrenador entrenadorUno;
     private Entrenador entrenadorDos;
     private GuarderiaDao guarderiaDao = new HibernateGuarderiaDao();
-    private Guarderia guarderia = new Guarderia("GuaGuarderia");
-    private Guarderia guarderiaDos = new Guarderia("guarderia");
+    private Guarderia guarderia = factory.guarderia("GuaGuarderia");
+    private Guarderia guarderiaDos = factory.guarderia("guarderia");
     private Especie especie_fuego;
     private Especie especie_tierra;
     private Especie especie_agua;
@@ -49,12 +49,13 @@ public class EspecieServiceDaoTest {
         especieServiceDao.setEspecieDao(especieDao);
         especieServiceDao.setGuarderiaDao(guarderiaDao);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-        entrenadorUno = new Entrenador("Alberto", guarderia, proveedor);
-        entrenadorDos = new Entrenador("Cristina", guarderiaDos, proveedor);
-        especie_tierra = new Especie("especie_tierra", TipoBicho.TIERRA);
-        especie_fuego = new Especie("especie_fuego", TipoBicho.FUEGO);
-        especie_agua = new Especie("especie_agua", TipoBicho.AGUA);
+        List<Nivel> niveles = this.niveles;
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        entrenadorUno = Factory.entrenador("Alberto", this.guarderia, this.proveedor);
+        entrenadorDos = Factory.entrenador("Cristina", guarderiaDos, this.proveedor);
+        this.especie_tierra = Factory.especieSinEvolucion("especie_tierra", TipoBicho.TIERRA);
+        especie_fuego = Factory.especieSinEvolucion("especie_fuego", TipoBicho.FUEGO);
+        especie_agua = Factory.especieSinEvolucion("especie_agua", TipoBicho.AGUA);
     }
 
     @After
@@ -74,7 +75,8 @@ public class EspecieServiceDaoTest {
 
     @Test
     public void SeTieneUnaEspeciePorqueUnEntrenadorDelSistemaCaputroUnBicho() {
-        Bicho bicho = new Bicho(especie_fuego);
+        Especie especie = this.especie_fuego;
+        Bicho bicho = Factory.bicho(especie);
         entrenadorUno.capturarBichomon(bicho, 1);
         bichoService.guardarEntrenador(entrenadorUno);
 
@@ -83,11 +85,11 @@ public class EspecieServiceDaoTest {
 
     @Test
     public void SeTienenLasEspeciesMasPopularesEntreLosBichosCapturadosDeLosEntrenadores() {
-        Bicho bicho = new Bicho(especie_fuego);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_tierra);
-        Bicho bichoTres = new Bicho(especie_tierra);
-        Bicho bichoCuatro = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_fuego);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_tierra);
+        Bicho bichoTres = Factory.bicho(especie_tierra);
+        Bicho bichoCuatro = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorUno.capturarBichomon(bichoUno, 1);
@@ -107,10 +109,10 @@ public class EspecieServiceDaoTest {
 
     @Test
     public void SeObtieneLasEspeciesQuePertenecenAUnaGuarderia() {
-        Bicho bicho = new Bicho(especie_tierra);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_agua);
-        Bicho bichoTres = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_tierra);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_agua);
+        Bicho bichoTres = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorUno.capturarBichomon(bichoUno, 1);
@@ -133,11 +135,11 @@ public class EspecieServiceDaoTest {
 
     @Test
     public void SeTieneLasEspeciesDeTodasLasGuarderiasDelSistema() {
-        Bicho bicho = new Bicho(especie_tierra);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_agua);
-        Bicho bichoTres = new Bicho(especie_fuego);
-        Bicho bichoCuatro = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_tierra);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_agua);
+        Bicho bichoTres = Factory.bicho(especie_fuego);
+        Bicho bichoCuatro = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorDos.capturarBichomon(bichoUno, 1);

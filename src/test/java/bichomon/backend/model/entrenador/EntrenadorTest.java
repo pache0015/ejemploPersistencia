@@ -4,6 +4,7 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.*;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,11 +18,11 @@ public class EntrenadorTest {
 
     private Entrenador entrenador;
     private ProveedorDeNiveles proveedor;
-    private Nivel nivelUno  = new Nivel(1, 1, 99);
-    private Nivel nivelDos  = new Nivel(2, 100, 400);
-    private Nivel nivelTres = new Nivel(3, 401, 1000);
-    private Nivel nivelCuatro = new Nivel(4, 1001, 2000);
-    private Nivel nivelCinco  = new Nivel(5, 2001, 3000);
+    private Nivel nivelUno = Factory.nivel(1, 1, 99);
+    private Nivel nivelDos = Factory.nivel(2, 100, 400);
+    private Nivel nivelTres = Factory.nivel(3, 401, 1000);
+    private Nivel nivelCuatro = Factory.nivel(4, 1001, 2000);
+    private Nivel nivelCinco = Factory.nivel(5, 2001, 3000);
     private List<Nivel> niveles = new ArrayList<>();
     private Bicho bichoUno;
     private Bicho bichoDos;
@@ -37,15 +38,16 @@ public class EntrenadorTest {
         niveles.add(nivelCuatro);
         niveles.add(nivelCinco);
 
-        proveedor = new ProveedorDeNiveles(niveles);
-        entrenador = new Entrenador("Ash", null, proveedor);
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        entrenador = Factory.entrenador("Ash", null, proveedor);
 
         bichoUno = new Bicho();
         bichoDos = new Bicho();
         bichoTres= new Bicho();
-        experienciaPorCaptura = new Experiencia(10, "Capturar bichomon");
+        experienciaPorCaptura = Factory.experienciaPorCaptura(10, "Capturar bichomon");
 
     }
+
     @Test
     public void test_constructoDeEntrenador(){
         List listaDeBichosVacios =  new ArrayList<>();
@@ -68,7 +70,7 @@ public class EntrenadorTest {
 
     @Test
     public void test003_unEntrenadorGanaTantaExperienciaQueSubeDeNivel(){
-        Experiencia tabla = new Experiencia(200, "Just for testing");
+        Experiencia tabla = Factory.experienciaPorCaptura(200, "Just for testing");
 
 
         Assert.assertEquals(entrenador.getNivel().numeroNivel, nivelUno.numeroNivel);
@@ -93,15 +95,15 @@ public class EntrenadorTest {
             entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
             entrenador.capturarBichomon(bichoTres, experienciaPorCaptura.puntosDeExperiencia());
         }catch (LimiteBicho error){
-            Assert.assertEquals("Tu lista esta llena, sube de nivel para caputar mas bichomons", error.getMessage());
+            Assert.assertEquals(LimiteBicho.ERROR_LIMITE_DE_BICHOS, error.getMessage());
         }
     }
 
     @Test
     public void un_entrenador_puede_abandonar_un_pokemon_en_principio_si_tiene_mas_de_uno() throws LimiteBicho {
-        Especie especie = new Especie("Especie", TipoBicho.TIERRA);
-        entrenador.capturarBichomon(new Bicho(especie), 100);
-        entrenador.capturarBichomon(new Bicho(especie), 10);
+        Especie especie = Factory.especieSinEvolucion("Especie", TipoBicho.TIERRA);
+        entrenador.capturarBichomon(Factory.bicho(especie), 100);
+        entrenador.capturarBichomon(Factory.bicho(especie), 10);
         assertTrue(entrenador.puedeAbandonar());
     }
 }

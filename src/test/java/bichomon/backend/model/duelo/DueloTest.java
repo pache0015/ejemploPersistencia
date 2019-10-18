@@ -10,7 +10,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class DueloTest {
     Duelo duelo;
     @Before
     public void setup(){
-        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
+        reptilmon = Factory.especieSinEvolucion("Reptilmon", TipoBicho.TIERRA);
         largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon, largartomon);
         bicho = new Bicho(reptilmon, "helloworld");
         bicho1 = new Bicho(largartomon, "blabla");
@@ -44,12 +44,12 @@ public class DueloTest {
         bicho1.setEnergia(1000.00);
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
+        proveedor = Factory.proveedorDeNiveles(niveles);
 
-        campeon = new Entrenador("campeon", new Dojo("Guarderia"), proveedor);
+        campeon = Factory.entrenador("campeon", new Dojo("Guarderia"), proveedor);
         campeon.setBichoParaDuelo(bicho);
 
-        retador = new Entrenador("Entrenador", new Dojo("Guarderia"), proveedor);
+        retador = Factory.entrenador("Entrenador", new Dojo("Guarderia"), proveedor);
         retador.setBichoParaDuelo(bicho1);
         fechaInicio = LocalDate.now();
         ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
