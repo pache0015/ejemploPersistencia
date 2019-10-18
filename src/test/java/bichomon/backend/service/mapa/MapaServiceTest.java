@@ -7,7 +7,7 @@ import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa.MapaServiceImp;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
@@ -42,7 +42,7 @@ public class MapaServiceTest {
     Especie reptilmon;
     Bicho bicho;
     Bicho bicho2;
-    BichoServiceImp bichoService;
+    BichoServiceImpl bichoService;
     BichoDao bichoDao;
     EntrenadorDao entrenadorDao;
     Dojo dojo;
@@ -65,7 +65,7 @@ public class MapaServiceTest {
         bicho2 = new Bicho(especie);
         entrenador = new Entrenador("ASH", guarderia ,proveedor);
         entrenador2 = new Entrenador("ASHU", guarderia ,proveedor);
-        bichoService = Mockito.spy(new BichoServiceImp());
+        bichoService = Mockito.spy(new BichoServiceImpl());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
 

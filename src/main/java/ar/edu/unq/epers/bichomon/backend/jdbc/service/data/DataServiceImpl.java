@@ -2,7 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.data;
 
 import ar.edu.unq.epers.bichomon.backend.dao.impl.JDBCDataDAO;
 
-public class DataServiceImp implements DataService {
+public class DataServiceImpl implements DataService {
 
     private JDBCDataDAO dao = new JDBCDataDAO();
 

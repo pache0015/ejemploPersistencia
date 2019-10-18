@@ -17,6 +17,22 @@ public abstract class Service {
     protected UbicacionDao ubicacionDao;
     protected EspecieDao especieDao;
 
+    public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
+        this.entrenadorDao = entrenadorDao;
+    }
+
+    public void setBichoDao(BichoDao bichoDao) {
+        this.bichoDao = bichoDao;
+    }
+
+    public void setUbicacionDao(UbicacionDao ubicacionDao) {
+        this.ubicacionDao = ubicacionDao;
+    }
+
+    public void setEspecieDao(EspecieDao especieDao) {
+        this.especieDao = especieDao;
+    }
+
     public void guardarBicho(Bicho bicho) {
         run(() -> this.bichoDao.guardar(bicho));
     }

@@ -1,12 +1,13 @@
 package bichomon.backend.jdbc.service.especie;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import bichomon.backend.factory.Factory;
 import org.junit.After;
 import org.junit.Before;
@@ -16,12 +17,13 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class EspecieServiceTest {
+public class JDBCEspecieServiceTest {
 
     private Especie unaEspecie;
-    private DataServiceImp dataService = new DataServiceImp();
+    private DataServiceImpl dataService = new DataServiceImpl();
     private EspecieServiceImpl unaEspecieService;
-    private EspecieDao dao;
+    private EspecieDao especieDao;
+    private UbicacionDao ubicacionDao;
 
     @Before
     public void setUp() {
@@ -32,8 +34,9 @@ public class EspecieServiceTest {
         unaEspecie.setNombre("asd");
         unaEspecie.setTipo(TipoBicho.ELECTRICIDAD);
 
-        dao = new JDBCEspecieDAO();
-        unaEspecieService = new EspecieServiceImpl(dao);
+        especieDao = new JDBCEspecieDAO();
+        unaEspecieService = new EspecieServiceImpl();
+        unaEspecieService.setEspecieDao(especieDao);
 
         unaEspecieService.crearEspecie(unaEspecie);
     }

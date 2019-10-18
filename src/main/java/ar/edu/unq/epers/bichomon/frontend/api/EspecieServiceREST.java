@@ -14,6 +14,7 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.ServiceFactory;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieService;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 
 /**
  * Esta implementacion decora el servicio {@link EspecieService} devuelto
@@ -63,4 +64,13 @@ public class EspecieServiceREST implements EspecieService {
 		return this.decorado.crearBicho(nombreEspecie, nombreBicho);
 	}
 
+	@Override
+	public List<Especie> especiesMasPopulares() {
+		return null;
+	}
+
+	@Override
+	public List<Especie> especiesMenosPopulares() {
+		return null;
+	}
 }

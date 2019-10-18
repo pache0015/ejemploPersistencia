@@ -13,15 +13,7 @@ import java.time.LocalTime;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
-public class BichoServiceImp extends Service implements BichoService {
-
-    public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
-        this.entrenadorDao = entrenadorDao;
-    }
-
-    public void setBichoDao(BichoDao bichoDao) {
-        this.bichoDao = bichoDao;
-    }
+public class BichoServiceImpl extends Service implements BichoService {
 
     @Override
     public Bicho buscar(String nombreEntrenador) {
@@ -43,7 +35,6 @@ public class BichoServiceImp extends Service implements BichoService {
     public ResultadoDeBusqueda getBusqueda() {
         return new ResultadoDeBusqueda(LocalTime.now(), 1, 1);
     }
-
 
     @Override
     public void abandonar(String nombreEntrenador, Integer idBicho) {

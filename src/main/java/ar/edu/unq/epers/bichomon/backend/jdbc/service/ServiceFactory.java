@@ -1,8 +1,11 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.service;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataService;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieService;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 
@@ -25,14 +28,14 @@ public class ServiceFactory {
 	 * @return un objeto que implementa {@link EspecieService}
 	 */
 	public EspecieService getEspecieService() {
-		return new EspecieServiceImpl(new JDBCEspecieDAO());
+		return new EspecieServiceImpl();
 	}
 	
 	/**
 	 * @return un objeto que implementa {@link DataService}
 	 */
 	public DataService getDataService() {
-		return new DataServiceImp();
+		return new DataServiceImpl();
 	}
 
 }

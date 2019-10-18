@@ -2,7 +2,7 @@ package bichomon.backend.jdbc.dao;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -12,14 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class JDBCEspecieDAOTest {
     private EspecieDao dao = new JDBCEspecieDAO();
-    private DataServiceImp dataService = new DataServiceImp();
+    private DataServiceImpl dataService = new DataServiceImpl();
     private Especie especie;
     private String nombreBichomon = "Pikachu";
 
@@ -102,7 +100,6 @@ public class JDBCEspecieDAOTest {
     }
     @Test
     public void al_recuperar_todas_las_especies_esta_ordena(){
-        List miListaDeEspeceis = new ArrayList();
         Especie especie1 = this.crearEspecie("cristal");
         Especie especie2 = this.crearEspecie("armadura");
         Especie especie3 = this.crearEspecie("Birdmna");

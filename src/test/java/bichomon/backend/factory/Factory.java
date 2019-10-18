@@ -2,7 +2,7 @@ package bichomon.backend.factory;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.condicion.CondicionBasadaEnEnergia;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -72,7 +72,7 @@ public class Factory {
         return new CondicionBasadaEnEnergia(cantidadDeEnergia);
     }
 
-    public static BichoServiceImp bichoServiceImpl() {
-        return new BichoServiceImp();
+    public static BichoServiceImpl bichoServiceImpl() {
+        return new BichoServiceImpl();
     }
 }

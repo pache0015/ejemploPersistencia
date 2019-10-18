@@ -1,10 +1,11 @@
 package bichomon.backend.EspecieServiceDao;
 
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceDaoImp;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.GuarderiaDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.HibernateGuarderiaDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImpl;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -23,31 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EspecieServiceDaoTest {
+public class HibernateEspecieServiceTest {
 
-    private Factory factory = new Factory();
-    private EspecieServiceDaoImp especieServiceDao = new EspecieServiceDaoImp();
-    private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private HibernateEspecieDao especieDao = new HibernateEspecieDao();
+    private UbicacionDao ubicacionDao = new HibernateUbicacionDao();
+    private EspecieServiceImpl especieService = new EspecieServiceImpl();
+    private HibernateEntrenadorDao entrenadorDao = new HibernateEntrenadorDao();
     private Nivel nivel = new Nivel(10, 1, 99);
-    private BichoServiceImp bichoService = Factory.bichoServiceImpl();
-
+    private BichoServiceImpl bichoService = new BichoServiceImpl();
     private List<Nivel> niveles = new ArrayList<>();
     private ProveedorDeNiveles proveedor;
     private Entrenador entrenadorUno;
     private Entrenador entrenadorDos;
-    private GuarderiaDao guarderiaDao = new HibernateGuarderiaDao();
-    private Guarderia guarderia = factory.guarderia("GuaGuarderia");
-    private Guarderia guarderiaDos = factory.guarderia("guarderia");
+    private Guarderia guarderia = new Guarderia("GuaGuarderia");
+    private Guarderia guarderiaDos = new Guarderia("guarderia");
     private Especie especie_fuego;
     private Especie especie_tierra;
     private Especie especie_agua;
 
     @Before
     public void setUp() {
+        especieService.setEspecieDao(especieDao);
+        especieService.setUbicacionDao(ubicacionDao);
         bichoService.setEntrenadorDao(entrenadorDao);
-        especieServiceDao.setEspecieDao(especieDao);
-        especieServiceDao.setGuarderiaDao(guarderiaDao);
         niveles.add(nivel);
         List<Nivel> niveles = this.niveles;
         proveedor = Factory.proveedorDeNiveles(niveles);
@@ -68,8 +67,8 @@ public class EspecieServiceDaoTest {
     @Test
     public void NoSeTieneNingunaEspeciePopularEImpopularDeUnaBaseDeDatosVacia() {
 
-        Assert.assertEquals(0, especieServiceDao.especiesMasPopulares().size());
-        Assert.assertEquals(0, especieServiceDao.especiesMenosPopulares().size());
+        Assert.assertEquals(0, especieService.especiesMasPopulares().size());
+        Assert.assertEquals(0, especieService.especiesMenosPopulares().size());
 
     }
 
@@ -80,7 +79,7 @@ public class EspecieServiceDaoTest {
         entrenadorUno.capturarBichomon(bicho, 1);
         bichoService.guardarEntrenador(entrenadorUno);
 
-        Assert.assertEquals(1, especieServiceDao.especiesMasPopulares().size());
+        Assert.assertEquals(1, especieService.especiesMasPopulares().size());
     }
 
     @Test
@@ -99,7 +98,7 @@ public class EspecieServiceDaoTest {
 
 
         bichoService.guardarEntrenador(entrenadorUno);
-        List<Especie> especiesMasPopulares = especieServiceDao.especiesMasPopulares();
+        List<Especie> especiesMasPopulares = especieService.especiesMasPopulares();
 
         Assert.assertEquals(2, especiesMasPopulares.size());
         Assert.assertTrue(especiesMasPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
@@ -125,9 +124,9 @@ public class EspecieServiceDaoTest {
 
         bichoService.guardarEntrenador(entrenadorUno);
 
-        List<Especie> especiesMenosPopulares = especieServiceDao.especiesMenosPopulares();
+        List<Especie> especiesMenosPopulares = especieService.especiesMenosPopulares();
 
-        Assert.assertEquals(2, especieServiceDao.especiesMenosPopulares().size());
+        Assert.assertEquals(2, especieService.especiesMenosPopulares().size());
         Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_fuego")));
         Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
 
@@ -154,13 +153,11 @@ public class EspecieServiceDaoTest {
         bichoService.guardarEntrenador(entrenadorUno);
         bichoService.guardarEntrenador(entrenadorDos);
 
-        List<Especie> especiesMenosPopulares = especieServiceDao.especiesMenosPopulares();
+        List<Especie> especiesMenosPopulares = especieService.especiesMenosPopulares();
 
         Assert.assertEquals(2, especiesMenosPopulares.size());
         Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_tierra")));
         Assert.assertTrue(especiesMenosPopulares.stream().anyMatch(obj -> obj.getNombre().equals("especie_fuego")));
 
     }
-
-
 }

@@ -1,8 +1,9 @@
 package bichomon.backend.ServiceTest.BichoService;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
+import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateBichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.BichoServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho.ErrorBichoNoPerteneceAEntrenador;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
@@ -26,7 +27,6 @@ import static org.mockito.Mockito.doReturn;
 
 public class BichoServiceTest {
 
-    Factory factory;
     Guarderia guarderia;
     Nivel nivel;
     ProveedorDeNiveles proveedor;
@@ -34,7 +34,7 @@ public class BichoServiceTest {
     Especie especie;
     Especie reptilmon;
     Bicho bicho;
-    BichoServiceImp bichoService;
+    BichoServiceImpl bichoService;
     BichoDao bichoDao;
     HibernateEntrenadorDao entrenadorDao;
     Pueblo pueblo;
@@ -42,22 +42,20 @@ public class BichoServiceTest {
 
     @Before
     public void setUp(){
-        factory = new Factory();
-        guarderia = factory.guarderia("guarderia");
-        nivel = Factory.nivel(2, 1, 99);
+        guarderia = new Guarderia("guarderia");
+        nivel = new Nivel(2, 1,99);
         List niveles = new ArrayList<Nivel>();
         niveles.add(nivel);
-        proveedor = Factory.proveedorDeNiveles(niveles);
-        this.reptilmon = Factory.especieSinEvolucion("reptilmon", TipoBicho.TIERRA);
-        this.especie = factory.especieConEvolucionYRaiz("especiemon", TipoBicho.TIERRA, this.reptilmon, this.especie);
-        Especie especie = this.especie;
-        bicho = Factory.bicho(especie);
-        entrenador = Factory.entrenador("ASH", null, this.proveedor);
-        bichoService = Mockito.spy(new BichoServiceImp());
-        bichoDao = Factory.hibernateBichoDAO();
-        entrenadorDao = Factory.hibernateEntrenadorDAO();
-        pueblo = Factory.pueblo();
-        dojo = Factory.dojo();
+        proveedor = new ProveedorDeNiveles(niveles);
+        reptilmon = new Especie("reptilmon", TipoBicho.TIERRA);
+        especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon, especie);
+        bicho = new Bicho(especie);
+        entrenador = new Entrenador("ASH", null ,proveedor);
+        bichoService = Mockito.spy(new BichoServiceImpl());
+        bichoDao = new HibernateBichoDao();
+        entrenadorDao = new HibernateEntrenadorDao();
+        pueblo = new Pueblo("Pueblo");
+        dojo = new Dojo("Dojo");
 
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);

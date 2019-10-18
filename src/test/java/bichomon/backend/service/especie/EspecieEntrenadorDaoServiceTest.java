@@ -3,7 +3,7 @@ package bichomon.backend.service.especie;
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImp;
+import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class EspecieEntrenadorDaoServiceTest {
 
     private Especie unaEspecie;
-    private DataServiceImp dataService = new DataServiceImp();
+   private DataServiceImpl dataService = new DataServiceImpl();
     private EspecieServiceImpl unaEspecieService;
     private EspecieDao dao;
 
@@ -34,15 +34,16 @@ public class EspecieEntrenadorDaoServiceTest {
         unaEspecie.setTipo(TipoBicho.ELECTRICIDAD);
 
         dao = new JDBCEspecieDAO();
-        unaEspecieService = new EspecieServiceImpl(dao);
+        unaEspecieService = new EspecieServiceImpl();
+        unaEspecieService.setEspecieDao(dao);
 
         unaEspecieService.crearEspecie(unaEspecie);
     }
 
     @After
-    public void tearDown() {
+   public void tearDown() {
         this.dataService.eliminarDatos();
-    }
+   }
 
 
     @Test

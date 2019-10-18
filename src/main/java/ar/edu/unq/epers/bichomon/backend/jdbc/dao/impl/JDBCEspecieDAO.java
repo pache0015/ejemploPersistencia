@@ -34,6 +34,16 @@ public class JDBCEspecieDAO extends JDBCDAO implements EspecieDao {
     }
 
     @Override
+    public List<Especie> recuperarEspeciesMasPopulares() {
+        return null;
+    }
+
+    @Override
+    public List<Especie> recuperarEspeciesMenosPopulares() {
+        return null;
+    }
+
+    @Override
     public void actualizar(Especie especie) {
         try {
             this.executeWithConnection(conn -> {
