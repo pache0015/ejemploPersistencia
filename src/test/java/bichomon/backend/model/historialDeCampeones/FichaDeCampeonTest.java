@@ -7,7 +7,9 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,17 +27,19 @@ public class FichaDeCampeonTest {
     List niveles = new ArrayList<Nivel>();
     Nivel nivel;
     FichaDeCampeon ficha;
+    Dojo dojo;
 
     @Before
     public void setup(){
-        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
+        reptilmon = Factory.especieSinEvolucion("Reptilmon", TipoBicho.TIERRA);
         bicho = new Bicho(reptilmon, "helloworld");
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);
-        campeon = new Entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
+        dojo = new Dojo("Guarderia");
+        campeon = new Entrenador("Entrenador", dojo, proveedor);
         fechaInicio = LocalDate.now();
-        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
+        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio, dojo);
     }
 
     @Test

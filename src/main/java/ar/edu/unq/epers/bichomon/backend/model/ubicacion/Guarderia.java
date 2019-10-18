@@ -47,17 +47,7 @@ public class Guarderia extends Ubicacion {
     }
 
     @Override
-    public Entrenador getEntrenadorCampeon() {
-        throw new UbicacionIncorrectaException();
-    }
-
-    @Override
-    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
-        throw new UbicacionIncorrectaException();
-    }
-
-    @Override
-    public void declararCampeones(Entrenador entrenador, Bicho bicho) {
+    public ResultadoCombate comenzarDuelo(Bicho bicho) {
         throw new UbicacionIncorrectaException();
     }
 

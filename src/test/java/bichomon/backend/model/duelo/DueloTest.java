@@ -11,6 +11,9 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +39,7 @@ public class DueloTest {
     Duelo duelo;
     @Before
     public void setup(){
-        reptilmon = new Especie("Reptilmon", TipoBicho.TIERRA);
+        reptilmon = Factory.especieSinEvolucion("Reptilmon", TipoBicho.TIERRA);
         largartomon = new Especie("Lagartomon", TipoBicho.TIERRA, reptilmon, largartomon);
         bicho = new Bicho(reptilmon, "helloworld");
         bicho1 = new Bicho(largartomon, "blabla");
@@ -44,25 +47,20 @@ public class DueloTest {
         bicho1.setEnergia(1000.00);
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-
+        proveedor = Factory.proveedorDeNiveles(niveles);
         campeon = new Entrenador("campeon", new Dojo("Guarderia"), proveedor);
-        campeon.setBichoParaDuelo(bicho);
+        bicho.setEntrenador(campeon);
 
         retador = new Entrenador("Entrenador", new Dojo("Guarderia"), proveedor);
-        retador.setBichoParaDuelo(bicho1);
+        bicho1.setEntrenador(retador);
+
         fechaInicio = LocalDate.now();
-        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio);
+        ficha = new FichaDeCampeon(campeon, bicho, fechaInicio, dojo);
 
         dojo = new Dojo("prueba");
         dojo.declararCampeones(campeon, bicho);
-        duelo = new Duelo(retador, dojo);
+        duelo = new Duelo(bicho1, dojo);
 
-    }
-
-    @Test
-    public void seLePideAlCampeonElBichoParaDuelo(){
-        Assert.assertEquals(bicho,campeon.getBichoParaDuelo());
     }
     @Test
     public void alPelearLaListaDeAtaquesTieneAlMenosUnAtaque(){
@@ -72,7 +70,7 @@ public class DueloTest {
     @Test
     public void luegoDeUnaPeleaUnBichoTieneMenosEnergiaQueAntes(){
         duelo.pelear();
-        Assert.assertTrue(bicho.getEnergia() < 1000.00);
+        Assert.assertTrue(bicho.getEnergiaPorDuelo() < 1000.00);
     }
     @Test
     public void luegoDeUnDueloElObjetoResultadoNoTieneAtributosNulosYLaListDeAtaquesTieneElementos(){
@@ -90,5 +88,11 @@ public class DueloTest {
     public void luegoDeUnDueloElBichoCampeonAunTieneEnergia(){
         ResultadoCombate resultado = duelo.pelear();
         Assert.assertTrue(resultado.getBichoCampeon().puedeSeguir());
+    }
+
+    @Test(expected = UbicacionIncorrectaException.class)
+    public void unEntrenadorEnUnaUbicacionQueNoEsDojoNoPuedeEstarEnDuelo(){
+        retador.ubicarseEn(new Guarderia("Guarderia"));
+        retador.duelo(bicho);
     }
 }

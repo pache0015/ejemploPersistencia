@@ -14,6 +14,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import bichomon.backend.factory.Factory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,12 +48,13 @@ public class HibernateEspecieServiceTest {
         especieService.setUbicacionDao(ubicacionDao);
         bichoService.setEntrenadorDao(entrenadorDao);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-        entrenadorUno = new Entrenador("Alberto", guarderia, proveedor);
-        entrenadorDos = new Entrenador("Cristina", guarderiaDos, proveedor);
-        especie_tierra = new Especie("especie_tierra", TipoBicho.TIERRA);
-        especie_fuego = new Especie("especie_fuego", TipoBicho.FUEGO);
-        especie_agua = new Especie("especie_agua", TipoBicho.AGUA);
+        List<Nivel> niveles = this.niveles;
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        entrenadorUno = Factory.entrenador("Alberto", this.guarderia, this.proveedor);
+        entrenadorDos = Factory.entrenador("Cristina", guarderiaDos, this.proveedor);
+        this.especie_tierra = Factory.especieSinEvolucion("especie_tierra", TipoBicho.TIERRA);
+        especie_fuego = Factory.especieSinEvolucion("especie_fuego", TipoBicho.FUEGO);
+        especie_agua = Factory.especieSinEvolucion("especie_agua", TipoBicho.AGUA);
     }
 
     @After
@@ -72,7 +74,8 @@ public class HibernateEspecieServiceTest {
 
     @Test
     public void SeTieneUnaEspeciePorqueUnEntrenadorDelSistemaCaputroUnBicho() {
-        Bicho bicho = new Bicho(especie_fuego);
+        Especie especie = this.especie_fuego;
+        Bicho bicho = Factory.bicho(especie);
         entrenadorUno.capturarBichomon(bicho, 1);
         bichoService.guardarEntrenador(entrenadorUno);
 
@@ -81,11 +84,11 @@ public class HibernateEspecieServiceTest {
 
     @Test
     public void SeTienenLasEspeciesMasPopularesEntreLosBichosCapturadosDeLosEntrenadores() {
-        Bicho bicho = new Bicho(especie_fuego);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_tierra);
-        Bicho bichoTres = new Bicho(especie_tierra);
-        Bicho bichoCuatro = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_fuego);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_tierra);
+        Bicho bichoTres = Factory.bicho(especie_tierra);
+        Bicho bichoCuatro = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorUno.capturarBichomon(bichoUno, 1);
@@ -105,10 +108,10 @@ public class HibernateEspecieServiceTest {
 
     @Test
     public void SeObtieneLasEspeciesQuePertenecenAUnaGuarderia() {
-        Bicho bicho = new Bicho(especie_tierra);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_agua);
-        Bicho bichoTres = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_tierra);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_agua);
+        Bicho bichoTres = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorUno.capturarBichomon(bichoUno, 1);
@@ -131,11 +134,11 @@ public class HibernateEspecieServiceTest {
 
     @Test
     public void SeTieneLasEspeciesDeTodasLasGuarderiasDelSistema() {
-        Bicho bicho = new Bicho(especie_tierra);
-        Bicho bichoUno = new Bicho(especie_tierra);
-        Bicho bichoDos = new Bicho(especie_agua);
-        Bicho bichoTres = new Bicho(especie_fuego);
-        Bicho bichoCuatro = new Bicho(especie_fuego);
+        Bicho bicho = Factory.bicho(especie_tierra);
+        Bicho bichoUno = Factory.bicho(especie_tierra);
+        Bicho bichoDos = Factory.bicho(especie_agua);
+        Bicho bichoTres = Factory.bicho(especie_fuego);
+        Bicho bichoCuatro = Factory.bicho(especie_fuego);
 
         entrenadorUno.capturarBichomon(bicho, 1);
         entrenadorDos.capturarBichomon(bichoUno, 1);

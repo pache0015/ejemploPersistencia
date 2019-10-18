@@ -1,15 +1,17 @@
 package bichomon.backend.jdbc.dao;
+
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
-import org.junit.*;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
+import bichomon.backend.factory.Factory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -31,7 +33,7 @@ public class JDBCEspecieDAOTest {
     }
 
     private Especie crearEspecie(String nombreBichomon) {
-        Especie especie = new Especie("fuego", TipoBicho.AIRE);
+        Especie especie = Factory.especieSinEvolucion("fuego", TipoBicho.AIRE);
         especie.setPeso(15);
         especie.setAltura(198);
         especie.setCantidadBichos(2500);
@@ -88,7 +90,7 @@ public class JDBCEspecieDAOTest {
 
     @Test
     public void no_se_puede_actualizar_una_especie_que_no_existe() {
-        Especie especieNoGuardada = new Especie("fuego", TipoBicho.AIRE);
+        Especie especieNoGuardada = Factory.especieSinEvolucion("fuego", TipoBicho.AIRE);
         try {
             this.dao.actualizar(especieNoGuardada);
             fail();
@@ -98,7 +100,6 @@ public class JDBCEspecieDAOTest {
     }
     @Test
     public void al_recuperar_todas_las_especies_esta_ordena(){
-        List miListaDeEspeceis = new ArrayList();
         Especie especie1 = this.crearEspecie("cristal");
         Especie especie2 = this.crearEspecie("armadura");
         Especie especie3 = this.crearEspecie("Birdmna");

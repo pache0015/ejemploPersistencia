@@ -2,6 +2,7 @@ package bichomon.backend.model.entrenador;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class ProveedorDeNivelesTest {
         niveles.add(nivelCuatro);
         niveles.add(nivelCinco);
 
-        proveedor = new ProveedorDeNiveles(niveles);
+        proveedor = Factory.proveedorDeNiveles(niveles);
     }
     @Test
     public void test001_unProovedorSabeDeterminarUnNivelParaUnaCantidadDeExperiencia(){

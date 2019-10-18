@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ResultadoDeBusqueda;
 
+
 import java.time.LocalTime;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
@@ -32,7 +33,7 @@ public class BichoServiceImpl extends Service implements BichoService {
     }
 
     public ResultadoDeBusqueda getBusqueda() {
-        return new ResultadoDeBusqueda(LocalTime.of(1, 1, 1, 11111), 1, 1);
+        return new ResultadoDeBusqueda(LocalTime.now(), 1, 1);
     }
 
     @Override
@@ -53,7 +54,6 @@ public class BichoServiceImpl extends Service implements BichoService {
 
             Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
             Bicho bichoRecuperado = this.bichoDao.recuperar(idBicho);
-
             if(entrenadorRecuperado.tieneBicho(idBicho)){
                 resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
                 return resultadoCombate;

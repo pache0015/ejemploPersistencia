@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,8 +38,8 @@ public class BichoTest {
         List niveles = new ArrayList<Nivel>();
         nivel = new Nivel(1, 1, 99);
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-        entrenador = new Entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        entrenador = Factory.entrenador("Entrenador", new Guarderia("Guarderia"), proveedor);
     }
     @Test
     public void cuandoCumpleUnaCondicionBasadaEnEnergiaEvolucionaYCambiaSuEspecie(){

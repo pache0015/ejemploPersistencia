@@ -7,7 +7,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Nivel;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import org.hamcrest.CoreMatchers;
+import bichomon.backend.factory.Factory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +31,8 @@ public class ResultadoCombateTest {
     @Before
     public void setUp(){
         niveles.add(nivel);
-        proveedor = new ProveedorDeNiveles(niveles);
-        entrenador = new Entrenador("Juan", null, proveedor);
+        proveedor = Factory.proveedorDeNiveles(niveles);
+        entrenador = Factory.entrenador("Juan", null, proveedor);
         ataques = new ArrayList<>();
 
         ataques.add(ataque);

@@ -1,13 +1,13 @@
-package bichomon.backend.jdbc.service.especie;
+package bichomon.backend.service.especie;
+
 
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EspecieDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.JDBCEspecieDAO;
-import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
-import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.data.DataServiceImpl;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieNoExistente;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.especie.EspecieServiceImpl;
+import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
+import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import bichomon.backend.factory.Factory;
 import org.junit.After;
 import org.junit.Before;
@@ -17,13 +17,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class JDBCEspecieServiceTest {
+public class EspecieEntrenadorDaoServiceTest {
 
     private Especie unaEspecie;
-    private DataServiceImpl dataService = new DataServiceImpl();
+   private DataServiceImpl dataService = new DataServiceImpl();
     private EspecieServiceImpl unaEspecieService;
-    private EspecieDao especieDao;
-    private UbicacionDao ubicacionDao;
+    private EspecieDao dao;
 
     @Before
     public void setUp() {
@@ -34,17 +33,17 @@ public class JDBCEspecieServiceTest {
         unaEspecie.setNombre("asd");
         unaEspecie.setTipo(TipoBicho.ELECTRICIDAD);
 
-        especieDao = new JDBCEspecieDAO();
+        dao = new JDBCEspecieDAO();
         unaEspecieService = new EspecieServiceImpl();
-        unaEspecieService.setEspecieDao(especieDao);
+        unaEspecieService.setEspecieDao(dao);
 
         unaEspecieService.crearEspecie(unaEspecie);
     }
 
     @After
-    public void tearDown() {
+   public void tearDown() {
         this.dataService.eliminarDatos();
-    }
+   }
 
 
     @Test

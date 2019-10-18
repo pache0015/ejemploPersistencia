@@ -2,6 +2,7 @@ package ar.edu.unq.epers.bichomon.backend.model.duelo;
 
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 import java.util.ArrayList;
@@ -9,18 +10,22 @@ import java.util.List;
 
 
 public class Duelo {
-    private Entrenador retador;
-    private Entrenador retado;
+    private Bicho bichoRetador;
+    private Bicho bichoCampeonActual;
+    private Entrenador entrenadorCampeonActual;
+    private Entrenador entrenadorRetador;
     private List<Ataque> ataques;
     private Bicho atacante;
     private Bicho atacado;
-    private Ubicacion gym;
+    private Dojo gym;
 
-    public Duelo(Entrenador retador, Ubicacion gym){
-        this.retador = retador;
+    public Duelo(Bicho retador, Dojo gym){
+        this.bichoRetador = retador;
         this.ataques = new ArrayList<>();
-        this.retado = gym.getEntrenadorCampeon();
+        this.entrenadorRetador = retador.getEntrenadorDueño();
         this.gym = gym;
+        this.bichoCampeonActual = gym.getBichoCampeon();
+        this.entrenadorCampeonActual = bichoCampeonActual.getEntrenadorDueño();
 
     }
     private void cargarAtaque(Bicho atacante, Bicho rival, Double energiaAtacante) {
@@ -36,10 +41,9 @@ public class Duelo {
         return bicho1.puedeSeguir() && bicho2.puedeSeguir();
     }
 
-    private Entrenador obtenerGanador() {
-        Bicho bichoCampeon = retado.getBichoParaDuelo();
-        if (bichoCampeon.puedeSeguir() || hayTimeout()) return retado;
-        return retador;
+    private Bicho obtenerGanador() {
+        if (bichoCampeonActual.puedeSeguir() || hayTimeout()) return bichoCampeonActual;
+        return bichoRetador;
     }
     private void intercambiarAtacanteYAtacado(){
         Bicho auxiliar = atacante;
@@ -48,22 +52,35 @@ public class Duelo {
     }
     public ResultadoCombate pelear(){
 
-        atacante = retador.getBichoParaDuelo();
-        atacado = retado.getBichoParaDuelo();
+        atacante = bichoRetador;
+        atacado = bichoCampeonActual;
 
         while (puedenSeguir(atacante, atacado) && !hayTimeout()){
-            Double energiaDeAtaque = atacante.atacar(atacado);
+            Double energiaDeAtaque = atacante.atacar(atacado, valorRandomPorAtaque());
             cargarAtaque(atacante, atacado, energiaDeAtaque);
             intercambiarAtacanteYAtacado();
         }
 
-        Entrenador ganador = obtenerGanador();
+        Bicho ganador = obtenerGanador();
 
-        gym.declararCampeones(ganador, ganador.getBichoParaDuelo());
+        gym.declararCampeones(ganador.getEntrenadorDueño(), ganador);
+
 
         aumentarEnergiaDeBichosPorDuelo();
-        return new ResultadoCombate(ganador, ganador.getBichoParaDuelo(), ataques);
+
+        restaurarEnergiaDeBichos();
+        return new ResultadoCombate(ganador.getEntrenadorDueño(), ganador, ataques);
     }
+
+    private Double valorRandomPorAtaque() {
+        return (Math.random() * 1.0) + 0.5;
+    }
+
+    private void restaurarEnergiaDeBichos() {
+        bichoCampeonActual.restaurarEnergia();
+        bichoRetador.restaurarEnergia();
+    }
+
     private void aumentarEnergiaDeBichosPorDuelo() {
         atacado.aumentarEnergiaDeBichoPorDuelo();
         atacante.aumentarEnergiaDeBichoPorDuelo();

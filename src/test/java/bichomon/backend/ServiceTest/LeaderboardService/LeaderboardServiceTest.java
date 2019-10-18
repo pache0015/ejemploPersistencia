@@ -1,12 +1,9 @@
 package bichomon.backend.ServiceTest.LeaderboardService;
 
-import static org.junit.Assert.*;
-
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateEspecieDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.impl.HibernateUbicacionDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.leaderboard.LeaderboardServiceImpl;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.SessionFactoryProvider;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
@@ -14,14 +11,17 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-
-import static bichomon.backend.ServiceTest.TestFactory.nuevoBicho;
-import static bichomon.backend.ServiceTest.TestFactory.nuevoEntrenador;
+import bichomon.backend.factory.Factory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
+import static bichomon.backend.factory.TestFactory.nuevoBicho;
+import static bichomon.backend.factory.TestFactory.nuevoEntrenador;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class LeaderboardServiceTest {
 
@@ -29,7 +29,7 @@ public class LeaderboardServiceTest {
     private HibernateEntrenadorDao entrenadorDao;
     private HibernateUbicacionDao ubicacionDao;
     private HibernateEspecieDao especieDao;
-    private Ubicacion dojo;
+    private Dojo dojo;
     private Entrenador entrenador;
     private Bicho bicho;
 
@@ -74,9 +74,9 @@ public class LeaderboardServiceTest {
         Dojo cuartoDojo = new Dojo("Cuarto");
         Dojo quintoDojo = new Dojo("Quinto");
 
-        Especie especie = new Especie("Otra Especie", TipoBicho.TIERRA);
-        Bicho segundoBicho = new Bicho(especie);
-        Bicho tercerBicho = new Bicho(especie);
+        Especie especie = Factory.especieSinEvolucion("Otra Especie", TipoBicho.TIERRA);
+        Bicho segundoBicho = Factory.bicho(especie);
+        Bicho tercerBicho = Factory.bicho(especie);
 
         entrenador.capturarBichomon(segundoBicho, 0);
         entrenador.capturarBichomon(tercerBicho, 0);
@@ -108,13 +108,13 @@ public class LeaderboardServiceTest {
         Dojo septimoDojo = new Dojo("Septimo");
         Dojo octavoDOjo = new Dojo("Octavo");
 
-        Especie especie = new Especie("Otra Especie", TipoBicho.TIERRA);
-        Bicho segundoBicho = new Bicho(especie);
-        Bicho tercerBicho = new Bicho(especie);
-        Especie asd = new Especie("Otra otra especie", TipoBicho.AIRE);
-        Bicho cuartoBicho = new Bicho(especie);
-        Bicho quintoBicho = new Bicho(asd);
-        Bicho sextoBicho = new Bicho(asd);
+        Especie especie = Factory.especieSinEvolucion("Otra Especie", TipoBicho.TIERRA);
+        Bicho segundoBicho = Factory.bicho(especie);
+        Bicho tercerBicho = Factory.bicho(especie);
+        Especie asd = Factory.especieSinEvolucion("Otra otra especie", TipoBicho.AIRE);
+        Bicho cuartoBicho = Factory.bicho(especie);
+        Bicho quintoBicho = Factory.bicho(asd);
+        Bicho sextoBicho = Factory.bicho(asd);
 
         entrenador.capturarBichomon(segundoBicho, 0);
         entrenador.capturarBichomon(tercerBicho, 0);
@@ -146,12 +146,12 @@ public class LeaderboardServiceTest {
 
     @Test
     public void se_retornan_los_lideres() {
-        Especie especie = new Especie("Especie", TipoBicho.TIERRA);
-        Bicho primerBicho = new Bicho(especie);
+        Especie especie = Factory.especieSinEvolucion("Especie", TipoBicho.TIERRA);
+        Bicho primerBicho = Factory.bicho(especie);
         primerBicho.setEnergia(100.0);
-        Bicho segundoBicho = new Bicho(especie);
+        Bicho segundoBicho = Factory.bicho(especie);
         segundoBicho.setEnergia(50.0);
-        Bicho tercerBicho = new Bicho(especie);
+        Bicho tercerBicho = Factory.bicho(especie);
         tercerBicho.setEnergia(30.0);
 
         Entrenador otroEntrenador = nuevoEntrenador("Guachin", dojo);

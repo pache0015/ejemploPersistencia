@@ -57,7 +57,7 @@ public class Dojo extends Ubicacion {
         if (hayFichasDeCampeones()) {
             getUltimaFichaCampeon().setFechaFin(fechaDeCambio);
         }
-        fichas.add(new FichaDeCampeon(entrenador, bicho, fechaDeCambio));
+        fichas.add(new FichaDeCampeon(entrenador, bicho, fechaDeCambio, this));
 
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
@@ -66,10 +66,11 @@ public class Dojo extends Ubicacion {
     public Entrenador getEntrenadorCampeon(){
         return entrenadorCampeon;
     }
+    public Bicho getBichoCAmpeon(){return bichoCampeon;}
 
-    @Override
-    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
-        Duelo duelo = new Duelo(entrenador,  this);
+
+    public ResultadoCombate comenzarDuelo(Bicho bicho) {
+        Duelo duelo = new Duelo(bicho,  this);
         return duelo.pelear();
     }
 
@@ -87,5 +88,14 @@ public class Dojo extends Ubicacion {
 
     public void setBichoCampeon(Bicho bichoCampeon) {
         this.bichoCampeon = bichoCampeon;
+    }
+
+
+
+
+    //Esta mal... Pero no tan mal
+
+    public void  setFichas(FichaDeCampeon ficha){
+        this.fichas.add(ficha);
     }
 }
