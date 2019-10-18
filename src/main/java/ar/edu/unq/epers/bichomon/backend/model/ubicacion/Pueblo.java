@@ -41,10 +41,6 @@ public class Pueblo extends Ubicacion {
 
         return new Bicho(probabilidadEspecieEncontrada.especie);
     }
-    @Override
-    public void declararCampeones(Entrenador entrenador, Bicho bicho) {
-        throw new UbicacionIncorrectaException();
-    }
 
     public List<Especie> especiesPosibles() {
         return new ArrayList<>(especiesYProbabilidades.stream().map(probabilidadEspecie -> probabilidadEspecie.especie).collect(Collectors.toList()));
@@ -56,12 +52,7 @@ public class Pueblo extends Ubicacion {
     }
 
     @Override
-    public Entrenador getEntrenadorCampeon() {
-        throw new UbicacionIncorrectaException();
-    }
-
-    @Override
-    public ResultadoCombate comenzarDuelo(Entrenador entrenador) {
+    public ResultadoCombate comenzarDuelo(Bicho bicho) {
         throw new UbicacionIncorrectaException();
     }
 

@@ -16,8 +16,6 @@ public class Entrenador {
     private Integer puntosDeExperiencia;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Bicho> bichos;
-    @OneToOne
-    private Bicho bichoParaDuelo;
     @ManyToOne(cascade = CascadeType.ALL)
     private Ubicacion ubicacionActual;
     @ManyToOne(cascade = CascadeType.ALL)
@@ -61,15 +59,7 @@ public class Entrenador {
         return this.ubicacionActual;
     }
 
-    public Bicho getBichoParaDuelo() {
-        return bichoParaDuelo;
-    }
-
-    public void setBichoParaDuelo(Bicho bicho) {
-        this.bichoParaDuelo = bicho;
-    }
-
-    public Boolean tieneBicho(Integer idBicho) {
+    public Boolean tieneBicho(Integer idBicho){
         return bichos.stream().anyMatch((bicho -> bicho.getId().equals(idBicho)));
     }
 
@@ -83,6 +73,7 @@ public class Entrenador {
             this.bichos.add(unBichoCapturado);
             unBichoCapturado.agregarEntrenadorAlHistorial(this);
             this.ganarEnergia(puntosDeExperienciaGanados);
+            unBichoCapturado.setEntrenador(this);
         } else {
             throw new LimiteBicho();
         }
@@ -108,17 +99,12 @@ public class Entrenador {
         bichos.remove(bichoASoltar);
     }
 
-    public ResultadoCombate duelo(Bicho bichoParaDuelo) {
-        setBichoParaDuelo(bichoParaDuelo);
-        return getUbicacionActual().comenzarDuelo(this);
+    public ResultadoCombate duelo(Bicho bichoParaDuelo){
+        return  getUbicacionActual().comenzarDuelo(bichoParaDuelo);
     }
 
     public void moverseA(Ubicacion ubicacion) {
         this.ubicacionActual = ubicacion;
-    }
-
-    public Boolean tieneNivelNecesario(Integer nivelNecesarioDeEntrenador) {
-        return this.getNivel().numeroNivel <= nivelNecesarioDeEntrenador;
     }
 
     public Bicho buscar() {

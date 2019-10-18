@@ -29,7 +29,7 @@ public class LeaderboardServiceTest {
     private HibernateEntrenadorDao entrenadorDao;
     private HibernateUbicacionDao ubicacionDao;
     private HibernateEspecieDao especieDao;
-    private Ubicacion dojo;
+    private Dojo dojo;
     private Entrenador entrenador;
     private Bicho bicho;
 
