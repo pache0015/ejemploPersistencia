@@ -55,6 +55,8 @@ camino.
 ## Se pide:
 - El objetivo de esta entrega es implementar los requerimientos utilizando una
 base de datos orientada a grafos.
+- Asegurar la atomicidad de los datos. Deberán modificar el `TransactionRunner` para poder tener un contexto 
+transaccional tanto con hibernate como con neo4j. 
 - Creen test unitarios para cada unidad de código entregada que prueben todas las
 funcionalidades pedidas, con casos favorables y desfavorables.
 
