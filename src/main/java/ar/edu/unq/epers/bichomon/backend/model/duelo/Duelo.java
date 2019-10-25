@@ -3,7 +3,6 @@ package ar.edu.unq.epers.bichomon.backend.model.duelo;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +61,7 @@ public class Duelo {
         }
 
         Bicho ganador = obtenerGanador();
+        ganador.aumentarVictorias();
 
         gym.declararCampeones(ganador.getEntrenadorDueño(), ganador);
 

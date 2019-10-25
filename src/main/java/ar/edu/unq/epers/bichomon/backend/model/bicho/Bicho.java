@@ -23,7 +23,7 @@ public class Bicho {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Especie especie;
     @Column
-    private Integer victorias;
+    private int victorias;
     @Column
     private LocalDate fechaDeCaptura;
     @ManyToMany
@@ -142,4 +142,8 @@ public class Bicho {
     }
 
     public Entrenador getEntrenadorDueño(){return this.entrenadorDueño;}
+
+    public void aumentarVictorias() {
+        victorias = victorias + 1;
+    }
 }

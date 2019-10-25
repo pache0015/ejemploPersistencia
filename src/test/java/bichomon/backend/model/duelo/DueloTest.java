@@ -10,7 +10,6 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
 import bichomon.backend.factory.Factory;
@@ -94,5 +93,11 @@ public class DueloTest {
     public void unEntrenadorEnUnaUbicacionQueNoEsDojoNoPuedeEstarEnDuelo(){
         retador.ubicarseEn(new Guarderia("Guarderia"));
         retador.duelo(bicho);
+    }
+
+    @Test
+    public void elBichoCampeonDeUnDueloAumentaSuCantidadDeVictorias() {
+        ResultadoCombate resultado = duelo.pelear();
+        Assert.assertEquals(new Integer(1), resultado.getBichoCampeon().getVictorias());
     }
 }
