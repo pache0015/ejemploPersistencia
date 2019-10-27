@@ -53,12 +53,6 @@ public class HibernateEntrenadorDao extends HibernateDAO<Entrenador> implements 
     public void actualizarUbicacion(Entrenador entrenador, Ubicacion ubicacionRecuperada) {
 
         Session session = TransactionRunner.getCurrentSession();
-        //String hql = "update Entrenador e set e.ubicacionActual = :entrenador.ubicacionActual where e.nombre = entrenador.nombre";
-
-        //String hqlUpdate = "update Entrenador e set e.ubicacionActual = :ubicacionRecuperada where e.nombre = : entrenador";
-        //Query updatedEntities = session.createQuery(hqlUpdate);
-        //updatedEntities.setParameter("entrenador", entrenador);
-        //updatedEntities.setParameter("ubicacionRecuperada", ubicacionRecuperada);
         session.saveOrUpdate(entrenador);
 
     }
