@@ -6,6 +6,8 @@ import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.UbicacionIncorrectaException;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -25,7 +27,11 @@ public class HibernateUbicacionDao extends HibernateDAO<Ubicacion> implements Ub
     @Override
     public Dojo recuperarDojo(String dojo) {
         Session session = TransactionRunner.getCurrentSession();
-        return session.get(Dojo.class, dojo);
+        try {
+            return session.get(Dojo.class, dojo);
+        } catch (HibernateException e) {
+            throw new UbicacionIncorrectaException();
+        }
     }
 
     @Override
