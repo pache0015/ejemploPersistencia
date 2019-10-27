@@ -1,13 +1,10 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.service.bicho;
 
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.service.Service;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.ResultadoDeBusqueda;
-
 
 import java.time.LocalTime;
 
@@ -58,7 +55,7 @@ public class BichoServiceImpl extends Service implements BichoService {
                 resultadoCombate = entrenadorRecuperado.duelo(bichoRecuperado);
                 return resultadoCombate;
             }
-            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
+            throw new ErrorBichoNoPerteneceAEntrenador();
         });
     }
 
@@ -70,7 +67,7 @@ public class BichoServiceImpl extends Service implements BichoService {
             if (entrenadorRecuperado.tieneBicho(idBicho)) {
                 return bichoRecuperado.puedeEvolucionar();
             }
-            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
+            throw new ErrorBichoNoPerteneceAEntrenador();
         });
     }
 
@@ -83,7 +80,7 @@ public class BichoServiceImpl extends Service implements BichoService {
                 bichoRecuperado.evolucionar();
                 return bichoRecuperado;
             }
-            throw new ErrorBichoNoPerteneceAEntrenador("El bicho no pertence al entrenador");
+            throw new ErrorBichoNoPerteneceAEntrenador();
         });
     }
 }

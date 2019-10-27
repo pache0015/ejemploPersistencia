@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 @Entity
 public class Guarderia extends Ubicacion {
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Bicho> abandonados = new ArrayList<>();
 
     public Guarderia(String nombre) {

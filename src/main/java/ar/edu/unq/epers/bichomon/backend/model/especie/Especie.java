@@ -30,11 +30,11 @@ public class Especie {
 	private String urlFoto;
 	@Column
 	private Integer cantidadBichos;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Especie evolucionDeEspecie;
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Especie especieRaiz;
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Condicion condicionDeEvolucion;
 
 	public Especie(String nombre, TipoBicho tipo) {

@@ -20,7 +20,7 @@ public class Bicho {
     @Column
     private String nombre;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     private Especie especie;
     @Column
     private int victorias;
