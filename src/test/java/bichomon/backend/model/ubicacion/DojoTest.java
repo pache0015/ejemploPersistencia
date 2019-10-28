@@ -15,10 +15,14 @@ public class DojoTest extends UbicacionTest {
 
     private Dojo dojo;
     private Entrenador entrenador;
+    private Entrenador entrenador_nuevoCampeon;
+    private Bicho bicho;
 
     @Before
     public void setUp() {
         entrenador = this.nuevoEntrenador("el entrenador");
+        entrenador_nuevoCampeon = this.nuevoEntrenador("el nuevo entrenador");
+        bicho = this.nuevoBicho("el bicho");
         dojo = new Dojo("El Dojo");
     }
 
@@ -35,7 +39,6 @@ public class DojoTest extends UbicacionTest {
 
     @Test
     public void un_dojo_con_campeon_tiene_bichos() throws LimiteBicho {
-        Bicho bicho = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
 
@@ -44,19 +47,17 @@ public class DojoTest extends UbicacionTest {
 
     @Test
     public void todos_los_bichomones_de_un_dojo_son_de_la_especie_raiz_del_bichomon_campeon() throws LimiteBicho {
-        Bicho bichoCampeon = nuevoBicho("Bicho");
-        entrenador.capturarBichomon(bichoCampeon, 10);
-        dojo.declararCampeones(entrenador, bichoCampeon);
+        entrenador.capturarBichomon(bicho, 10);
+        dojo.declararCampeones(entrenador, bicho);
 
-        assertEquals(dojo.bichomonPara(entrenador).getEspecie(), bichoCampeon.getEspecieRaiz());
+        assertEquals(dojo.bichomonPara(entrenador).getEspecie(), bicho.getEspecieRaiz());
     }
 
     @Test
     public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
-        Bicho bichoAAbandonar = nuevoBicho("Bicho");
-        entrenador.capturarBichomon(bichoAAbandonar, 10);
+        entrenador.capturarBichomon(bicho, 10);
         try {
-            dojo.recibirAbandonado(entrenador, bichoAAbandonar);
+            dojo.recibirAbandonado(entrenador, bicho);
             fail();
         } catch (ErrorAbandonoImposible e) {
             assertEquals(ErrorAbandonoImposible.MENSAJE_ERROR, e.getMessage());
@@ -65,7 +66,6 @@ public class DojoTest extends UbicacionTest {
 
     @Test
     public void un_entrenador_se_queda_con_el_bichomon_que_encuentra_en_un_dojo() {
-        Bicho bicho = nuevoBicho("Bicho");
         entrenador.ubicarseEn(dojo);
         entrenador.capturarBichomon(bicho, 10);
         dojo.declararCampeones(entrenador, bicho);
@@ -73,5 +73,25 @@ public class DojoTest extends UbicacionTest {
         assertEquals(entrenador.getBichos().size(), 1);
         entrenador.buscar();
         assertEquals(entrenador.getBichos().size(), 2);
+    }
+    @Test
+    public void un_entrenador_es_dos_veces_campeon_en_un_mismo_dojo(){
+        Bicho bicho_otro_campeon = this.nuevoBicho("otro bicho");
+        entrenador.ubicarseEn(dojo);
+        entrenador.capturarBichomon(bicho, 1);
+        entrenador_nuevoCampeon.ubicarseEn(dojo);
+        entrenador_nuevoCampeon.capturarBichomon(bicho_otro_campeon, 1);
+
+        dojo.declararCampeones(entrenador, bicho);
+
+        assertEquals(dojo.getBichoCAmpeon().getNombre(), bicho.getNombre());
+
+        dojo.declararCampeones(entrenador_nuevoCampeon, bicho_otro_campeon);
+
+        assertEquals(dojo.getBichoCAmpeon().getNombre(), bicho_otro_campeon.getNombre());
+
+        dojo.declararCampeones(entrenador, bicho);
+
+        assertEquals(dojo.getBichoCAmpeon().getNombre(), bicho.getNombre());
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 public class Dojo extends Ubicacion {
-    @OneToOne
+    @ManyToOne
     private Entrenador entrenadorCampeon;
     @ManyToOne(cascade = CascadeType.ALL)
     private Bicho bichoCampeon;
