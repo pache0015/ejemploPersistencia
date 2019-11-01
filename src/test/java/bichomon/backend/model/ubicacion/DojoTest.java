@@ -94,4 +94,5 @@ public class DojoTest extends UbicacionTest {
 
         assertEquals(dojo.getBichoCAmpeon().getNombre(), bicho.getNombre());
     }
+
 }
