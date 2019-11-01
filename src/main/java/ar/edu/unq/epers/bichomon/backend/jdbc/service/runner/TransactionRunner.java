@@ -1,5 +1,4 @@
 package ar.edu.unq.epers.bichomon.backend.jdbc.service.runner;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
