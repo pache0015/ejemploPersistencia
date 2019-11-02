@@ -153,7 +153,7 @@ public class MapaServiceTest {
     @Test
     public void neo4jTest(){
         neo4jDAO.guardar(guarderia);
-       UbicacionNodo ur = neo4jDAO.recuperar("guarderia");
+       UbicacionNodo ur =neo4jDAO.recuperar("guarderia");
 
        Assert.assertEquals(ur.getNombre(), "guarderia");
     }

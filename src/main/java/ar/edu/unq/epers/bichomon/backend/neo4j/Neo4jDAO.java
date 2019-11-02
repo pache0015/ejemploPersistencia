@@ -3,6 +3,8 @@ package ar.edu.unq.epers.bichomon.backend.neo4j;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.neo4j.driver.v1.*;
 
+import java.util.List;
+
 public class Neo4jDAO {
 
     private Driver driver;
@@ -26,10 +28,15 @@ public class Neo4jDAO {
         Session session = this.driver.session();
         String query = "MATCH (ubicacion{nombre: {unNombre}}) RETURN ubicacion";
         try {
+
             StatementResult result = session.run(query, Values.parameters("unNombre", nombre));
-            Record single = result.single();
-            return new UbicacionNodo(single.get("nombre").asString(),
-                    single.get("tipo").asString());
+            return result.list(record ->{
+               Value ubicacion = record.get(0);
+               String nombre_ubicacion = ubicacion.get("nombre").asString();
+               String tipo = ubicacion.get("tipo").asString();
+                return new UbicacionNodo(nombre_ubicacion, tipo);
+            }).get(0);
+
         } finally {
             session.close();
         }
@@ -37,15 +44,15 @@ public class Neo4jDAO {
 
     public void conectar(String nombreUbicacionUno, String nombreUbicacionDos, String tipoCamino) {
         Session session = this.driver.session();
-        String query = "MATCH (ubicacionUno: Ubicacion {nombre: {nombreUbicacionUno}})" +
+        String query = "MATCH (ubicacionUno: Ubicacion {nombre: {nombreUbicacionUno}}) " +
                        "MATCH (ubicacionDos: Ubicacion {nombre: {nombreUbicacionDos}}) " +
-                       "CREATE ubicacionUno-[camino:{tipoCamino}]->ubicacionDos" +
-                       "RETURN *";
+                       "MERGE (ubicacionUno)-[:{tipoCamino}]->(ubicacionDos)";
         try{
            session.run(query, Values.parameters(
-                    "nombreUbicacionUno", nombreUbicacionUno,
-                                   "nombreUbicacionDos", nombreUbicacionDos,
-                                   "tipoCamino", tipoCamino));
+                     "tipoCamino", tipoCamino,
+                                    "nombreUbicacionUno", nombreUbicacionUno,
+                                    "nombreUbicacionDos", nombreUbicacionDos
+                                   ));
 
         }finally {
             session.close();
