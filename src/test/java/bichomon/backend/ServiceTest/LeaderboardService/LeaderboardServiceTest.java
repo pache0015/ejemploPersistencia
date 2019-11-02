@@ -67,6 +67,31 @@ public class LeaderboardServiceTest {
     }
 
     @Test
+    public void se_retornan_todos_los_campeones_de_un_dojo(){
+        dojo.declararCampeones(entrenador, bicho);
+
+        Entrenador entrenador_dos = nuevoEntrenador("Otro_entrenador", dojo);
+        Bicho bicho_dos = nuevoBicho();
+        entrenador_dos.capturarBichomon(bicho_dos, 1);
+
+        dojo.declararCampeones(entrenador_dos, bicho_dos);
+
+        Entrenador entrenador_tres = nuevoEntrenador("Tercer_entrenador", dojo);
+        Bicho bicho_tres = nuevoBicho();
+        entrenador_tres.capturarBichomon(bicho_tres, 1);
+
+        dojo.declararCampeones(entrenador_tres, bicho_tres);
+
+        service.guardarEntrenador(entrenador);
+        service.guardarEntrenador(entrenador_dos);
+        service.guardarEntrenador(entrenador_tres);
+
+        List<Entrenador> campeones = service.campeones();
+
+        assertEquals(campeones.size(), 3);
+    }
+
+    @Test
     public void se_retorna_la_especie_lider() {
         Dojo primerDojo = new Dojo("Primero");
         Dojo segundoDojo = new Dojo("Segundo");

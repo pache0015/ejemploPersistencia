@@ -23,7 +23,7 @@ public class PuebloTest extends UbicacionTest {
     }
 
     @Test
-    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_dojo() throws LimiteBicho {
+    public void se_lanza_una_excepcion_si_el_entrenador_intenta_abandonar_un_bichomon_en_un_pueblo() throws LimiteBicho {
         Bicho bichoAAbandonar = nuevoBicho("Bicho");
         entrenador.capturarBichomon(bichoAAbandonar, 10);
         try {
@@ -67,5 +67,23 @@ public class PuebloTest extends UbicacionTest {
         assertEquals(entrenador.getBichos().size(), 0);
         entrenador.buscar();
         assertEquals(entrenador.getBichos().size(), 1);
+    }
+    @Test
+    public void un_entrenador_puede_encontrar_mas_de_una_especie_en_el_pueblo(){
+        Especie especie = nuevaEspecie("Especie");
+        Especie especie_no_Probable = nuevaEspecie("Especie_no_probable");
+        Especie especie_poco_probable = nuevaEspecie("Especie_poco_probable");
+        pueblo.agregarEspecie(especie, 88);
+        pueblo.agregarEspecie(especie_no_Probable, 2);
+        pueblo.agregarEspecie(especie_poco_probable, 10);
+
+        entrenador.ubicarseEn(pueblo);
+
+        assertEquals(entrenador.getBichos().size(), 0);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 1);
+        entrenador.buscar();
+        assertEquals(entrenador.getBichos().size(), 2);
+
     }
 }

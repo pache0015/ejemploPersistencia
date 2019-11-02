@@ -3,18 +3,12 @@ package ar.edu.unq.epers.bichomon.backend.jdbc.service.mapa;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.BichoDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.EntrenadorDao;
 import ar.edu.unq.epers.bichomon.backend.jdbc.dao.UbicacionDao;
-import ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner;
 import ar.edu.unq.epers.bichomon.backend.model.bicho.Bicho;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
-import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-
-import java.time.LocalDate;
+import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
 
@@ -23,6 +17,7 @@ public class MapaServiceImp implements MapaService {
     private EntrenadorDao entrenadorDao;
     private BichoDao bichoDao;
     private UbicacionDao ubicacionDao;
+    private Neo4jDAO neo4jDAO;
 
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
@@ -76,5 +71,10 @@ public class MapaServiceImp implements MapaService {
             return ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
 
         });
+    }
+
+    public void crearUbicacion(Ubicacion ubicacion) {
+        ubicacionDao.guardar(ubicacion);
+        neo4jDAO.guardar(ubicacion);
     }
 }

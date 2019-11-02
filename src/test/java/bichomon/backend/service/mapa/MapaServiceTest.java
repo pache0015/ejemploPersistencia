@@ -22,7 +22,8 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
-
+import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
+import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,6 +50,7 @@ public class MapaServiceTest {
     MapaServiceImp mapaService;
     UbicacionDao ubicacionDao;
     Entrenador entrenador2;
+    Neo4jDAO neo4jDAO;
 
     @Before
     public void setUp(){
@@ -101,8 +103,6 @@ public class MapaServiceTest {
         Assert.assertEquals("gym", entrenadorRecuperado.getUbicacionActual().getNombre());
     }
 
-
-
     @Test
     public void dosEntrenadoresEnLaMismaUbicacionSonGuardadosyLuegoSePideLaCantidadDeEentrenadoresEnEsaUbicacion(){
 
@@ -147,6 +147,18 @@ public class MapaServiceTest {
 
 
         Assert.assertEquals(bicho.getNombre(), mapaService.campeonHistorico(dojo.getNombre()).getNombre());
+    }
+
+    @Test
+    public void seCreaUnNodoDeUbicacionEnNeo4j() {
+
+        mapaService.crearUbicacion(dojo);
+        Ubicacion ubicacion = ubicacionDao.recuperar(dojo.getNombre());
+        UbicacionNodo nodoUbicacion = neo4jDAO.recuperar(dojo.getNombre());
+
+        Assert.assertEquals(ubicacion.getNombre(), "gym");
+        Assert.assertEquals(nodoUbicacion.getNombre(), "gym");
+        Assert.assertEquals(nodoUbicacion.getTipo(), "Dojo");
     }
 
 }
