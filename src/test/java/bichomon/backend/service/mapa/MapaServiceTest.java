@@ -150,17 +150,21 @@ public class MapaServiceTest {
 
         Assert.assertEquals(bicho.getNombre(), mapaService.campeonHistorico(dojo.getNombre()).getNombre());
     }
+    @Test
+    public void neo4jTest(){
+        neo4jDAO.guardar(guarderia);
+       UbicacionNodo ur = neo4jDAO.recuperar("guarderia");
+
+       Assert.assertEquals(ur.getNombre(), "guarderia");
+    }
 
     @Test
-    public void seCreaUnNodoDeUbicacionEnNeo4j() {
+    public void conectarDosCaminos(){
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
 
-        mapaService.crearUbicacion(dojo);
-        Ubicacion ubicacion = TransactionRunner.run(() -> ubicacionDao.recuperar(dojo.getNombre()));
-        UbicacionNodo nodoUbicacion = neo4jDAO.recuperar(dojo.getNombre());
-
-        Assert.assertEquals(ubicacion.getNombre(), "gym");
-        Assert.assertEquals(nodoUbicacion.getNombre(), "gym");
-        Assert.assertEquals(nodoUbicacion.getTipo(), "Dojo");
+        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
     }
+
 
 }

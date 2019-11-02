@@ -71,16 +71,13 @@ public class MapaServiceImp implements MapaService {
     @Override
     public Bicho campeonHistorico(String dojo) {
         return run(() -> {
-
             return ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
-
         });
     }
 
     public void crearUbicacion(Ubicacion ubicacion) {
         run(() -> {
             ubicacionDao.guardar(ubicacion);
-            neo4jDAO.guardar(ubicacion);
         });
     }
 }
