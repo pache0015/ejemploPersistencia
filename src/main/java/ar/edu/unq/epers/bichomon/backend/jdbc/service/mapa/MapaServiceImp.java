@@ -32,6 +32,10 @@ public class MapaServiceImp implements MapaService {
         this.ubicacionDao = ubicacionDao;
     }
 
+    public void setNeo4jDAO(Neo4jDAO neo4jDAO) {
+        this.neo4jDAO = neo4jDAO;
+    }
+
     @Override
     public void mover(String entrenador, String ubicacion) {
         run(() -> {
@@ -74,7 +78,9 @@ public class MapaServiceImp implements MapaService {
     }
 
     public void crearUbicacion(Ubicacion ubicacion) {
-        ubicacionDao.guardar(ubicacion);
-        neo4jDAO.guardar(ubicacion);
+        run(() -> {
+            ubicacionDao.guardar(ubicacion);
+            neo4jDAO.guardar(ubicacion);
+        });
     }
 }

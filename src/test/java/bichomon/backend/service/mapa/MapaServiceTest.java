@@ -70,6 +70,7 @@ public class MapaServiceTest {
         bichoService = Mockito.spy(new BichoServiceImpl());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
+        neo4jDAO = new Neo4jDAO();
 
         bichoService.setBichoDao(bichoDao);
         bichoService.setEntrenadorDao(entrenadorDao);
@@ -81,6 +82,7 @@ public class MapaServiceTest {
         mapaService.setUbicacionDao(ubicacionDao);
         mapaService.setEntrenadorDao(entrenadorDao);
         mapaService.setBichoDao(bichoDao);
+        mapaService.setNeo4jDAO(neo4jDAO);
     }
 
     @After
@@ -153,7 +155,7 @@ public class MapaServiceTest {
     public void seCreaUnNodoDeUbicacionEnNeo4j() {
 
         mapaService.crearUbicacion(dojo);
-        Ubicacion ubicacion = ubicacionDao.recuperar(dojo.getNombre());
+        Ubicacion ubicacion = TransactionRunner.run(() -> ubicacionDao.recuperar(dojo.getNombre()));
         UbicacionNodo nodoUbicacion = neo4jDAO.recuperar(dojo.getNombre());
 
         Assert.assertEquals(ubicacion.getNombre(), "gym");
