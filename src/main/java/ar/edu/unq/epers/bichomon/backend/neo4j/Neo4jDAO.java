@@ -58,4 +58,24 @@ public class Neo4jDAO {
             session.close();
         }
     }
+    public List<UbicacionNodo> conectados(String nombreUbicacion, String tipoCamino){
+        Session session = this.driver.session();
+        String query =  "MATCH(ubicacionPadre: Ubicacion {nombre: {nombreUbicacion}}) " +
+                        "MATCH (ubicacion)-[{tipoCamino}]->(ubicacionPadre) " +
+                        "RETURN ubicacion";
+        try{
+            StatementResult result = session.run(query, Values.parameters(
+                    "nombreUbicacion", nombreUbicacion,
+                                   "tipoCamino", tipoCamino));
+            return result.list(record ->{
+                Value ubicacion = record.get(0);
+                String nombre_ubicacion = ubicacion.get("nombre").asString();
+                String tipo = ubicacion.get("tipo").asString();
+                return new UbicacionNodo(nombre_ubicacion, tipo);
+            });
+        }finally {
+            session.close();
+        }
+    }
+
 }
