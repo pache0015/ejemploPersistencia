@@ -164,6 +164,13 @@ public class MapaServiceTest {
         neo4jDAO.guardar(dojo);
 
         neo4jDAO.conectar("guarderia", "gym", "Maritimo");
+
+        Assert.assertEquals(1, neo4jDAO.conectados("guarderoa", "Maritimo"));
+    }
+
+    @Test
+    public void test(){
+
     }
 
 
