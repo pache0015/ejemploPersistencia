@@ -169,8 +169,15 @@ public class MapaServiceTest {
     }
 
     @Test
-    public void test(){
+    public void SiSePideMoverAUnaUbicacionPorUnTipoQueCaminoQUeEstaNoPosseSeLanzaUnaException(){
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+        entrenador.moverseA(guarderia);
+        entrenador.setCantidadDeMonedas(1);
 
+        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
+
+        neo4jDAO.mover(entrenador.getNombre(), dojo.getNombre(), "Aereo");
     }
 
 

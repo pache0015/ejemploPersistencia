@@ -76,6 +76,12 @@ public class Neo4jDAO {
         }finally {
             session.close();
         }
-    }
+    }-
 
+    public void mover(String nombreEntrenador, String ubicacionFinal, String tipoDeCamino) {
+        //nose si hay que guardar el entrenador y recuperarlo aqui
+        if(this.conectados(nombreEntrenador, tipoDeCamino).isEmpty()){
+            throw new UbicacionMuyLejana();
+        }
+    }
 }
