@@ -23,6 +23,7 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
+import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
 import org.junit.After;
 import org.junit.Assert;
@@ -160,15 +161,22 @@ public class MapaServiceTest {
 
     @Test
     public void conectarDosCaminos(){
+        Dojo dojo2 = new Dojo("el potrero");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
+        neo4jDAO.guardar(dojo2);
 
         neo4jDAO.conectar("guarderia", "gym", "Maritimo");
+        neo4jDAO.conectar("guarderia", "el potrero", "Maritimo");
 
-        Assert.assertEquals(1, neo4jDAO.conectados("guarderoa", "Maritimo"));
+        List<UbicacionNodo> conectados = neo4jDAO.conectados("guarderia", "Maritimo");
+
+        Assert.assertEquals(2, conectados.size());
+        Assert.assertEquals("el potrero", conectados.get(0).getNombre());
+        Assert.assertEquals("gym", conectados.get(1).getNombre());
     }
 
-    @Test
+    @Test(expected = UbicacionMuyLejana.class)
     public void SiSePideMoverAUnaUbicacionPorUnTipoQueCaminoQUeEstaNoPosseSeLanzaUnaException(){
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -177,7 +185,18 @@ public class MapaServiceTest {
 
         neo4jDAO.conectar("guarderia", "gym", "Maritimo");
 
-        neo4jDAO.mover(entrenador.getNombre(), dojo.getNombre(), "Aereo");
+        neo4jDAO.mover(entrenador, dojo.getNombre(), "Aereo");
+    }
+
+    @Test
+    public void conectadosA(){
+        Dojo dojo2 = new Dojo("el potrero");
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+
+        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
+
+        Assert.assertTrue(neo4jDAO.estaConectadoA("guarderia", "gym"));
     }
 
 
