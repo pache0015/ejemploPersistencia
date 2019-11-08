@@ -3,6 +3,7 @@ package ar.edu.unq.epers.bichomon.backend.neo4j;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.neo4j.driver.v1.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Neo4jDAO {
@@ -76,10 +77,28 @@ public class Neo4jDAO {
         }finally {
             session.close();
         }
-    }-
+    }
+    public List<UbicacionNodo> caminoMasCorto(String entrenador, String ubicacion){
+        String ubicacionDelEntrenador = entrenador;
+        Session session = this.driver.session();
+        String query = "MATCH shorterPath=shortestPath(" +
+                       "  (ubicacionEntrenador:Ubicacion {nombre:{ubicacionDelEntrenador}})" +
+                "         -[tipoCamino]->(ubicacionFinal :Ubicacion {nombre : {ubicacion}})" +
+                ")" +
+                "RETURN shorterPath";
+        try{
+            StatementResult result =  session.run(query, Values.parameters(
+                    "ubicacionEntrenador", ubicacionDelEntrenador,
+                    "ubicacion", ubicacion
+            ));
 
+            return new ArrayList<>();
+        }finally {
+            session.close();
+        }
+
+    }
     public void mover(String nombreEntrenador, String ubicacionFinal, String tipoDeCamino) {
-        //nose si hay que guardar el entrenador y recuperarlo aqui
         if(this.conectados(nombreEntrenador, tipoDeCamino).isEmpty()){
             throw new UbicacionMuyLejana();
         }
