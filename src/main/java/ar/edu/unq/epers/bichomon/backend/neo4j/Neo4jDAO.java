@@ -14,7 +14,7 @@ public class Neo4jDAO {
     public void guardar(Ubicacion item) {
         Session session = driver.session();
         try {
-            String query = "MERGE (ubicacion:Ubicacion:{tipo} {nombre: {nombreUbicacion}}) ";
+            String query = "CREATE (ubicacion:Ubicacion { tipo: {tipo}, nombre: {nombreUbicacion} })";
             session.run(query, Values.parameters(
                     "nombreUbicacion", item.getNombre(), "tipo", item.getClass().getSimpleName()));
         } finally {
@@ -24,12 +24,24 @@ public class Neo4jDAO {
 
     public UbicacionNodo recuperar(String nombre) {
         Session session = this.driver.session();
-        String query = "MATCH (ubicacion:Ubicacion :  {nombre: {unNombre}}) ";
+        String query = "MATCH (ubicacion:Ubicacion {nombre: {unNombre}}) RETURN ubicacion";
         try {
             StatementResult result = session.run(query, Values.parameters("unNombre", nombre));
             Record single = result.single();
-            return new UbicacionNodo(single.get("nombre").asString(),
-                    single.get("tipo").asString());
+
+            UbicacionNodo ubicacionNodo = new UbicacionNodo(single.get("ubicacion").get("nombre").asString(),
+                    single.get("ubicacion").get("tipo").asString());
+            return ubicacionNodo;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void deleteAllNodes() {
+        Session session = this.driver.session();
+        String query = "MATCH(R) DETACH DELETE R";
+        try {
+            session.run(query);
         } finally {
             session.close();
         }

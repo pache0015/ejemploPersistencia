@@ -24,7 +24,6 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -85,7 +84,7 @@ public class MapaServiceTest {
         mapaService.setNeo4jDAO(neo4jDAO);
     }
 
-    @After
+    @Before
     public void cleanup() {
         TransactionRunner.run(() -> {
             new HibernateEspecieDao().borrarTodo();
@@ -153,6 +152,7 @@ public class MapaServiceTest {
 
     @Test
     public void seCreaUnNodoDeUbicacionEnNeo4j() {
+        neo4jDAO.deleteAllNodes();
 
         mapaService.crearUbicacion(dojo);
         Ubicacion ubicacion = TransactionRunner.run(() -> ubicacionDao.recuperar(dojo.getNombre()));
