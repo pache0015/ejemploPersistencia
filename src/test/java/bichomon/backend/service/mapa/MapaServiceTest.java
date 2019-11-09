@@ -18,10 +18,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.ProveedorDeNiveles;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Guarderia;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.*;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
@@ -166,10 +163,10 @@ public class MapaServiceTest {
         neo4jDAO.guardar(dojo);
         neo4jDAO.guardar(dojo2);
 
-        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
-        neo4jDAO.conectar("guarderia", "el potrero", "Maritimo");
+        neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
+        neo4jDAO.conectar("guarderia", "el potrero", Camino.maritimo());
 
-        List<UbicacionNodo> conectados = neo4jDAO.conectados("guarderia", "Maritimo");
+        List<UbicacionNodo> conectados = neo4jDAO.conectados("guarderia", Camino.maritimo());
 
         Assert.assertEquals(2, conectados.size());
         Assert.assertEquals("el potrero", conectados.get(0).getNombre());
@@ -178,26 +175,42 @@ public class MapaServiceTest {
 
     @Test(expected = UbicacionMuyLejana.class)
     public void SiSePideMoverAUnaUbicacionPorUnTipoQueCaminoQUeEstaNoPosseSeLanzaUnaException(){
+        Guarderia guarderia = new Guarderia("La guardeshia");
+        Dojo dojo = new Dojo("El dosho");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
         entrenador.moverseA(guarderia);
         entrenador.setCantidadDeMonedas(1);
-
-        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
 
         neo4jDAO.mover(entrenador, dojo.getNombre(), "Aereo");
     }
 
     @Test
     public void conectadosA(){
-        Dojo dojo2 = new Dojo("el potrero");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
+        neo4jDAO.guardar(new Dojo("el otro dojo"));
 
-        neo4jDAO.conectar("guarderia", "gym", "Maritimo");
+        neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
+        neo4jDAO.conectar("guarderia", "el otro dojo", Camino.maritimo());
+        neo4jDAO.conectar("el otro dojo", "gym", Camino.maritimo());
 
         Assert.assertTrue(neo4jDAO.estaConectadoA("guarderia", "gym"));
     }
+
+    @Test
+    public void x(){
+        Dojo dojo2 = new Dojo("el otro dojo");
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+        neo4jDAO.guardar(dojo2);
+
+        neo4jDAO.conectar("guarderia", "gym", Camino.terrestre());
+        neo4jDAO.conectar("gym", "el otro dojo", Camino.terrestre());
+
+        Assert.assertEquals((Integer) 2, neo4jDAO.precioEntreUbicaciones("guarderia", "el otro dojo"));
+    }
+
 
 
 }

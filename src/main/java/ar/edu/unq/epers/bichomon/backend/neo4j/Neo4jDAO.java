@@ -1,6 +1,7 @@
 package ar.edu.unq.epers.bichomon.backend.neo4j;
 
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
+import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Camino;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.neo4j.driver.v1.*;
 
@@ -44,11 +45,12 @@ public class Neo4jDAO {
         }
     }
 
-    public void conectar(String nombreUbicacionUno, String nombreUbicacionDos, String tipoCamino) {
+    public void conectar(String nombreUbicacionUno, String nombreUbicacionDos, Camino camino) {
         Session session = this.driver.session();
         String query = "MATCH (ubicacionUno: Ubicacion {nombre: {nombreUbicacionUno}}) " +
                        "MATCH (ubicacionDos: Ubicacion {nombre: {nombreUbicacionDos}}) " +
-                       "MERGE (ubicacionUno)-[:" + tipoCamino + "]->(ubicacionDos)";
+                       "MERGE (ubicacionUno)-[c:" + camino.tipo() + "]->(ubicacionDos) " +
+                        "SET c.precio = " + camino.precio();
         try{
            session.run(query, Values.parameters(
                                     "nombreUbicacionUno", nombreUbicacionUno,
@@ -59,9 +61,9 @@ public class Neo4jDAO {
             session.close();
         }
     }
-    public List<UbicacionNodo> conectados(String nombreUbicacion, String tipoCamino){
+    public List<UbicacionNodo> conectados(String nombreUbicacion, Camino camino){
         Session session = this.driver.session();
-        String query = "MATCH (:Ubicacion { nombre: {nombreUbicacion} })-[:" + tipoCamino + "]->(ubicacionConectada:Ubicacion) " +
+        String query = "MATCH (:Ubicacion { nombre: {nombreUbicacion} })-[:" + camino.tipo() + "]->(ubicacionConectada:Ubicacion) " +
                         "RETURN ubicacionConectada";
         try{
             StatementResult result = session.run(query, Values.parameters(
@@ -101,8 +103,8 @@ public class Neo4jDAO {
         if(!this.estaConectadoA(ubicacionActualEntrenador.getNombre(), ubicacionFinal)){
             throw new UbicacionMuyLejana();
         }
-
     }
+
     public Boolean estaConectadoA(String ubicacionSalida, String ubicacionLlegada){
         Session session = this.driver.session();
         String query = "MATCH (:Ubicacion { nombre: {ubicacionSalida} })-[*]->(ubicacionConectada:Ubicacion  { nombre: {ubicacionLlegada} }) " +
@@ -112,6 +114,20 @@ public class Neo4jDAO {
                     "ubicacionSalida", ubicacionSalida,
                                     "ubicacionLlegada", ubicacionLlegada));
             return result.single().get(0).asBoolean();
+        }finally {
+            session.close();
+        }
+    }
+
+    public Integer precioEntreUbicaciones(String ubicacionSalida, String ubicacionLlegada) {
+        Session session = this.driver.session();
+        String query = "MATCH caminos = (:Ubicacion {nombre: {ubicacionSalida}}) -[*]-> (:Ubicacion { nombre: {ubicacionLlegada} }) " +
+                       "RETURN extract(camino IN relationships(caminos) | camino.precio) as extracted";
+        try{
+            StatementResult result = session.run(query, Values.parameters(
+                    "ubicacionSalida", ubicacionSalida,
+                    "ubicacionLlegada", ubicacionLlegada));
+            return result.single().get(0).asInt();
         }finally {
             session.close();
         }
