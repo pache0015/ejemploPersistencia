@@ -78,21 +78,16 @@ public class Neo4jDAO {
             session.close();
         }
     }
-    public List<UbicacionNodo> caminoMasCorto(String entrenador, String ubicacion){
-        String ubicacionDelEntrenador = entrenador;
+    public Integer precioCaminoMasCorto(String ubicacionSalida, String ubicacionLlegada){
         Session session = this.driver.session();
-        String query = "MATCH shorterPath=shortestPath(" +
-                       "  (ubicacionEntrenador:Ubicacion {nombre:{ubicacionDelEntrenador}})" +
-                "         -[tipoCamino]->(ubicacionFinal :Ubicacion {nombre : {ubicacion}})" +
-                ")" +
-                "RETURN shorterPath";
+        String query = "MATCH shortestPath = shortestPath((:Ubicacion { nombre: {ubicacionSalida} })-[*]->(ubicacionConectada:Ubicacion  { nombre: {ubicacionLlegada} })) " +
+                "RETURN reduce(total = 0, camino IN relationships(shortestPath)| total + camino.precio) AS reduction";
         try{
-            StatementResult result =  session.run(query, Values.parameters(
-                    "ubicacionEntrenador", ubicacionDelEntrenador,
-                    "ubicacion", ubicacion
-            ));
+            StatementResult result = session.run(query, Values.parameters(
+                    "ubicacionSalida", ubicacionSalida,
+                    "ubicacionLlegada", ubicacionLlegada));
 
-            return new ArrayList<>();
+            return result.single().get(0).asInt();
         }finally {
             session.close();
         }

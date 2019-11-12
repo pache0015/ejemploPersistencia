@@ -237,4 +237,18 @@ public class MapaServiceTest {
         neo4jDAO.puedeMover(entrenador, "gym");
 
     }
+
+    @Test
+    public void elPrecioDelCaminoMasCortoEs5Monedas(){
+        Dojo dojo2 = new Dojo("el otro dojo");
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+        neo4jDAO.guardar(dojo2);
+
+        neo4jDAO.conectar("guarderia", "gym", Camino.terrestre());
+        neo4jDAO.conectar("gym", "el otro dojo", Camino.terrestre());
+        neo4jDAO.conectar("guarderia", "el otro dojo", Camino.aereo());
+
+        Assert.assertEquals((Integer) 5, neo4jDAO.precioCaminoMasCorto("guarderia", "el otro dojo"));
+    }
 }
