@@ -19,6 +19,7 @@ import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.*;
+import ar.edu.unq.epers.bichomon.backend.neo4j.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
@@ -87,20 +88,8 @@ public class MapaServiceTest {
     public void cleanup() {
         TransactionRunner.run(() -> {
             new HibernateEspecieDao().borrarTodo();
+            neo4jDAO.borrarTodo();
         });
-    }
-
-    @Test
-    public void unEntrenadorCambiaDeUbicacion(){
-
-        bichoService.guardarEntrenador(entrenador);
-
-        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
-        mapaService.mover(entrenador.getNombre(), dojo.getNombre());
-
-        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
-
-        Assert.assertEquals("gym", entrenadorRecuperado.getUbicacionActual().getNombre());
     }
 
     @Test
@@ -182,7 +171,7 @@ public class MapaServiceTest {
         entrenador.moverseA(guarderia);
         entrenador.setCantidadDeMonedas(1);
 
-        neo4jDAO.mover(entrenador, dojo.getNombre(), "Aereo");
+        neo4jDAO.puedeMover(entrenador, dojo.getNombre());
     }
 
     @Test
@@ -199,7 +188,7 @@ public class MapaServiceTest {
     }
 
     @Test
-    public void x(){
+    public void elCaminoMasBaratoVale2Monedas(){
         Dojo dojo2 = new Dojo("el otro dojo");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -208,9 +197,44 @@ public class MapaServiceTest {
         neo4jDAO.conectar("guarderia", "gym", Camino.terrestre());
         neo4jDAO.conectar("gym", "el otro dojo", Camino.terrestre());
 
-        Assert.assertEquals((Integer) 2, neo4jDAO.precioEntreUbicaciones("guarderia", "el otro dojo"));
+        Assert.assertEquals((Integer) 2, neo4jDAO.precioMinimoEntreUbicaciones("guarderia", "el otro dojo"));
     }
 
+    @Test
+    public void elCaminoMasBaratoVale3Monedas(){
+        Dojo dojo2 = new Dojo("el otro dojo");
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+        neo4jDAO.guardar(dojo2);
 
+        neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
+        neo4jDAO.conectar("gym", "el otro dojo", Camino.terrestre());
+        neo4jDAO.conectar("gym", "el otro dojo", Camino.aereo());
 
+        Assert.assertEquals((Integer) 3, neo4jDAO.precioMinimoEntreUbicaciones("guarderia", "el otro dojo"));
+    }
+
+    @Test(expected = CaminoMuyCostoso.class)
+    public void elEntrenadorNoPuedePagarElCaminoMasBarato(){
+        entrenador.moverseA(guarderia);
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+
+        neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
+
+        neo4jDAO.puedeMover(entrenador, "gym");
+    }
+
+    @Test
+    public void elEntrenadorPuedePagarElCaminoMasBarato(){
+        entrenador.setCantidadDeMonedas(2);
+        entrenador.moverseA(guarderia);
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+
+        neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
+
+        neo4jDAO.puedeMover(entrenador, "gym");
+
+    }
 }

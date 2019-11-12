@@ -98,11 +98,16 @@ public class Neo4jDAO {
         }
 
     }
-    public void mover(Entrenador entrenador, String ubicacionFinal, String tipoDeCamino) {
+    public void puedeMover(Entrenador entrenador, String ubicacionFinal) {
         Ubicacion ubicacionActualEntrenador = entrenador.getUbicacionActual();
         if(!this.estaConectadoA(ubicacionActualEntrenador.getNombre(), ubicacionFinal)){
             throw new UbicacionMuyLejana();
         }
+        Integer precioCamino = this.precioMinimoEntreUbicaciones(ubicacionActualEntrenador.getNombre(), ubicacionFinal);
+        if (!entrenador.puedePagar(precioCamino)) {
+            throw new CaminoMuyCostoso();
+        }
+
     }
 
     public Boolean estaConectadoA(String ubicacionSalida, String ubicacionLlegada){
@@ -119,16 +124,28 @@ public class Neo4jDAO {
         }
     }
 
-    public Integer precioEntreUbicaciones(String ubicacionSalida, String ubicacionLlegada) {
+    public Integer precioMinimoEntreUbicaciones(String ubicacionSalida, String ubicacionLlegada) {
         Session session = this.driver.session();
         String query = "MATCH caminos = (:Ubicacion {nombre: {ubicacionSalida}}) -[*]-> (:Ubicacion { nombre: {ubicacionLlegada} }) " +
-                       "RETURN extract(camino IN relationships(caminos) | camino.precio) as extracted";
+                       "RETURN reduce(total = 0, camino IN relationships(caminos)| total + camino.precio) AS reduction";
         try{
             StatementResult result = session.run(query, Values.parameters(
                     "ubicacionSalida", ubicacionSalida,
                     "ubicacionLlegada", ubicacionLlegada));
-            return result.single().get(0).asInt();
+            return result.list().stream().mapToInt(record -> record.get(0).asInt()).min().getAsInt();
         }finally {
+            session.close();
+        }
+    }
+
+    public void borrarTodo() {
+        Session session = this.driver.session();
+        String queryOne = "MATCH ()-[r]->() delete r";
+        String queryTwo = "MATCH (r) DELETE r";
+        try {
+            session.run(queryOne);
+            session.run(queryTwo);
+        } finally {
             session.close();
         }
     }

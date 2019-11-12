@@ -135,4 +135,8 @@ public class Entrenador {
             this.cantidadDeMonedas = this.cantidadDeMonedas - unaCantidadDeMonedasARemover;
         }
     }
+
+    public Boolean puedePagar(Integer precio) {
+        return this.cantidadDeMonedas >= precio;
+    }
 }

@@ -41,6 +41,7 @@ public class MapaServiceImp implements MapaService {
         run(() -> {
             Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
             Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
+            neo4jDAO.puedeMover(entrenadorRecuperado, ubicacion);
 
             entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
 
