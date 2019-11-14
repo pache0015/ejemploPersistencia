@@ -5,7 +5,6 @@ import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Camino;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
 import org.neo4j.driver.v1.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Neo4jDAO {
@@ -93,16 +92,25 @@ public class Neo4jDAO {
         }
 
     }
+
     public void puedeMover(Entrenador entrenador, String ubicacionFinal) {
         Ubicacion ubicacionActualEntrenador = entrenador.getUbicacionActual();
-        if(!this.estaConectadoA(ubicacionActualEntrenador.getNombre(), ubicacionFinal)){
+        assertEstaConectado(ubicacionFinal, ubicacionActualEntrenador);
+        Integer precioCamino = this.precioMinimoEntreUbicaciones(ubicacionActualEntrenador.getNombre(), ubicacionFinal);
+        assertEntrenadorPuedePagar(entrenador, precioCamino);
+
+    }
+
+    public void assertEstaConectado(String ubicacionFinal, Ubicacion ubicacionActualEntrenador) {
+        if (!this.estaConectadoA(ubicacionActualEntrenador.getNombre(), ubicacionFinal)) {
             throw new UbicacionMuyLejana();
         }
-        Integer precioCamino = this.precioMinimoEntreUbicaciones(ubicacionActualEntrenador.getNombre(), ubicacionFinal);
+    }
+
+    public void assertEntrenadorPuedePagar(Entrenador entrenador, Integer precioCamino) {
         if (!entrenador.puedePagar(precioCamino)) {
             throw new CaminoMuyCostoso();
         }
-
     }
 
     public Boolean estaConectadoA(String ubicacionSalida, String ubicacionLlegada){
