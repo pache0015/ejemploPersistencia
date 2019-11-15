@@ -98,7 +98,7 @@ public class Neo4jDAO {
         }
     }
 
-    public void puedeMover(Entrenador entrenador, String ubicacionFinal) {
+    public void assertPuedeMover(Entrenador entrenador, String ubicacionFinal) {
         Ubicacion ubicacionActualEntrenador = entrenador.getUbicacionActual();
         assertEstaConectado(ubicacionFinal, ubicacionActualEntrenador);
         Integer precioCamino = this.precioMinimoEntreUbicaciones(ubicacionActualEntrenador.getNombre(), ubicacionFinal);

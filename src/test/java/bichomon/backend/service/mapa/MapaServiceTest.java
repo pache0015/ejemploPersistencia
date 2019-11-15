@@ -23,6 +23,7 @@ import ar.edu.unq.epers.bichomon.backend.neo4j.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,11 +52,11 @@ public class MapaServiceTest {
     Neo4jDAO neo4jDAO;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         SessionFactoryProvider.destroy();
         guarderia = new Guarderia("guarderia");
         dojo = new Dojo("gym");
-        nivel = new Nivel(2, 1,99);
+        nivel = new Nivel(2, 1, 99);
         List niveles = new ArrayList<Nivel>();
         niveles.add(nivel);
         proveedor = new ProveedorDeNiveles(niveles);
@@ -63,8 +64,8 @@ public class MapaServiceTest {
         especie = new Especie("especiemon", TipoBicho.TIERRA, reptilmon);
         bicho = new Bicho(especie);
         bicho2 = new Bicho(especie);
-        entrenador = new Entrenador("ASH", guarderia ,proveedor);
-        entrenador2 = new Entrenador("ASHU", guarderia ,proveedor);
+        entrenador = new Entrenador("ASH", guarderia, proveedor);
+        entrenador2 = new Entrenador("ASHU", guarderia, proveedor);
         bichoService = Mockito.spy(new BichoServiceImpl());
         bichoDao = new HibernateBichoDao();
         entrenadorDao = new HibernateEntrenadorDao();
@@ -76,14 +77,13 @@ public class MapaServiceTest {
         mapaService = new MapaServiceImp();
 
 
-
         mapaService.setUbicacionDao(ubicacionDao);
         mapaService.setEntrenadorDao(entrenadorDao);
         mapaService.setBichoDao(bichoDao);
         mapaService.setNeo4jDAO(neo4jDAO);
     }
 
-    @Before
+    @After
     public void cleanup() {
         TransactionRunner.run(() -> {
             new HibernateEspecieDao().borrarTodo();
@@ -93,19 +93,22 @@ public class MapaServiceTest {
 
     @Test
     public void unEntrenadorCambiaDeUbicacion() {
-
-        bichoService.guardarEntrenador(entrenador);
-
+        Entrenador unEntrenador = new Entrenador("trainer", guarderia, proveedor);
+        unEntrenador.setCantidadDeMonedas(100);
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.guardar(dojo);
+        neo4jDAO.conectar(unEntrenador.getUbicacionActual().getNombre(), dojo.getNombre(), Camino.terrestre());
+        bichoService.guardarEntrenador(unEntrenador);
         TransactionRunner.run(() -> ubicacionDao.guardar(dojo));
-        mapaService.mover(entrenador.getNombre(), dojo.getNombre());
 
-        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
+        mapaService.mover(unEntrenador.getNombre(), dojo.getNombre());
+        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(unEntrenador.getNombre()));
 
         Assert.assertEquals("gym", entrenadorRecuperado.getUbicacionActual().getNombre());
     }
 
     @Test
-    public void dosEntrenadoresEnLaMismaUbicacionSonGuardadosyLuegoSePideLaCantidadDeEentrenadoresEnEsaUbicacion(){
+    public void dosEntrenadoresEnLaMismaUbicacionSonGuardadosyLuegoSePideLaCantidadDeEentrenadoresEnEsaUbicacion() {
 
 
         bichoService.guardarEntrenador(entrenador);
@@ -115,48 +118,49 @@ public class MapaServiceTest {
     }
 
     @Test(expected = NoHayCampeonException.class)
-    public void unDojoNoTieneCampeon(){
+    public void unDojoNoTieneCampeon() {
 
-        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+        TransactionRunner.run(() -> ubicacionDao.guardar(dojo));
         mapaService.campeon(dojo.getNombre());
     }
 
     @Test
-    public void seLePideElCampeonActualAUnDojo(){
+    public void seLePideElCampeonActualAUnDojo() {
         dojo.setBichoCampeon(bicho);
 
-        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+        TransactionRunner.run(() -> ubicacionDao.guardar(dojo));
 
-        String nombreBicho =  mapaService.campeon(dojo.getNombre()).getNombre();
+        String nombreBicho = mapaService.campeon(dojo.getNombre()).getNombre();
 
         Assert.assertEquals(bicho.getNombre(), nombreBicho);
     }
 
     @Test
-    public void SeVerificaElCampeonHistoricoDeUnDojo(){
-        FichaDeCampeon ficha1 = new FichaDeCampeon(entrenador,bicho, LocalDate.of(2018, 10,18), dojo);
+    public void SeVerificaElCampeonHistoricoDeUnDojo() {
+        FichaDeCampeon ficha1 = new FichaDeCampeon(entrenador, bicho, LocalDate.of(2018, 10, 18), dojo);
 
-        ficha1.setFechaFin(LocalDate.of(2019, 10,10));
-        FichaDeCampeon ficha2 = new FichaDeCampeon(entrenador2,bicho2, LocalDate.of(2019, 10,17), dojo);
+        ficha1.setFechaFin(LocalDate.of(2019, 10, 10));
+        FichaDeCampeon ficha2 = new FichaDeCampeon(entrenador2, bicho2, LocalDate.of(2019, 10, 17), dojo);
         ficha2.setFechaFin(LocalDate.now());
 
         dojo.setFichas(ficha1);
         dojo.setFichas(ficha2);
 
-        TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
+        TransactionRunner.run(() -> ubicacionDao.guardar(dojo));
 
         Assert.assertEquals(bicho.getNombre(), mapaService.campeonHistorico(dojo.getNombre()).getNombre());
     }
-    @Test
-    public void neo4jTest(){
-        neo4jDAO.guardar(guarderia);
-       UbicacionNodo ur =neo4jDAO.recuperar("guarderia");
 
-       Assert.assertEquals(ur.getNombre(), "guarderia");
+    @Test
+    public void neo4jTest() {
+        neo4jDAO.guardar(guarderia);
+        UbicacionNodo ur = neo4jDAO.recuperar("guarderia");
+
+        Assert.assertEquals(ur.getNombre(), "guarderia");
     }
 
     @Test
-    public void conectarDosCaminos(){
+    public void conectarDosCaminos() {
         Dojo dojo2 = new Dojo("el potrero");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -173,7 +177,7 @@ public class MapaServiceTest {
     }
 
     @Test(expected = UbicacionMuyLejana.class)
-    public void SiSePideMoverAUnaUbicacionPorUnTipoQueCaminoQUeEstaNoPosseSeLanzaUnaException(){
+    public void SiSePideMoverAUnaUbicacionPorUnTipoQueCaminoQUeEstaNoPosseSeLanzaUnaException() {
         Guarderia guarderia = new Guarderia("La guardeshia");
         Dojo dojo = new Dojo("El dosho");
         neo4jDAO.guardar(guarderia);
@@ -181,11 +185,11 @@ public class MapaServiceTest {
         entrenador.moverseA(guarderia);
         entrenador.setCantidadDeMonedas(1);
 
-        neo4jDAO.puedeMover(entrenador, dojo.getNombre());
+        neo4jDAO.assertPuedeMover(entrenador, dojo.getNombre());
     }
 
     @Test
-    public void conectadosA(){
+    public void conectadosA() {
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
         neo4jDAO.guardar(new Dojo("el otro dojo"));
@@ -210,7 +214,7 @@ public class MapaServiceTest {
     }
 
     @Test
-    public void elCaminoMasBaratoVale2Monedas(){
+    public void elCaminoMasBaratoVale2Monedas() {
         Dojo dojo2 = new Dojo("el otro dojo");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -223,7 +227,7 @@ public class MapaServiceTest {
     }
 
     @Test
-    public void elCaminoMasBaratoVale3Monedas(){
+    public void elCaminoMasBaratoVale3Monedas() {
         Dojo dojo2 = new Dojo("el otro dojo");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -237,18 +241,18 @@ public class MapaServiceTest {
     }
 
     @Test(expected = CaminoMuyCostoso.class)
-    public void elEntrenadorNoPuedePagarElCaminoMasBarato(){
+    public void elEntrenadorNoPuedePagarElCaminoMasBarato() {
         entrenador.moverseA(guarderia);
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
 
         neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
 
-        neo4jDAO.puedeMover(entrenador, "gym");
+        neo4jDAO.assertPuedeMover(entrenador, "gym");
     }
 
     @Test
-    public void elEntrenadorPuedePagarElCaminoMasBarato(){
+    public void elEntrenadorPuedePagarElCaminoMasBarato() {
         entrenador.setCantidadDeMonedas(2);
         entrenador.moverseA(guarderia);
         neo4jDAO.guardar(guarderia);
@@ -256,11 +260,11 @@ public class MapaServiceTest {
 
         neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
 
-        neo4jDAO.puedeMover(entrenador, "gym");
+        neo4jDAO.assertPuedeMover(entrenador, "gym");
     }
 
     @Test
-    public void elPrecioDelCaminoMasCortoEs5Monedas(){
+    public void elPrecioDelCaminoMasCortoEs5Monedas() {
         Dojo dojo2 = new Dojo("el otro dojo");
         neo4jDAO.guardar(guarderia);
         neo4jDAO.guardar(dojo);
@@ -275,9 +279,14 @@ public class MapaServiceTest {
 
     @Test
     public void seMuevePorElCaminoMasCortoSiPuedePagarElPrecio() {
-        mapaService.moverMasCorto("ASH", "guarderia");
+        entrenador.setCantidadDeMonedas(2);
+        mapaService.crearUbicacion(new Dojo("ubiuno"));
+        neo4jDAO.conectar("ubiuno", "guarderia", Camino.maritimo());
 
-        Assert.assertEquals(0, 0);
+        mapaService.moverMasCorto("ASH", "ubi");
+
+        Assert.assertEquals(entrenador.getUbicacionActual().getNombre(), "ubiuno");
+        Assert.assertEquals(entrenador.getCantidadDeMonedas(), 0);
     }
 
 }
