@@ -1,5 +1,4 @@
 package ar.edu.unq.epers.bichomon.backend.neo4j;
-
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Camino;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
@@ -30,7 +29,6 @@ public class Neo4jDAO {
         Session session = this.driver.session();
         String query = "MATCH (ubicacion{nombre: {unNombre}}) RETURN ubicacion";
         try {
-
             StatementResult result = session.run(query, Values.parameters("unNombre", nombre));
             return result.list(record ->{
                Value ubicacion = record.get(0);
@@ -90,7 +88,6 @@ public class Neo4jDAO {
         }finally {
             session.close();
         }
-
     }
 
     public void puedeMover(Entrenador entrenador, String ubicacionFinal) {
@@ -98,7 +95,6 @@ public class Neo4jDAO {
         assertEstaConectado(ubicacionFinal, ubicacionActualEntrenador);
         Integer precioCamino = this.precioMinimoEntreUbicaciones(ubicacionActualEntrenador.getNombre(), ubicacionFinal);
         assertEntrenadorPuedePagar(entrenador, precioCamino);
-
     }
 
     public void assertEstaConectado(String ubicacionFinal, Ubicacion ubicacionActualEntrenador) {
@@ -152,4 +148,5 @@ public class Neo4jDAO {
             session.close();
         }
     }
+
 }

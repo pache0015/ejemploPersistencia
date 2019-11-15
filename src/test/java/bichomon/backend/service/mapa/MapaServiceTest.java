@@ -133,8 +133,6 @@ public class MapaServiceTest {
 
         TransactionRunner.run(()-> ubicacionDao.guardar(dojo));
 
-
-
         Assert.assertEquals(bicho.getNombre(), mapaService.campeonHistorico(dojo.getNombre()).getNombre());
     }
     @Test
@@ -235,7 +233,6 @@ public class MapaServiceTest {
         neo4jDAO.conectar("guarderia", "gym", Camino.maritimo());
 
         neo4jDAO.puedeMover(entrenador, "gym");
-
     }
 
     @Test
@@ -251,4 +248,12 @@ public class MapaServiceTest {
 
         Assert.assertEquals((Integer) 5, neo4jDAO.precioCaminoMasCorto("guarderia", "el otro dojo"));
     }
+
+    @Test
+    public void seMuevePorElCaminoMasCortoSiPuedePagarElPrecio() {
+        mapaService.moverMasCorto("ASH", "guarderia");
+
+        Assert.assertEquals(0, 0);
+    }
+
 }

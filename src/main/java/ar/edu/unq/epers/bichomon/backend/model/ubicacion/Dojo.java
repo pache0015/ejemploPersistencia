@@ -6,7 +6,10 @@ import ar.edu.unq.epers.bichomon.backend.model.duelo.ResultadoCombate;
 import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.historialDeCampeones.FichaDeCampeon;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,6 @@ public class Dojo extends Ubicacion {
             getUltimaFichaCampeon().setFechaFin(fechaDeCambio);
         }
         fichas.add(new FichaDeCampeon(entrenador, bicho, fechaDeCambio, this));
-
         entrenadorCampeon = entrenador;
         bichoCampeon = bicho;
     }
