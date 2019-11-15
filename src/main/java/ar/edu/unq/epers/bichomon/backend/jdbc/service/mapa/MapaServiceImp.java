@@ -8,6 +8,7 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.NoHayCampeonException;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.neo4j.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 
 import static ar.edu.unq.epers.bichomon.backend.jdbc.service.runner.TransactionRunner.run;
@@ -18,7 +19,6 @@ public class MapaServiceImp implements MapaService {
     private BichoDao bichoDao;
     private UbicacionDao ubicacionDao;
     private Neo4jDAO neo4jDAO;
-
 
     public void setEntrenadorDao(EntrenadorDao entrenadorDao) {
         this.entrenadorDao = entrenadorDao;
@@ -41,10 +41,29 @@ public class MapaServiceImp implements MapaService {
         run(() -> {
             Entrenador entrenadorRecuperado = this.entrenadorDao.recuperar(entrenador);
             Ubicacion ubicacionRecuperada = this.ubicacionDao.recuperar(ubicacion);
+            neo4jDAO.puedeMover(entrenadorRecuperado, ubicacion);
 
             entrenadorRecuperado.ubicarseEn(ubicacionRecuperada);
 
             entrenadorDao.actualizarUbicacion(entrenadorRecuperado, ubicacionRecuperada);
+        });
+    }
+
+    public void moverMasCorto(String unEntrenador, String ubicacion) {
+        run(() -> {
+            Entrenador entrenador = entrenadorDao.recuperar(unEntrenador);
+            Ubicacion ubicacionLlegada = ubicacionDao.recuperar(ubicacion);
+            String salida = entrenador.getUbicacionActual().getNombre();
+            int monedas = entrenador.getCantidadDeMonedas();
+            Integer precio = neo4jDAO.precioCaminoMasCorto(salida, ubicacion);
+            neo4jDAO.assertEntrenadorPuedePagar(entrenador, precio);
+
+            if (monedas >= precio) {
+                entrenador.ubicarseEn(ubicacionLlegada);
+                entrenador.setCantidadDeMonedas(monedas - precio);
+            } else {
+                throw new CaminoMuyCostoso();
+            }
         });
     }
 
@@ -60,27 +79,28 @@ public class MapaServiceImp implements MapaService {
         return run(() -> {
             Dojo dojo = ubicacionDao.recuperarDojo(nombreDojo);
             Bicho posibleCampeon = dojo.getBichoCAmpeon();
-            if (posibleCampeon == null) {
-                throw new NoHayCampeonException();
-            }
+            assertHayCampeon(posibleCampeon);
             return posibleCampeon;
         });
 
     }
 
+    public void assertHayCampeon(Bicho posibleCampeon) {
+        if (posibleCampeon == null) {
+            throw new NoHayCampeonException();
+        }
+    }
+
     @Override
     public Bicho campeonHistorico(String dojo) {
         return run(() -> {
-
             return ubicacionDao.recuperarIdCampeonHistoricoEnDojo(dojo);
-
         });
     }
 
     public void crearUbicacion(Ubicacion ubicacion) {
         run(() -> {
             ubicacionDao.guardar(ubicacion);
-            neo4jDAO.guardar(ubicacion);
         });
     }
 }

@@ -22,6 +22,8 @@ public class Entrenador {
     private Nivel nivel;
     @ManyToOne(cascade = CascadeType.ALL)
     private ProveedorDeNiveles proveedor;
+    @Column
+    private Integer cantidadDeMonedas = 0;
 
     public Entrenador(String nombre, Ubicacion ubicacion, ProveedorDeNiveles proveedor) {
         this.nombre = nombre;
@@ -30,6 +32,7 @@ public class Entrenador {
         this.nivel = proveedor.getNivelDeEntrenador(this.puntosDeExperiencia);
         this.ubicacionActual = ubicacion;
         this.proveedor = proveedor;
+
     }
 
     public Entrenador() {
@@ -115,5 +118,25 @@ public class Entrenador {
 
     public Boolean puedeAbandonar() {
         return this.tieneMasDeUnBicho();
+    }
+
+    public int getCantidadDeMonedas() {
+        return this.cantidadDeMonedas;
+    }
+
+    public void setCantidadDeMonedas(Integer cantidadDeMonedasASetear) {
+        this.cantidadDeMonedas = cantidadDeMonedasASetear;
+    }
+
+    public void quitarUnaCantidadDeMonedas(Integer unaCantidadDeMonedasARemover) {
+        if(this.getCantidadDeMonedas() < unaCantidadDeMonedasARemover){
+            throw new MonedasInsuficientes();
+        }else {
+            this.cantidadDeMonedas = this.cantidadDeMonedas - unaCantidadDeMonedasARemover;
+        }
+    }
+
+    public Boolean puedePagar(Integer precio) {
+        return this.cantidadDeMonedas >= precio;
     }
 }

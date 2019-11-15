@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EntrenadorTest {
@@ -52,20 +53,20 @@ public class EntrenadorTest {
     public void test_constructoDeEntrenador(){
         List listaDeBichosVacios =  new ArrayList<>();
 
-        Assert.assertEquals(entrenador.getBichos(), listaDeBichosVacios);
-        Assert.assertEquals(entrenador.getNivel().numeroNivel, 1, 0);
-        Assert.assertEquals(entrenador.getPuntosDeExperiencia(), 1, 0);
+        assertEquals(entrenador.getBichos(), listaDeBichosVacios);
+        assertEquals(entrenador.getNivel().numeroNivel, 1, 0);
+        assertEquals(entrenador.getPuntosDeExperiencia(), 1, 0);
     }
     @Test
     public void test001_unEntrenadorTieneUnNivel() {
-        Assert.assertEquals(entrenador.getNivel().numeroNivel, this.nivelUno.numeroNivel);
+        assertEquals(entrenador.getNivel().numeroNivel, this.nivelUno.numeroNivel);
     }
     @Test
     public void test002_unEntrandorAumentaSuEnergia(){
         entrenador.ganarEnergia(experienciaPorCaptura.puntosDeExperiencia());
 
-        Assert.assertEquals(entrenador.getPuntosDeExperiencia(), 11, 0);
-        Assert.assertEquals(entrenador.getNivel().numeroNivel, 1, 1);
+        assertEquals(entrenador.getPuntosDeExperiencia(), 11, 0);
+        assertEquals(entrenador.getNivel().numeroNivel, 1, 1);
     }
 
     @Test
@@ -73,19 +74,19 @@ public class EntrenadorTest {
         Experiencia tabla = Factory.experienciaPorCaptura(200, "Just for testing");
 
 
-        Assert.assertEquals(entrenador.getNivel().numeroNivel, nivelUno.numeroNivel);
+        assertEquals(entrenador.getNivel().numeroNivel, nivelUno.numeroNivel);
 
         entrenador.ganarEnergia(tabla.puntosDeExperiencia());
 
-        Assert.assertEquals(entrenador.getNivel().numeroNivel, nivelDos.numeroNivel);
-        Assert.assertEquals(entrenador.getPuntosDeExperiencia(), 201, 0);
+        assertEquals(entrenador.getNivel().numeroNivel, nivelDos.numeroNivel);
+        assertEquals(entrenador.getPuntosDeExperiencia(), 201, 0);
     }
 
     @Test
     public void test004_unEntrenadorPuedeCapturarPokemonsYGanaExperienciaPorEllo() throws LimiteBicho {
         entrenador.capturarBichomon(bichoUno, experienciaPorCaptura.puntosDeExperiencia());
 
-        Assert.assertEquals(entrenador.getBichos().size(), 1);
+        assertEquals(entrenador.getBichos().size(), 1);
     }
 
     @Test
@@ -95,7 +96,7 @@ public class EntrenadorTest {
             entrenador.capturarBichomon(bichoDos, experienciaPorCaptura.puntosDeExperiencia());
             entrenador.capturarBichomon(bichoTres, experienciaPorCaptura.puntosDeExperiencia());
         }catch (LimiteBicho error){
-            Assert.assertEquals(LimiteBicho.ERROR_LIMITE_DE_BICHOS, error.getMessage());
+            assertEquals(LimiteBicho.ERROR_LIMITE_DE_BICHOS, error.getMessage());
         }
     }
 
@@ -105,5 +106,24 @@ public class EntrenadorTest {
         entrenador.capturarBichomon(Factory.bicho(especie), 100);
         entrenador.capturarBichomon(Factory.bicho(especie), 10);
         assertTrue(entrenador.puedeAbandonar());
+    }
+    @Test
+    public void un_entrenador_empieza_siempre_con_cero_monedas(){
+        assertEquals(0, entrenador.getCantidadDeMonedas()) ;
+    }
+    @Test
+    public void se_le_pueden_setear_las_cantidades_de_monedas_a_un_entrenador(){
+        entrenador.setCantidadDeMonedas(3);
+
+        assertEquals(3, entrenador.getCantidadDeMonedas());
+    }
+    @Test
+    public void si_a_un_entrenador_se_le_quitan_mas_monedas_de_las_que_lleva_este_lanza_un_error(){
+        entrenador.setCantidadDeMonedas(3);
+        try {
+            entrenador.quitarUnaCantidadDeMonedas(4);
+        }catch (Error e){
+            assertEquals(e.getMessage(), "El entrenador no tiene la cantidad suficiente de monedas");
+        }
     }
 }

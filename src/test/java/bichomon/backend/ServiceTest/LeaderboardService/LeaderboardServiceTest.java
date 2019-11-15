@@ -10,9 +10,8 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.Entrenador;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Dojo;
-import ar.edu.unq.epers.bichomon.backend.model.ubicacion.Ubicacion;
+import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import bichomon.backend.factory.Factory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,6 +33,14 @@ public class LeaderboardServiceTest {
     private Bicho bicho;
 
     @Before
+    public void cleanup() {
+        TransactionRunner.run(() -> {
+            new HibernateEspecieDao().borrarTodo();
+            new Neo4jDAO().borrarTodo();
+        });
+    }
+
+    @Before
     public void setup() {
         service = new LeaderboardServiceImpl();
         entrenadorDao = new HibernateEntrenadorDao();
@@ -47,13 +54,6 @@ public class LeaderboardServiceTest {
         bicho.setEnergia(0.0);
         entrenador = nuevoEntrenador("Hola", dojo);
         entrenador.capturarBichomon(bicho, 30);
-    }
-
-    @After
-    public void cleanup() {
-        TransactionRunner.run(() -> {
-            especieDao.borrarTodo();
-        });
     }
 
     @Test
