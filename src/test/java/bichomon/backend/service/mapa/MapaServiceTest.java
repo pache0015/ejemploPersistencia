@@ -23,7 +23,6 @@ import ar.edu.unq.epers.bichomon.backend.neo4j.CaminoMuyCostoso;
 import ar.edu.unq.epers.bichomon.backend.neo4j.Neo4jDAO;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionMuyLejana;
 import ar.edu.unq.epers.bichomon.backend.neo4j.UbicacionNodo;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,12 +83,25 @@ public class MapaServiceTest {
         mapaService.setNeo4jDAO(neo4jDAO);
     }
 
-    @After
+    @Before
     public void cleanup() {
         TransactionRunner.run(() -> {
             new HibernateEspecieDao().borrarTodo();
             neo4jDAO.borrarTodo();
         });
+    }
+
+    @Test
+    public void unEntrenadorCambiaDeUbicacion() {
+
+        bichoService.guardarEntrenador(entrenador);
+
+        TransactionRunner.run(() -> ubicacionDao.guardar(dojo));
+        mapaService.mover(entrenador.getNombre(), dojo.getNombre());
+
+        Entrenador entrenadorRecuperado = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
+
+        Assert.assertEquals("gym", entrenadorRecuperado.getUbicacionActual().getNombre());
     }
 
     @Test
@@ -186,6 +198,18 @@ public class MapaServiceTest {
     }
 
     @Test
+    public void seCreaUnNodoDeUbicacionEnNeo4j() {
+
+        mapaService.crearUbicacion(dojo);
+        Ubicacion ubicacion = TransactionRunner.run(() -> ubicacionDao.recuperar(dojo.getNombre()));
+        UbicacionNodo nodoUbicacion = neo4jDAO.recuperar(dojo.getNombre());
+
+        Assert.assertEquals(ubicacion.getNombre(), "gym");
+        Assert.assertEquals(nodoUbicacion.getNombre(), "gym");
+        Assert.assertEquals(nodoUbicacion.getTipo(), "Dojo");
+    }
+
+    @Test
     public void elCaminoMasBaratoVale2Monedas(){
         Dojo dojo2 = new Dojo("el otro dojo");
         neo4jDAO.guardar(guarderia);
@@ -257,3 +281,4 @@ public class MapaServiceTest {
     }
 
 }
+
