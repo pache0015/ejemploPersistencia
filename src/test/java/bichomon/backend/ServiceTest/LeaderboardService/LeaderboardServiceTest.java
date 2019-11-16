@@ -83,10 +83,9 @@ public class LeaderboardServiceTest {
         dojo.declararCampeones(entrenador_tres, bicho_tres);
 
         service.guardarEntrenador(entrenador);
-        service.guardarEntrenador(entrenador_dos);
-        service.guardarEntrenador(entrenador_tres);
 
         List<Entrenador> campeones = service.campeones();
+        TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador_dos.getNombre()));
 
         assertEquals(campeones.size(), 3);
     }

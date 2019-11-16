@@ -61,6 +61,7 @@ public class MapaServiceImp implements MapaService {
             if (monedas >= precio) {
                 entrenador.ubicarseEn(ubicacionLlegada);
                 entrenador.setCantidadDeMonedas(monedas - precio);
+                entrenadorDao.guardar(entrenador);
             } else {
                 throw new CaminoMuyCostoso();
             }
@@ -101,6 +102,7 @@ public class MapaServiceImp implements MapaService {
     public void crearUbicacion(Ubicacion ubicacion) {
         run(() -> {
             ubicacionDao.guardar(ubicacion);
+            neo4jDAO.guardar(ubicacion);
         });
     }
 }

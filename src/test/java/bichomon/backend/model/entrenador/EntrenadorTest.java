@@ -5,7 +5,6 @@ import ar.edu.unq.epers.bichomon.backend.model.entrenador.*;
 import ar.edu.unq.epers.bichomon.backend.model.especie.Especie;
 import ar.edu.unq.epers.bichomon.backend.model.especie.TipoBicho;
 import bichomon.backend.factory.Factory;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,7 +121,7 @@ public class EntrenadorTest {
         entrenador.setCantidadDeMonedas(3);
         try {
             entrenador.quitarUnaCantidadDeMonedas(4);
-        }catch (Error e){
+        } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "El entrenador no tiene la cantidad suficiente de monedas");
         }
     }

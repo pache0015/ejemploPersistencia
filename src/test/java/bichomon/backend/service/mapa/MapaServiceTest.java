@@ -280,13 +280,15 @@ public class MapaServiceTest {
     @Test
     public void seMuevePorElCaminoMasCortoSiPuedePagarElPrecio() {
         entrenador.setCantidadDeMonedas(2);
+        TransactionRunner.run(() -> entrenadorDao.guardar(entrenador));
         mapaService.crearUbicacion(new Dojo("ubiuno"));
-        neo4jDAO.conectar("ubiuno", "guarderia", Camino.maritimo());
+        neo4jDAO.guardar(guarderia);
+        neo4jDAO.conectar("guarderia", "ubiuno", Camino.maritimo());
 
-        mapaService.moverMasCorto("ASH", "ubi");
-
-        Assert.assertEquals(entrenador.getUbicacionActual().getNombre(), "ubiuno");
-        Assert.assertEquals(entrenador.getCantidadDeMonedas(), 0);
+        mapaService.moverMasCorto("ASH", "ubiuno");
+        Entrenador entrenador1 = TransactionRunner.run(() -> entrenadorDao.recuperar(entrenador.getNombre()));
+        Assert.assertEquals(entrenador1.getUbicacionActual().getNombre(), "ubiuno");
+        Assert.assertEquals(entrenador1.getCantidadDeMonedas(), 0);
     }
 
 }
